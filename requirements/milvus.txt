@@ -1,0 +1,6 @@
+# Milvus backend — distributed, server-based
+# Works on: Windows, Linux, macOS (client)
+# Requires: running Milvus server (Docker recommended)
+# Python: 3.8+
+-r base.txt
+pymilvus

@@ -1,0 +1,6 @@
+# Core dependencies (always needed)
+sentence-transformers>=3.0
+numpy
+transformers
+torch
+networkx

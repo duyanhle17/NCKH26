@@ -2,57 +2,103 @@ import re
 from typing import Any, Dict, List
 from .utils_text import normalize_text
 
-# Bạn có thể giữ các regex Article/Chapter như cũ,
-# nhưng dataset VN có thể không có "Article". Vậy ta dùng fallback an toàn.
+# ── Public import from chunking  (lazy to avoid circular) ─────────────────────
+def _get_legal_splitters():
+    from .chunking import strip_header_footer, split_legal_units
+    return strip_header_footer, split_legal_units
 
-PAGE_MARK = re.compile(r"^---\s*end\s*of\s*page\s*=\s*\d+\s*---\s*$", re.IGNORECASE)
+
+# Maximum characters we allow in a single passage before we force a new one.
+# Kept generous so that a full Điều (which may be long) fits in one passage.
+MAX_PASSAGE_CHARS: int = 6000
+# Minimum chars for a passage to be worth keeping
+MIN_PASSAGE_CHARS: int = 120
+
 
 def doc_to_passages(doc: Dict[str, Any]) -> List[Dict[str, Any]]:
     """
-    Split theo đoạn trống lớn để tạo passages.
-    Nếu không split được thì trả về 1 passage FULL_DOC.
-    """
-    text = doc["content"]
-    parts = [normalize_text(p) for p in re.split(r"\n{2,}", text) if normalize_text(p)]
-    passages: List[Dict[str, Any]] = []
+    Split a document into semantically meaningful passages.
 
-    # ghép lại thành blocks đủ dài (tránh quá vụn)
-    buf = []
-    cur_len = 0
-    def flush(idx: int):
-        nonlocal buf, cur_len
+    Strategy (fixes the old char-count slicing that broke Điều/Khoản):
+    1. Strip header / footer noise.
+    2. Split by legal structure hierarchy (Phần > Chương > Điều > Khoản > Điểm).
+    3. Pack consecutive units into passages that stay under MAX_PASSAGE_CHARS
+       WITHOUT ever cutting mid-unit: if a single unit already exceeds the
+       budget, it becomes its own passage (oversized but semantically complete).
+    """
+    strip_header_footer, split_legal_units = _get_legal_splitters()
+
+    raw = doc["content"]
+    text = normalize_text(raw)
+
+    # 1. Strip header / footer
+    clean = strip_header_footer(text)
+    if not clean:
+        clean = text  # fallback: keep original
+
+    # 2. Split into legal units
+    units = split_legal_units(clean)
+
+    passages: List[Dict[str, Any]] = []
+    buf: List[str] = []
+    buf_len: int = 0
+    pi: int = 0
+
+    def flush():
+        nonlocal buf, buf_len, pi
         if not buf:
             return
         block = normalize_text("\n\n".join(buf))
-        if len(block) >= 200:
+        if len(block) >= MIN_PASSAGE_CHARS:
             passages.append({
                 "doc_id": doc["doc_id"],
-                "path": f'{doc["path"]} > PASSAGE_{idx}',
+                "path": f'{doc["path"]} > PASSAGE_{pi}',
                 "content": block,
             })
-        buf = []
-        cur_len = 0
-
-    pi = 0
-    for p in parts:
-        if cur_len + len(p) <= 3500:
-            buf.append(p)
-            cur_len += len(p)
-        else:
-            flush(pi)
             pi += 1
-            buf = [p]
-            cur_len = len(p)
+        buf = []
+        buf_len = 0
 
-    flush(pi)
+    for unit in units:
+        unit = normalize_text(unit)
+        if not unit:
+            continue
+        ulen = len(unit)
 
+        if ulen > MAX_PASSAGE_CHARS:
+            # Oversized unit (e.g. long Điều or corrupt appendix block):
+            # flush current buffer first, then push unit as its own passage.
+            flush()
+            block = normalize_text(unit)
+            if len(block) >= MIN_PASSAGE_CHARS:
+                passages.append({
+                    "doc_id": doc["doc_id"],
+                    "path": f'{doc["path"]} > PASSAGE_{pi}',
+                    "content": block,
+                })
+                pi += 1
+        elif buf_len + ulen > MAX_PASSAGE_CHARS:
+            flush()
+            buf = [unit]
+            buf_len = ulen
+        else:
+            buf.append(unit)
+            buf_len += ulen
+
+    flush()
+
+    # Fallback: no passages created (very short doc)
     if not passages:
-        passages.append({
-            "doc_id": doc["doc_id"],
-            "path": f'{doc["path"]} > FULL_DOC',
-            "content": normalize_text(text),
-        })
+        block = normalize_text(clean)
+        if len(block) >= MIN_PASSAGE_CHARS:
+            passages.append({
+                "doc_id": doc["doc_id"],
+                "path": f'{doc["path"]} > FULL_DOC',
+                "content": block,
+            })
+
     return passages
+
 
 def docs_to_passages(docs: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     all_passages: List[Dict[str, Any]] = []

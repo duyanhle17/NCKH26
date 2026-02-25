@@ -1,0 +1,5 @@
+# ZVec backend — embedded, lightweight (Alibaba Proxima)
+# Works on: Linux x86_64, Linux ARM64, macOS ARM64
+# Python: 3.10 - 3.12 ONLY
+-r base.txt
+zvec

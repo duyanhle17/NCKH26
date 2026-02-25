@@ -1,0 +1,5 @@
+# ChromaDB backend — embedded, persistent
+# Works on: Windows, Linux, macOS
+# Python: 3.9 - 3.13
+-r base.txt
+chromadb

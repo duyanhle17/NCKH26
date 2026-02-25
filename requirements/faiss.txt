@@ -1,0 +1,5 @@
+# FAISS backend — local, in-process
+# Works on: Windows, Linux, macOS
+# Python: 3.8+
+-r base.txt
+faiss-cpu
