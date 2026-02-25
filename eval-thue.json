@@ -1,0 +1,262 @@
+[
+    {
+        "type": "factual",
+        "query": "Theo Thông tư 01/1999/TT-BXD, giá trị dự toán xây lắp sau thuế bao gồm những thành phần nào?",
+        "expected_answer": "Giá trị dự toán xây lắp sau thuế của công trình xây dựng bao gồm giá trị dự toán xây lắp trước thuế và khoản thuế giá trị gia tăng đầu ra."
+    },
+    {
+        "type": "factual",
+        "query": "Chi phí trực tiếp trong dự toán xây lắp trước thuế theo Thông tư 01/1999/TT-BXD bao gồm các chi phí nào?",
+        "expected_answer": "Bao gồm chi phí vật liệu, chi phí nhân công và chi phí sử dụng máy thi công được xác định dựa trên cơ sở khối lượng xây lắp tính theo thiết kế được duyệt và đơn giá xây dựng cơ bản của công tác xây lắp tương ứng."
+    },
+    {
+        "type": "reasoning",
+        "query": "Tại sao lại có sự chênh lệch vật liệu trong chi phí dự toán theo Thông tư 01/1999/TT-BXD và phần chênh lệch này được xử lý như thế nào?",
+        "expected_answer": "Khi có sự thay đổi giá cả vật liệu, doanh nghiệp sẽ căn cứ vào mức giá chưa có thuế giá trị gia tăng trong thông báo từng thời kỳ của cơ quan có thẩm quyền công bố và mức giá đã tính trong đơn giá xây dựng cơ bản để xác định phần chênh lệch. Phần chênh lệch này được đưa trực tiếp vào chi phí vật liệu trong dự toán."
+    },
+    {
+        "type": "case-study",
+        "case": "Một công trình xây dựng bắt đầu thi công từ năm 1998 và tiếp tục chuyển tiếp sang năm 1999.",
+        "query": "Việc áp dụng thuế giá trị gia tăng cho các khối lượng xây dựng hoàn thành trước và sau ngày 31/12/1998 được quy định như thế nào theo Thông tư 01/1999/TT-BXD?",
+        "expected_answer": "Đối với khối lượng công trình, hạng mục công trình đã thực hiện đến ngày 31/12/1998 sẽ không tính thuế giá trị gia tăng. Còn đối với khối lượng thực hiện từ ngày 01/01/1999 thì được tính toán và áp dụng thuế theo hướng dẫn tại thông tư này."
+    },
+    {
+        "type": "factual",
+        "query": "Định mức chi phí chung đối với công tác Lắp đặt điện, nước, đường ống, máy công nghệ theo Phụ lục 2 Thông tư 01/1999/TT-BXD là bao nhiêu?",
+        "expected_answer": "Định mức chi phí chung đối với công tác Lắp đặt điện, nước, đường ống, máy công nghệ là 63,5%."
+    },
+    {
+        "type": "hallucination-trap",
+        "query": "Thu nhập chịu thuế tính trước đối với công trình xây dựng sân bay quốc tế theo Thông tư 01/1999/TT-BXD được quy định ở mức bao nhiêu phần trăm?",
+        "expected_answer": "Văn bản không có quy định cụ thể định mức thu nhập chịu thuế tính trước dành riêng cho 'công trình xây dựng sân bay quốc tế'. Phụ lục 2 chỉ phân loại theo các nhóm công trình như dân dụng, công nghiệp, giao thông, thủy lợi, v.v."
+    },
+    {
+        "type": "reasoning",
+        "query": "Thuế giá trị gia tăng đầu ra trong dự toán xây lắp theo Thông tư 01/1999/TT-BXD có mục đích sử dụng là gì?",
+        "expected_answer": "Thuế giá trị gia tăng đầu ra sử dụng để trả số thuế giá trị gia tăng đầu vào mà doanh nghiệp xây dựng đã ứng trước khi mua các loại vật tư, vật liệu, nhiên liệu, năng lượng... nhưng chưa được tính vào chi phí dự toán và phần thuế giá trị gia tăng mà doanh nghiệp xây dựng phải nộp."
+    },
+    {
+        "type": "factual",
+        "query": "Dự toán chi phí thiết kế trước thuế được tính như thế nào khi áp dụng thuế GTGT theo Thông tư 01/1999/TT-BXD?",
+        "expected_answer": "Dự toán chi phí thiết kế trước thuế bằng dự toán chi phí thiết kế tính theo bảng giá thiết kế công trình do Bộ Xây dựng ban hành nhân với hệ số điều chỉnh K = 0,96."
+    },
+    {
+        "type": "hallucination-trap",
+        "query": "Tiền trợ cấp ăn trưa hàng tháng cho công nhân xây lắp theo Thông tư 01/1999/TT-BXD là bao nhiêu?",
+        "expected_answer": "Thông tư 01/1999/TT-BXD không đề cập đến khoản 'tiền trợ cấp ăn trưa hàng tháng' cho công nhân xây lắp. Các chi phí nhân công chỉ bao gồm lương cơ bản, các khoản phụ cấp có tính chất lương (như lưu động, không ổn định sản xuất) và một số chi phí khoán khác."
+    },
+    {
+        "type": "case-study",
+        "case": "Một dự án áp dụng định mức chi phí chung là 55,0% và thu nhập chịu thuế tính trước là 5,5%.",
+        "query": "Loại công trình nào phù hợp với các định mức này theo Phụ lục 2 của Thông tư 01/1999/TT-BXD?",
+        "expected_answer": "Các định mức này áp dụng cho 'Xây dựng công trình dân dụng thông thường' hoặc 'Khai hoang, xây dựng đồng ruộng'."
+    },
+    {
+        "type": "factual",
+        "query": "Mức lệ phí cấp giấy phép thành lập trung tâm trọng tài là bao nhiêu theo Thông tư 01/2005/TT-BTC?",
+        "expected_answer": "Lệ phí cấp giấy phép thành lập trung tâm trọng tài là 500.000 đồng."
+    },
+    {
+        "type": "factual",
+        "query": "Theo Thông tư 01/2005/TT-BTC, lệ phí khi yêu cầu Tòa án chỉ định trọng tài viên hoặc thay đổi trọng tài viên là bao nhiêu?",
+        "expected_answer": "Yêu cầu Tòa án chỉ định trọng tài viên, thay đổi trọng tài viên có mức thu lệ phí là 100.000 đồng."
+    },
+    {
+        "type": "case-study",
+        "case": "Một trung tâm trọng tài vừa được cấp phép hoạt động nay muốn đăng ký thành lập thêm một chi nhánh tại thành phố khác.",
+        "query": "Trung tâm trọng tài này sẽ phải nộp khoản lệ phí nào và mức thu là bao nhiêu theo Thông tư 01/2005/TT-BTC?",
+        "expected_answer": "Trung tâm trọng tài phải nộp lệ phí Đăng ký hoạt động chi nhánh với mức thu là 100.000 đồng."
+    },
+    {
+        "type": "reasoning",
+        "query": "Cơ quan nào có thẩm quyền thu lệ phí cấp giấy phép thành lập và đăng ký hoạt động của trung tâm trọng tài?",
+        "expected_answer": "Cơ quan thu lệ phí là cơ quan có thẩm quyền cấp giấy phép thành lập, đăng ký hoạt động trung tâm trọng tài, đăng ký hoạt động chi nhánh trung tâm trọng tài."
+    },
+    {
+        "type": "case-study",
+        "case": "Ông B muốn gửi đơn yêu cầu Tòa án hủy một quyết định trọng tài mà ông cho là không thỏa đáng.",
+        "query": "Ông B phải nộp lệ phí cho cơ quan nào và số tiền lệ phí phải nộp là bao nhiêu?",
+        "expected_answer": "Ông B phải nộp lệ phí cho Toà án nơi ông gửi đơn yêu cầu, với mức thu lệ phí là 500.000 đồng."
+    },
+    {
+        "type": "factual",
+        "query": "Toàn bộ số tiền lệ phí cấp phép hoạt động trung tâm trọng tài thu được sẽ được cơ quan thu xử lý như thế nào?",
+        "expected_answer": "Cơ quan thu lệ phí phải nộp toàn bộ số tiền phí thu được vào ngân sách nhà nước."
+    },
+    {
+        "type": "factual",
+        "query": "Lệ phí tòa án liên quan đến trọng tài được hạch toán vào mục và tiểu mục nào của mục lục ngân sách nhà nước hiện hành?",
+        "expected_answer": "Được hạch toán vào chương, loại, khoản tương ứng, mục 045, tiểu mục 07 của mục lục ngân sách nhà nước hiện hành."
+    },
+    {
+        "type": "hallucination-trap",
+        "query": "Phí gia hạn giấy phép hoạt động của trung tâm trọng tài sau 5 năm là bao nhiêu theo Thông tư 01/2005/TT-BTC?",
+        "expected_answer": "Thông tư 01/2005/TT-BTC không có quy định nào về việc 'gia hạn giấy phép hoạt động sau 5 năm' hay lệ phí cho việc này."
+    },
+    {
+        "type": "hallucination-trap",
+        "query": "Lệ phí cấp chứng chỉ hành nghề cho trọng tài viên quốc tế là bao nhiêu theo Thông tư 01/2005/TT-BTC?",
+        "expected_answer": "Văn bản không quy định về 'lệ phí cấp chứng chỉ hành nghề cho trọng tài viên quốc tế'. Văn bản chỉ đề cập đến lệ phí cấp phép thành lập, thay đổi nội dung, đăng ký hoạt động của trung tâm/chi nhánh trọng tài và lệ phí Tòa án liên quan đến trọng tài."
+    },
+    {
+        "type": "reasoning",
+        "query": "Vì cơ quan thu lệ phí phải nộp toàn bộ số tiền lệ phí trọng tài vào ngân sách, vậy kinh phí cho hoạt động thu lệ phí của họ được lấy từ đâu?",
+        "expected_answer": "Kinh phí cho hoạt động thu lệ phí được ngân sách nhà nước bảo đảm theo dự toán hàng năm."
+    },
+    {
+        "type": "factual",
+        "query": "Theo Thông tư 01/2000/TT-UBCK1, những tổ chức nào được phép thu phí dịch vụ chứng khoán đối với khách hàng?",
+        "expected_answer": "Bao gồm: Công ty chứng khoán, Công ty quản lý quỹ đầu tư, Tổ chức lưu ký và ngân hàng giám sát bảo quản."
+    },
+    {
+        "type": "factual",
+        "query": "Mức phí bảo lãnh phát hành chứng khoán tối đa được quy định là bao nhiêu theo Thông tư 01/2000/TT-UBCK1?",
+        "expected_answer": "Mức phí bảo lãnh phát hành tối đa không quá 3% tổng trị giá bảo lãnh phát hành."
+    },
+    {
+        "type": "case-study",
+        "case": "Một công ty chứng khoán thu phí môi giới giao dịch trái phiếu của khách hàng với mức 0,8% trị giá giao dịch.",
+        "query": "Hành động này có vi phạm quy định tại Thông tư 01/2000/TT-UBCK1 không? Vì sao?",
+        "expected_answer": "Có vi phạm. Theo Thông tư 01/2000/TT-UBCK1, phí dịch vụ môi giới mua, bán trái phiếu tối đa không quá 0,5% trị giá giao dịch. Mức 0,8% đã vượt quá giới hạn cho phép."
+    },
+    {
+        "type": "case-study",
+        "case": "Một nhà đầu tư nước ngoài thanh toán phí dịch vụ chứng khoán bằng ngoại tệ (USD) tại một công ty chứng khoán ở Việt Nam.",
+        "query": "Tỷ giá quy đổi từ USD sang VNĐ để thanh toán được xác định như thế nào?",
+        "expected_answer": "Tỷ giá quy đổi được thực hiện theo tỷ giá trên thị trường ngoại tệ liên ngân hàng do Ngân hàng Nhà nước công bố tại thời điểm thu."
+    },
+    {
+        "type": "factual",
+        "query": "Mức thu phí đại diện người sở hữu trái phiếu được tính tối đa là bao nhiêu?",
+        "expected_answer": "Mức thu thỏa thuận giữa tổ chức phát hành và đại diện người sở hữu trái phiếu, nhưng tối đa không quá 0,1% tổng trị giá trái phiếu phát hành."
+    },
+    {
+        "type": "reasoning",
+        "query": "Phí dịch vụ lưu ký chứng khoán đối với khách hàng được tính dựa trên những yếu tố nào?",
+        "expected_answer": "Mức thu được tính toán dựa trên cơ sở mức phí do Trung tâm Giao dịch Chứng khoán quy định với thành viên lưu ký, và cộng thêm một tỷ lệ thoả thuận giữa khách hàng và tổ chức lưu ký."
+    },
+    {
+        "type": "factual",
+        "query": "Khách hàng trong nước bắt buộc phải thanh toán phí dịch vụ chứng khoán bằng loại tiền nào?",
+        "expected_answer": "Đối với khách hàng trong nước được thống nhất thu bằng Đồng Việt Nam."
+    },
+    {
+        "type": "hallucination-trap",
+        "query": "Theo Thông tư 01/2000/TT-UBCK1, mức phí dịch vụ tư vấn đầu tư qua nền tảng trực tuyến tối đa là bao nhiêu tiền mỗi tháng?",
+        "expected_answer": "Thông tư không quy định mức giới hạn số tiền cụ thể hay nền tảng trực tuyến. Phí dịch vụ tư vấn đầu tư và cung cấp thông tin được thu theo thoả thuận giữa khách hàng và tổ chức cung cấp dịch vụ."
+    },
+    {
+        "type": "hallucination-trap",
+        "query": "Tổ chức lưu ký chứng khoán có bị phạt nếu không nộp báo cáo thu phí hàng tuần cho Ủy ban Chứng khoán Nhà nước không?",
+        "expected_answer": "Văn bản không đề cập đến việc phải nộp 'báo cáo thu phí hàng tuần' cũng như các quy định về xử phạt liên quan đến vấn đề này."
+    },
+    {
+        "type": "reasoning",
+        "query": "Các công ty kinh doanh chứng khoán phải xử lý như thế nào đối với các khoản phí thu được từ khách hàng?",
+        "expected_answer": "Các công ty kinh doanh, dịch vụ chứng khoán phải hạch toán đầy đủ toàn bộ khoản phí thu được trong sổ sách kế toán theo chế độ quản lý tài chính và chế độ kế toán quy định đối với công ty chứng khoán."
+    },
+    {
+        "type": "factual",
+        "query": "Theo Thông tư 01/2013/TT-BTC, khi nộp hồ sơ hợp pháp hoá lãnh sự tại Bộ Ngoại giao, cơ quan thu được trích lại bao nhiêu % số tiền lệ phí?",
+        "expected_answer": "Cơ quan thu lệ phí (Bộ Ngoại giao) được trích để lại 30% tiền thu lệ phí trước khi nộp vào ngân sách nhà nước."
+    },
+    {
+        "type": "factual",
+        "query": "Nếu hồ sơ chứng nhận lãnh sự được nộp tại cơ quan ngoại vụ cấp tỉnh, mức trích lại lệ phí được phân chia như thế nào?",
+        "expected_answer": "Cơ quan thu lệ phí (Bộ Ngoại giao) được để lại 20% tiền thu lệ phí, và chuyển cho cơ quan ngoại vụ các tỉnh, thành phố trực thuộc Trung ương 10% tiền thu lệ phí."
+    },
+    {
+        "type": "reasoning",
+        "query": "Số tiền lệ phí hợp pháp hoá lãnh sự được trích để lại cho cơ quan thu nhằm mục đích chi trả cho các hoạt động nào?",
+        "expected_answer": "Nhằm trang trải chi phí cho việc thực hiện thu lệ phí, bao gồm: chi thanh toán tiền lương, tiền công, phụ cấp; chi phí vật tư, văn phòng phẩm; chi sửa chữa tài sản, máy móc; chi mua sắm thiết bị và chi khen thưởng, phúc lợi cho nhân viên."
+    },
+    {
+        "type": "case-study",
+        "case": "Cơ quan thu lệ phí chứng nhận lãnh sự năm nay có tổng số tiền thu lệ phí thấp hơn năm ngoái. Nguồn quỹ khen thưởng vẫn còn dư sau khi trả các chi phí hoạt động.",
+        "query": "Mức chi khen thưởng, phúc lợi tối đa bình quân cho một nhân viên trong trường hợp này là bao nhiêu theo Thông tư 01/2013/TT-BTC?",
+        "expected_answer": "Vì số thu năm nay thấp hơn năm trước, mức chi khen thưởng tối đa bình quân cho một người là bằng 2 tháng lương thực hiện."
+    },
+    {
+        "type": "case-study",
+        "case": "Sau khi kết thúc năm tài chính, cơ quan ngoại vụ tỉnh A đã quyết toán đúng chế độ nhưng vẫn chưa chi hết số tiền lệ phí hợp pháp hóa lãnh sự được trích lại (phần 10%).",
+        "query": "Số tiền dư này sẽ bị thu hồi vào ngân sách nhà nước hay được xử lý thế nào?",
+        "expected_answer": "Theo Thông tư 01/2013/TT-BTC, sau khi quyết toán đúng chế độ, số tiền phí, lệ phí chưa chi trong năm được phép chuyển sang năm sau để tiếp tục chi theo chế độ quy định chứ không bị thu hồi."
+    },
+    {
+        "type": "factual",
+        "query": "Theo Thông tư 01/2013/TT-BTC, phần lệ phí còn lại phải nộp trực tiếp vào ngân sách nhà nước là bao nhiêu phần trăm?",
+        "expected_answer": "Số tiền thu lệ phí hợp pháp hoá, chứng nhận lãnh sự còn lại phải nộp vào ngân sách nhà nước là 70%."
+    },
+    {
+        "type": "factual",
+        "query": "Các khoản đóng góp theo quy định được phép chi từ nguồn lệ phí giữ lại (tính trên tiền lương) gồm những khoản nào?",
+        "expected_answer": "Các khoản đóng góp được tính trên tiền lương bao gồm: bảo hiểm y tế, bảo hiểm xã hội và công đoàn phí."
+    },
+    {
+        "type": "hallucination-trap",
+        "query": "Thông tư 01/2013/TT-BTC quy định thời hạn giải quyết hồ sơ hợp pháp hóa lãnh sự đối với tài liệu y tế là tối đa mấy ngày làm việc?",
+        "expected_answer": "Văn bản không quy định thời hạn giải quyết hồ sơ hợp pháp hóa lãnh sự hay phân biệt loại tài liệu y tế. Thông tư này chỉ quy định về chế độ thu, nộp và quản lý sử dụng lệ phí."
+    },
+    {
+        "type": "hallucination-trap",
+        "query": "Trẻ em dưới 14 tuổi có được miễn hoàn toàn lệ phí chứng nhận lãnh sự theo Thông tư 01/2013/TT-BTC không?",
+        "expected_answer": "Thông tư 01/2013/TT-BTC không có bất kỳ quy định nào về việc miễn giảm lệ phí cho trẻ em dưới 14 tuổi."
+    },
+    {
+        "type": "reasoning",
+        "query": "Nguồn tiền lệ phí hợp pháp hóa lãnh sự được trích lại có được dùng để trả lương cho tất cả cán bộ làm việc tại cơ quan thu lệ phí không?",
+        "expected_answer": "Không. Nguồn tiền này không được chi tiền lương cho các cán bộ, công chức đã hưởng lương từ ngân sách nhà nước theo chế độ quy định."
+    },
+    {
+        "type": "factual",
+        "query": "Thông tư 01/2003/TT-BTC áp dụng để thu phí sử dụng đường bộ đối với nhóm phương tiện nào?",
+        "expected_answer": "Áp dụng đối với xe quân sự của Bộ Quốc phòng mang biển số nền màu đỏ, chữ và số màu trắng dập chìm."
+    },
+    {
+        "type": "factual",
+        "query": "Mệnh giá vé năm thu phí đường bộ đối với xe ô tô con quân sự mức 2 theo Thông tư 01/2003/TT-BTC là bao nhiêu?",
+        "expected_answer": "Mệnh giá vé năm đối với xe ô tô con quân sự mức 2 là 1.000.000 đồng/vé/năm."
+    },
+    {
+        "type": "case-study",
+        "case": "Bộ Quốc phòng sở hữu một xe ô tô vận tải quân sự mang biển đỏ chữ trắng dập chìm, thuộc danh mục chịu phí mức 2.",
+        "query": "Số tiền phí sử dụng đường bộ toàn quốc phải nộp trong 1 năm cho chiếc xe này là bao nhiêu?",
+        "expected_answer": "Số tiền phải nộp cho xe ô tô vận tải quân sự mức 2 là 1.500.000 đồng/vé/năm."
+    },
+    {
+        "type": "reasoning",
+        "query": "Thông tư 01/2003/TT-BTC ra đời nhằm mục đích gì đối với các văn bản pháp luật trước đó?",
+        "expected_answer": "Thông tư 01/2003/TT-BTC ra đời nhằm sửa đổi mức thu phí sử dụng đường bộ đối với xe quân sự của Bộ Quốc phòng quy định tại Thông tư số 109/2002/TT-BTC ngày 6/12/2002."
+    },
+    {
+        "type": "factual",
+        "query": "Mức phí đường bộ (vé năm) cho xe ô tô con quân sự mức 1 là bao nhiêu?",
+        "expected_answer": "Mệnh giá vé năm đối với xe ô tô con quân sự mức 1 là 2.000.000 đồng/vé/năm."
+    },
+    {
+        "type": "case-study",
+        "case": "Đơn vị quân đội A có 3 xe ô tô con quân sự (mức 1) và 2 xe ô tô vận tải quân sự (mức 1).",
+        "query": "Tổng số tiền mua vé năm thu phí sử dụng đường bộ cho 5 phương tiện này là bao nhiêu theo Thông tư 01/2003/TT-BTC?",
+        "expected_answer": "Tổng số tiền = (3 xe * 2.000.000 đồng) + (2 xe * 3.000.000 đồng) = 6.000.000 + 6.000.000 = 12.000.000 đồng."
+    },
+    {
+        "type": "factual",
+        "query": "Thông tư 01/2003/TT-BTC của Bộ Tài chính có hiệu lực thi hành kể từ ngày nào?",
+        "expected_answer": "Thông tư có hiệu lực thi hành từ ngày 01/03/2003."
+    },
+    {
+        "type": "hallucination-trap",
+        "query": "Phí sử dụng đường bộ áp dụng đối với xe bọc thép, xe tăng của Bộ Quốc phòng được quy định là bao nhiêu theo Thông tư 01/2003/TT-BTC?",
+        "expected_answer": "Văn bản không đề cập đến mức thu phí cho 'xe bọc thép' hay 'xe tăng'. Văn bản chỉ phân loại theo 'xe ô tô con quân sự' và 'xe ô tô vận tải quân sự'."
+    },
+    {
+        "type": "hallucination-trap",
+        "query": "Xe công vụ của lực lượng Cảnh sát mang biển số xanh, dập chìm có được áp dụng mức thu phí theo Thông tư 01/2003/TT-BTC này không?",
+        "expected_answer": "Không. Thông tư 01/2003/TT-BTC chỉ áp dụng đối với xe quân sự của Bộ Quốc phòng mang biển số nền màu đỏ, chữ và số màu trắng dập chìm."
+    },
+    {
+        "type": "reasoning",
+        "query": "Thông tư 01/2003/TT-BTC được ban hành dựa trên ý kiến hiệp thương và căn cứ vào các cơ sở pháp lý nào?",
+        "expected_answer": "Thông tư được ban hành dựa trên căn cứ Pháp lệnh phí và lệ phí số 38/2001/PL-UBTVQH10, Nghị định số 57/2002/NĐ-CP của Chính phủ và sau khi có ý kiến của Bộ Quốc phòng."
+    }
+]
