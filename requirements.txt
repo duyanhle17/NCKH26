@@ -1,0 +1,6 @@
+numpy
+networkx
+faiss-cpu
+sentence-transformers
+transformers
+yake
