@@ -114,27 +114,35 @@ def hybrid_query_engine(question: str, top_k_entities: int = 5, top_k_chunks: in
     # 1. Direct Chunk Search (Semantic Search)
     direct_chunks = search_chunks_direct(question, top_k=5)
     
-    # 2. Search Entities
-    entity_results = search_entities(question, top_k=5)
-    matched_entities = [e for e, score in entity_results]
+    # 2. Extract Entities from Top Chunks for KG support AFTER topK
+    chunk_entities = set()
+    for c_idx in direct_chunks:
+        for ent, chunks in ENTITY_TO_CHUNKS.items():
+            if c_idx in chunks:
+                chunk_entities.add(ent)
+                
+    # 3. (Optional) Entity-VDB Expand
+    entity_results = search_entities(question, top_k=3)
+    matched_entities_from_vdb = [e for e, score in entity_results]
     
-    # 3. Get Chunks from Entities (Entity -> Chunk traversal)
+    # Lấy thêm tối đa 2 chunks từ Entity-VDB (nếu chưa có trong direct_chunks)
     entity_linked_chunks = []
-    for ent in matched_entities:
+    for ent in matched_entities_from_vdb:
         for c_idx in ENTITY_TO_CHUNKS.get(ent, []):
             if c_idx < len(CHUNKS_V2) and c_idx not in direct_chunks and c_idx not in entity_linked_chunks:
                 entity_linked_chunks.append(c_idx)
-                
-    # Giới hạn lấy tối đa 2 chunk từ entities (mà chưa có trong direct_chunks)
     entity_linked_chunks = entity_linked_chunks[:2]
+    
+    # Merge Entities (từ chunk + từ VDB) để lấy Relationships
+    combined_entities = list(set(list(chunk_entities) + matched_entities_from_vdb))
     
     # 4. Merge Chunks (Total max 7: 5 direct + 2 entity)
     final_chunk_indices = direct_chunks + entity_linked_chunks
     
-    # 5. Extract Relationships cho matched entities
+    # 5. Extract Relationships cho ALL combined entities
     rels_context = ""
     seen_rels = set()
-    for ent in matched_entities:
+    for ent in combined_entities:
         for rel in get_entity_relationships(ent):
             rel_key = (rel["src"], rel["tgt"])
             if rel_key not in seen_rels:
@@ -142,39 +150,61 @@ def hybrid_query_engine(question: str, top_k_entities: int = 5, top_k_chunks: in
                 rel_name = rel.get("relation", "liên_quan")
                 desc = f" ({rel['description']})" if rel.get("description") else ""
                 rels_context += f"• {rel['src']} --[{rel_name}]--> {rel['tgt']}{desc}\n"
+
     
     # Generate Context String
-    ent_context_str = "\n".join([f"• {e}" for e in matched_entities])
+    ent_context_str = "\n".join([f"• {e}" for e in matched_entities_from_vdb])
     chunk_context_str = "\n".join([f"[Chunk {i+1}]: {CHUNKS_V2[idx]}" for i, idx in enumerate(final_chunk_indices)])
     
-    context_str = f"""--- KHÁI NIỆM & THỰC THỂ CÓ LIÊN QUAN ---
+    context_str = f"""--- KHÁI NIỆM & THỰC THỂ TỪ CÂU HỎI ---
 {ent_context_str}
 
---- CÁC MỐI QUAN HỆ TRONG ĐỒ THỊ ---
+--- CÁC MỐI QUAN HỆ TRONG ĐỒ THỊ (HỖ TRỢ TỪ CHUNKS VÀ CÂU HỎI) ---
 {rels_context}
 
 --- CÁC TRÍCH ĐOẠN VĂN BẢN (CHUNKS) ---
 {chunk_context_str}"""
 
-    # 6. LLM Call
-    prompt = f"""Bạn là chuyên gia về pháp luật Việt Nam. Dựa vào CONTEXT dưới đây để trả lời CÂU HỎI. 
+    prompt = f"""Bạn là trợ lý pháp lý và chuyên gia về văn bản pháp luật, thông tư của Việt Nam.
 
-Quy tắc:
-1. TRẢ LỜI NGẮN GỌN, CHÍNH XÁC, DỰA TRÊN CONTEXT CUNG CẤP BÊN DƯỚI.
-2. NẾU KHÔNG TÌM THẤY THÔNG TIN TRONG CONTEXT, HÃY TRẢ LỜI "Không tìm thấy thông tin liên quan".
-3. TRÍCH DẪN ĐIỀU LUẬT (NẾU CÓ).
+STRICT RULES:
+1) CHỈ SỬ DỤNG THÔNG TIN CÓ TRONG CONTEXT BÊN DƯỚI. KHÔNG sử dụng kiến thức bên ngoài hay tự đưa ra giả định.
+2) BẠN CÓ THỂ áp dụng suy luận logic và pháp lý dựa trên các quy định trong CONTEXT (ví dụ: tính toán số tiền, áp dụng quy tắc vào tình huống).
+3) Nếu CONTEXT KHÔNG CHỨA đủ quy định để trả lời hợp lý, BẮT BUỘC TRẢ LỜI NGAY MỘT CÂU DUY NHẤT:
+   Không tìm thấy thông tin liên quan
+4) Ưu tiên lấy các điều khoản, thông tư phù hợp nhất.
+5) Nếu nhiều phần trong CONTEXT chứa thông tin mâu thuẫn, hãy chỉ ra sự mâu thuẫn.
+
+REASONING RULE (QUAN TRỌNG):
+- Câu hỏi có thể mô tả một tình huống thực tế (case study).
+- Các định mức chi phí hoặc thuế cần áp dụng chính xác theo bảng luật trong CONTEXT.
+- Bạn phải tuân thủ:
+  (a) Xác định quy tắc / mức phí liên quan trong CONTEXT.
+  (b) Áp dụng tỷ lệ / số tiền đó vào dữ kiện của tình huống thực tế. Tiển hành cộng trừ nhân chia rõ ràng.
+  (c) Đưa ra KẾT LUẬN CỤ THỂ (có số liệu nếu cần) được suy ra logic từ CONTEXT.
+
+OUTPUT FORMAT (Bắt buộc phải có đúng các Headline này):
+
+Answer:
+- Trình bày suy luận và kết luận ngắn gọn, chi tiết các bước tính toán nếu có (Quy tắc → Áp dụng → Kết luận). TRẢ LỜI BẰNG TIẾNG VIỆT.
+
+Cơ sở pháp lý:
+- <Nêu rõ Khoản/Điều/Thông tư nào trong CONTEXT đã dùng để trả lời>
+
+Trích dẫn:
+- "<Trích dẫn chính xác từ CONTEXT để làm bằng chứng (tối đa ~30 chữ/trích dẫn)>"
 
 CONTEXT:
 {context_str}
 
-CÂU HỎI: {question}
+CÂU HỎI TỔNG HỢP: {question}
 
 TRẢ LỜI:"""
 
     answer = call_llm_query(prompt)
     
     debug_info["context_recall"] = context_str
-    debug_info["num_entities"] = len(matched_entities)
+    debug_info["num_entities"] = len(combined_entities)
     debug_info["num_chunks"] = len(final_chunk_indices)
     debug_info["num_relationships"] = len(seen_rels)
     
@@ -200,7 +230,13 @@ if __name__ == "__main__":
     
     results = []
     for i, item in enumerate(tqdm(eval_data)):
-        q = item.get("query", "")
+        q_text = item.get("query", "")
+        case_text = item.get("case", "")
+        if case_text:
+            q = f"[Tình huống thực tế]: {case_text}\n[Câu hỏi]: {q_text}"
+        else:
+            q = q_text
+            
         # Tăng thời gian chờ lên 4.5 giây để tránh lỗi Rate Limit (429) do đánh giá 50 câu liên tục
         time.sleep(4.5) 
         
@@ -209,7 +245,8 @@ if __name__ == "__main__":
         res = {
             "id": i + 1,
             "type": item.get("type", ""),
-            "query": q,
+            "query": q_text,
+            "case": case_text,
             "expected_answer": item.get("expected_answer", ""),
             "my_answer": my_answer,
             "debug_info": {

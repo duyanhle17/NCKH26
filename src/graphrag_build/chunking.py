@@ -452,6 +452,118 @@ def pack_units_to_token_chunks(tw: TokenizerWrapper, units: list[str],
     return [tw.encode(t) for t in texts]
 
 
+def split_into_sections(text: str) -> List[Dict[str, str]]:
+    """
+    Chia văn bản theo các mục/điều/khoản/phần lớn
+    Nhận diện các tiêu đề section trong văn bản pháp luật Việt Nam
+    """
+    section_patterns = [
+        r'^(Điều\s+\d+[\.\:])',              # Điều 1. / Điều 1:
+        r'^([IVXLC]+[\.\-]\s)',               # I. / II- / III.
+        r'^(\d+[\.\)]\s)',                     # 1. / 2) 
+        r'^(\d+\.\d+[\.\-]\s)',               # 1.1. / 2.3-
+        r'^(Chương\s+[IVXLC\d]+)',            # Chương I / Chương 1
+        r'^(Phần\s+[IVXLC\d]+)',             # Phần I / Phần 1
+        r'^(Mục\s+[IVXLC\d]+)',              # Mục I / Mục 1
+        r'^(PHỤ LỤC)',                        # PHỤ LỤC
+    ]
+    
+    sections = []
+    current_section = ""
+    current_header = ""
+    
+    for line in text.split('\n'):
+        stripped = line.strip()
+        is_header = False
+        
+        for pattern in section_patterns:
+            if re.match(pattern, stripped, re.IGNORECASE):
+                if current_section.strip():
+                    sections.append({
+                        "header": current_header,
+                        "content": current_section.strip()
+                    })
+                current_header = stripped
+                current_section = line + '\n'
+                is_header = True
+                break
+        
+        if not is_header:
+            current_section += line + '\n'
+            
+    if current_section.strip():
+        sections.append({
+            "header": current_header,
+            "content": current_section.strip()
+        })
+    return sections
+
+def chunk_text_by_tokens(text: str, tw: TokenizerWrapper, max_tokens: int, overlap_tokens: int) -> List[str]:
+    """
+    Chia văn bản thành các chunk theo token size với overlap.
+    Ưu tiên cắt tại các ranh giới câu/đoạn.
+    """
+    if len(tw.encode(text)) <= max_tokens:
+        return [text]
+        
+    chunks = []
+    # Chia theo câu (dùng dấu chấm, dấu chấm phẩy) HOẶC xuống dòng
+    sentences = [s.strip() for s in re.split(r'(?<=[.;:!\?])\s+|\n+', text) if s.strip()]
+    
+    current_chunk = ""
+    
+    for sentence in sentences:
+        sent_toks = len(tw.encode(sentence))
+        curr_toks = len(tw.encode(current_chunk)) if current_chunk else 0
+        
+        # Nếu thêm câu hiện tại vẫn trong giới hạn max_tokens
+        if curr_toks + sent_toks + 1 <= max_tokens:
+            if current_chunk:
+                current_chunk += " " + sentence
+            else:
+                current_chunk = sentence
+        else:
+            # Lưu chunk hiện tại
+            if current_chunk:
+                chunks.append(current_chunk.strip())
+            
+            # Nếu câu đơn lẻ dài hơn max_tokens, cắt cứng theo từ
+            if sent_toks > max_tokens:
+                words = sentence.split()
+                current_chunk = ""
+                for word in words:
+                    wt = len(tw.encode(word))
+                    curr_t = len(tw.encode(current_chunk)) if current_chunk else 0
+                    if curr_t + wt + 1 <= max_tokens:
+                        current_chunk = current_chunk + " " + word if current_chunk else word
+                    else:
+                        if current_chunk:
+                            chunks.append(current_chunk.strip())
+                        current_chunk = word
+            else:
+                # Tạo overlap: lấy phần cuối của chunk trước dựa vào decode token
+                if chunks:
+                    last_chunk = chunks[-1]
+                    last_ids = tw.encode(last_chunk)
+                    if len(last_ids) > overlap_tokens:
+                        overlap_ids = last_ids[-overlap_tokens:]
+                        overlap_text = tw.decode(overlap_ids)
+                        # Cắt overlap tại ranh giới từ để tránh mất nghĩa
+                        space_idx = overlap_text.find(' ')
+                        if space_idx > 0:
+                            overlap_text = overlap_text[space_idx + 1:]
+                    else:
+                        overlap_text = last_chunk
+                    current_chunk = overlap_text + " " + sentence
+                else:
+                    current_chunk = sentence
+                    
+    # Lưu chunk cuối cùng
+    if current_chunk:
+        chunks.append(current_chunk.strip())
+        
+    return chunks
+
 def build_chunks(passages: List[Dict[str, Any]], embed_model: str, max_tokens: int, overlap_tokens: int, min_chunk_chars: int):
     tokenizer = AutoTokenizer.from_pretrained(embed_model, use_fast=True)
     tw = TokenizerWrapper(tokenizer)
@@ -459,6 +571,7 @@ def build_chunks(passages: List[Dict[str, Any]], embed_model: str, max_tokens: i
     chunks_meta = []
     dataset = []
     seen_ids = set()
+    chunk_id_counter = 0
 
     for pi, p in enumerate(passages):
         doc_key = f'{p.get("doc_id","doc")}::passage-{pi}'
@@ -466,38 +579,53 @@ def build_chunks(passages: List[Dict[str, Any]], embed_model: str, max_tokens: i
         if not text:
             continue
 
-        # Passages from passages.py are pre-stripped, but apply as safety net
         text = strip_header_footer(text)
         if not text:
             continue
 
-        units = split_legal_units(text)
-        # Use text-preserving chunker — original Vietnamese text is kept intact
-        chunk_texts = pack_units_to_text_chunks(
-            tw, units, max_tokens=max_tokens, overlap_tokens=overlap_tokens
-        )
+        # Áp dụng chiến lược chia Session -> Chunks mới của user
+        sections = split_into_sections(text)
+        
+        for section in sections:
+            section_content = section["content"]
+            section_header = section["header"]
+            
+            text_chunks = chunk_text_by_tokens(section_content, tw, max_tokens, overlap_tokens)
 
-        for ci, raw_text in enumerate(chunk_texts):
-            chunk_text = normalize_text(raw_text)   # only whitespace normalization
-            if len(chunk_text) < min_chunk_chars:
-                continue
-            cid = mdhash_id(chunk_text)
-            if cid in seen_ids:
-                continue
-            seen_ids.add(cid)
+            for ci, raw_text in enumerate(text_chunks):
+                # Nối header vào nội dung để làm rõ ngữ cảnh cho LLM/Vector
+                if section_header:
+                    full_raw_text = f"{section_header} {raw_text}"
+                else:
+                    full_raw_text = raw_text
+                    
+                chunk_text = normalize_text(full_raw_text)
+                
+                # Nếu chunk quá nhỏ so với min_chunk_chars:
+                # Nhưng nếu nó là chunk DUY NHẤT của một Section (ví dụ Điều 1 ngắn), ta vẫn GIỮ LẠI ngọai trừ nó quá ngắn (<30 chars)
+                if len(chunk_text) < min_chunk_chars:
+                    if len(text_chunks) > 1 or len(chunk_text) < 30:
+                        continue
+                        
+                cid = mdhash_id(chunk_text)
+                if cid in seen_ids:
+                    continue
+                seen_ids.add(cid)
 
-            # Count tokens on the original text (not decoded)
-            tok_count = len(tw.encode(raw_text))
+                tok_count = len(tw.encode(full_raw_text))
 
-            meta = {
-                "id": cid,
-                "full_doc_id": doc_key,
-                "chunk_order_index": ci,
-                "tokens": tok_count,
-                "path": p.get("path", ""),
-                "content": chunk_text
-            }
-            chunks_meta.append(meta)
-            dataset.append(chunk_text)
+                meta = {
+                    "id": cid,
+                    "full_doc_id": doc_key,
+                    "section_header": section_header,
+                    "chunk_index": ci,
+                    "total_chunks_in_section": len(text_chunks),
+                    "tokens": tok_count,
+                    "path": p.get("path", ""),
+                    "content": chunk_text
+                }
+                chunks_meta.append(meta)
+                dataset.append(chunk_text)
+                chunk_id_counter += 1
 
     return chunks_meta, dataset

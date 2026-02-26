@@ -56,6 +56,11 @@ def run_build(config: BuildConfig) -> None:
     if not dataset:
         raise ValueError("Chunks=0 after chunking.")
     logger.info(f"✅ chunks={len(dataset)}")
+    
+    # Lưu sớm chunk ra file để user có thể check kể cả khi KG chưa build xong
+    logger.info("📁 saving chunk artifacts early ...")
+    save_json_compact(config.cache_dir / "chunks.json", dataset)
+    save_json(config.cache_dir / "chunks_meta.json", chunks_meta)
 
     # ── 4. KG extraction (LLM based) ─────────────────────────────────────
     logger.info(f"🧠 LLM entities + KG (model={config.llm_model}) ...")

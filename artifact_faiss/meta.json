@@ -1,5 +1,5 @@
 {
-  "created_at": "2026-02-26T23:00:35.103307",
+  "created_at": "2026-02-27T01:46:24.575956",
   "build_mode": "TXT→PASSAGES(legal-split)→CHUNK(token)→Snowflake/snowflake-arctic-embed-m→FAISS(chunks+entities)→KG",
   "dataset_dir": "dataset",
   "cache_dir": "artifact_faiss",
@@ -12,9 +12,9 @@
   },
   "counts": {
     "passages": 8,
-    "chunks": 31,
-    "kg_nodes": 280,
-    "kg_edges": 207,
-    "entities": 280
+    "chunks": 57,
+    "kg_nodes": 306,
+    "kg_edges": 328,
+    "entities": 306
   }
 }

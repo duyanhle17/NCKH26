@@ -32,7 +32,7 @@ class BuildConfig:
 
     # ── Chunking parameters ─────────────────────────────────────────────
     max_token_size: int = 512
-    overlap_token_size: int = 64
+    overlap_token_size: int = 100
     min_chunk_chars: int = 120
 
     # ── 3. LLM KG EXTRACTION PARAMETERS ─────────────────────────────────
@@ -43,7 +43,7 @@ class BuildConfig:
     # max_workers: số luồng song song gọi LLM cùng lúc.
     # Với Kimi K2 NVIDIA NIM: bạn đã test thành công với 20 workers, có thể tăng lên nữa
     # nếu bị rate limit thì backoff tự động sẽ xử lý.
-    max_workers: int = 20  # 20 workers đã test OK
+    max_workers: int = 2  # Set xuống 2 vì Kimi API quota đang chặn (Too Many Requests), có thể 10
 
     # batch_size: số chunks xử lý trong 1 vòng lặp trước khi save checkpoint.
     # VD: 200 chunks = cứ 200 chunks lại lưu tiến độ một lần.
