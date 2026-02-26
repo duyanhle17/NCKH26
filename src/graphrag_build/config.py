@@ -9,17 +9,22 @@ class BuildConfig:
 
     # ── Output directories ──────────────────────────────────────────────
     work_dir: Path = Path("./work")
-    cache_dir: Path = Path("./artifacts/graphrag")
+    cache_dir: Path | None = None
 
-    # ── Embedding model ─────────────────────────────────────────────────
-    # Snowflake Arctic Embed M — multilingual, works well for Vietnamese
+    # ── 1. EMBEDDING MODEL CHOICE ───────────────────────────────────────
+    # To use a different model, change this string to any HF model name.
+    # Recommended for Vietnamese:
+    #   - "Snowflake/snowflake-arctic-embed-m" (Current)
+    #   - "intfloat/multilingual-e5-large"
+    #   - "BAAI/bge-m3"
     embed_model: str = "Snowflake/snowflake-arctic-embed-m"
     batch_embed: int = 16
 
-    # ── Vector storage backend ──────────────────────────────────────────
-    # Choose one: "faiss" | "chromadb"
-    # (uncomment "milvus" or "zvec" in vector_store.py to enable those)
-    vector_backend: str = "chromadb"
+    # ── 2. STORAGE BACKEND CHOICE ───────────────────────────────────────
+    # Change this to switch your database.
+    # Options: "faiss", "chromadb", "milvus", "zvec"
+    # Note: your files will be saved in ./artifact_{vector_backend}/
+    vector_backend: str = "faiss" 
 
     # Milvus-specific (only used when vector_backend="milvus")
     milvus_uri: str = "http://localhost:19530"
@@ -30,9 +35,36 @@ class BuildConfig:
     overlap_token_size: int = 64
     min_chunk_chars: int = 120
 
-    # ── KG extraction parameters ────────────────────────────────────────
-    top_k_terms_per_chunk: int = 24
-    min_term_len: int = 3
-    max_term_words: int = 10
-    cooc_window: int = 2
-    prune_min_cooc_weight: int = 2
+    # ── 3. LLM KG EXTRACTION PARAMETERS ─────────────────────────────────
+    # Model LLM — Kimi K2 Instruct chạy qua NVIDIA NIM API
+    # Để dùng model này, set: export NVAPI_KEY="nvapi-..."
+    llm_model: str = "moonshotai/kimi-k2-instruct"
+
+    # max_workers: số luồng song song gọi LLM cùng lúc.
+    # Với Kimi K2 free tier nên dùng 12-15. Nếu bị rate limit thì giảm xuống.
+    max_workers: int = 12
+
+    # batch_size: số chunks xử lý trong 1 vòng lặp trước khi save checkpoint.
+    # VD: 200 chunks = cứ 200 chunks lại lưu tiến độ một lần.
+    # Nếu bị ngắt giữa chừng, lần sau sẻ tiếp tục từ batch chưa xong.
+    batch_size: int = 200
+
+    # Entity types phù hợp với dạng văn bản pháp luật Việt Nam (Thông tư, Nghị định...)
+    entity_types: List[str] = field(default_factory=lambda: [
+        "CƠ_QUAN_BAN_HÀNH",
+        "VĂN_BẢN_PHÁP_LUẬT",
+        "LOẠI_THUẾ_PHÍ",
+        "MỨC_THU_PHÍ",
+        "ĐỐI_TƯỢNG_ÁP_DỤNG",
+        "HOẠT_ĐỘNG_ĐƯỢC_ĐIỀU_CHỈNH",
+        "ĐIỀU_KHOẢN",
+        "THỜI_HẠN_HIỆU_LỰC",
+    ])
+
+    # YAKE supplement — bổ sung keyword nếu LLM bỏ sót
+    yake_top_k: int = 5       # số keyword YAKE bổ sung tối đa mỗi chunk
+    yake_lang: str = "vi"     # ngôn ngữ: "vi" cho tiếng Việt
+
+    def __post_init__(self):
+        if self.cache_dir is None:
+            self.cache_dir = Path(f"./artifact_{self.vector_backend}")

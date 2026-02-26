@@ -16,7 +16,7 @@ from .config import BuildConfig
 from .dataset_loader import load_txt_documents
 from .passages import docs_to_passages
 from .chunking import build_chunks
-from .entities_kg import build_kg
+from .entities_kg import build_kg_llm
 from .embeddings import load_embedder, embed_texts
 from .vector_store import create_vector_store
 from .io_artifacts import (
@@ -57,15 +57,24 @@ def run_build(config: BuildConfig) -> None:
         raise ValueError("Chunks=0 after chunking.")
     logger.info(f"✅ chunks={len(dataset)}")
 
-    # ── 4. KG extraction ─────────────────────────────────────────────────
-    logger.info("🧠 entities + KG ...")
-    kg, chunk_entities, entity_to_chunks = build_kg(
+    # ── 4. KG extraction (LLM based) ─────────────────────────────────────
+    logger.info(f"🧠 LLM entities + KG (model={config.llm_model}) ...")
+    
+    # Tạo thư mục checkpoint
+    checkpoint_dir = config.work_dir / f"checkpoint_{config.vector_backend}"
+    ensure_dir(checkpoint_dir)
+
+    kg, chunk_entities, entity_to_chunks, all_entities, all_relationships = build_kg_llm(
         dataset,
-        top_k_terms_per_chunk=config.top_k_terms_per_chunk,
-        max_term_words=config.max_term_words,
-        cooc_window=config.cooc_window,
-        prune_min_cooc_weight=config.prune_min_cooc_weight,
+        llm_model=config.llm_model,
+        entity_types=config.entity_types,
+        max_workers=config.max_workers,
+        batch_size=config.batch_size,
+        checkpoint_dir=str(checkpoint_dir),
+        yake_top_k=config.yake_top_k,
+        yake_lang=config.yake_lang
     )
+    
     entities = sorted(list(entity_to_chunks.keys()))
     logger.info(
         f"✅ kg_nodes={kg.number_of_nodes()} "
@@ -120,6 +129,8 @@ def run_build(config: BuildConfig) -> None:
         config.cache_dir / "entity_to_chunks.json",
         {k: sorted(list(v)) for k, v in entity_to_chunks.items()},
     )
+    save_json_compact(config.cache_dir / "all_entities_raw.json", all_entities)
+    save_json_compact(config.cache_dir / "all_relationships_raw.json", all_relationships)
 
     meta = build_meta(
         config=config,

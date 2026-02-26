@@ -84,7 +84,7 @@ def main():
     # ── Build config ─────────────────────────────────────────────────────
     from graphrag_build.config import BuildConfig
 
-    output_dir = args.output or f"./artifacts/graphrag_{backend}"
+    output_dir = args.output or f"./artifact_{backend}"
 
     config = BuildConfig(
         dataset_dir=Path(args.dataset),
