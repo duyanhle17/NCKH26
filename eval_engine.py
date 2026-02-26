@@ -111,33 +111,18 @@ def hybrid_query_engine(question: str, top_k_entities: int = 5, top_k_chunks: in
     """
     debug_info = {}
     
-    # 1. Direct Chunk Search (Semantic Search)
+    # 1. Direct Chunk Search (Semantic Search First)
     direct_chunks = search_chunks_direct(question, top_k=5)
     
-    # 2. Extract Entities from Top Chunks for KG support AFTER topK
+    # 2. Extract Entities EXCLUSIVELY from Top Chunks for KG Support
     chunk_entities = set()
     for c_idx in direct_chunks:
         for ent, chunks in ENTITY_TO_CHUNKS.items():
             if c_idx in chunks:
                 chunk_entities.add(ent)
                 
-    # 3. (Optional) Entity-VDB Expand
-    entity_results = search_entities(question, top_k=3)
-    matched_entities_from_vdb = [e for e, score in entity_results]
-    
-    # Lấy thêm tối đa 2 chunks từ Entity-VDB (nếu chưa có trong direct_chunks)
-    entity_linked_chunks = []
-    for ent in matched_entities_from_vdb:
-        for c_idx in ENTITY_TO_CHUNKS.get(ent, []):
-            if c_idx < len(CHUNKS_V2) and c_idx not in direct_chunks and c_idx not in entity_linked_chunks:
-                entity_linked_chunks.append(c_idx)
-    entity_linked_chunks = entity_linked_chunks[:2]
-    
-    # Merge Entities (từ chunk + từ VDB) để lấy Relationships
-    combined_entities = list(set(list(chunk_entities) + matched_entities_from_vdb))
-    
-    # 4. Merge Chunks (Total max 7: 5 direct + 2 entity)
-    final_chunk_indices = direct_chunks + entity_linked_chunks
+    combined_entities = list(chunk_entities)
+    final_chunk_indices = direct_chunks
     
     # 5. Extract Relationships cho ALL combined entities
     rels_context = ""
@@ -153,13 +138,13 @@ def hybrid_query_engine(question: str, top_k_entities: int = 5, top_k_chunks: in
 
     
     # Generate Context String
-    ent_context_str = "\n".join([f"• {e}" for e in matched_entities_from_vdb])
+    ent_context_str = "\n".join([f"• {e}" for e in combined_entities[:10]]) # Lấy tối đa 10 entities cho đỡ dài
     chunk_context_str = "\n".join([f"[Chunk {i+1}]: {CHUNKS_V2[idx]}" for i, idx in enumerate(final_chunk_indices)])
     
-    context_str = f"""--- KHÁI NIỆM & THỰC THỂ TỪ CÂU HỎI ---
+    context_str = f"""--- KHÁI NIỆM & THỰC THỂ ĐƯỢC NHẮC ĐẾN TRONG CHUNKS ---
 {ent_context_str}
 
---- CÁC MỐI QUAN HỆ TRONG ĐỒ THỊ (HỖ TRỢ TỪ CHUNKS VÀ CÂU HỎI) ---
+--- CÁC MỐI QUAN HỆ TRONG ĐỒ THỊ (HỖ TRỢ TỪ CHUNKS) ---
 {rels_context}
 
 --- CÁC TRÍCH ĐOẠN VĂN BẢN (CHUNKS) ---
