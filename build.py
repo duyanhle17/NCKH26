@@ -72,6 +72,9 @@ def main():
     parser.add_argument("--milvus-uri", default="http://localhost:19530", help="Milvus server URI")
     parser.add_argument("--milvus-collection", default="graphrag_chunks", help="Milvus collection name prefix")
 
+    # ── LLM extraction parameters ──────────────────────────────────────────
+    parser.add_argument("--max-workers", type=int, default=None, help="Max parallel LLM workers (default: 8)")
+
     args = parser.parse_args()
 
     # ── Validate backend availability ────────────────────────────────────
@@ -86,18 +89,22 @@ def main():
 
     output_dir = args.output or f"./artifact_{backend}"
 
-    config = BuildConfig(
-        dataset_dir=Path(args.dataset),
-        cache_dir=Path(output_dir),
-        embed_model=args.model,
-        vector_backend=backend,
-        batch_embed=args.batch_size,
-        max_token_size=args.max_tokens,
-        overlap_token_size=args.overlap_tokens,
-        min_chunk_chars=args.min_chunk_chars,
-        milvus_uri=args.milvus_uri,
-        milvus_collection=args.milvus_collection,
-    )
+    config_kwargs = {
+        "dataset_dir": Path(args.dataset),
+        "cache_dir": Path(output_dir),
+        "embed_model": args.model,
+        "vector_backend": backend,
+        "batch_embed": args.batch_size,
+        "max_token_size": args.max_tokens,
+        "overlap_token_size": args.overlap_tokens,
+        "min_chunk_chars": args.min_chunk_chars,
+        "milvus_uri": args.milvus_uri,
+        "milvus_collection": args.milvus_collection,
+    }
+    if args.max_workers is not None:
+        config_kwargs["max_workers"] = args.max_workers
+
+    config = BuildConfig(**config_kwargs)
 
     # ── Print config ─────────────────────────────────────────────────────
     print("=" * 60)
@@ -110,6 +117,7 @@ def main():
     print(f"  Max tokens      : {config.max_token_size}")
     print(f"  Overlap tokens  : {config.overlap_token_size}")
     print(f"  Min chunk chars : {config.min_chunk_chars}")
+    print(f"  LLM Max workers : {config.max_workers}")
     print("=" * 60)
 
     # ── Run pipeline ─────────────────────────────────────────────────────

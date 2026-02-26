@@ -41,8 +41,9 @@ class BuildConfig:
     llm_model: str = "moonshotai/kimi-k2-instruct"
 
     # max_workers: số luồng song song gọi LLM cùng lúc.
-    # Với Kimi K2 free tier nên dùng 12-15. Nếu bị rate limit thì giảm xuống.
-    max_workers: int = 12
+    # Với Kimi K2 NVIDIA NIM: bạn đã test thành công với 20 workers, có thể tăng lên nữa
+    # nếu bị rate limit thì backoff tự động sẽ xử lý.
+    max_workers: int = 20  # 20 workers đã test OK
 
     # batch_size: số chunks xử lý trong 1 vòng lặp trước khi save checkpoint.
     # VD: 200 chunks = cứ 200 chunks lại lưu tiến độ một lần.
