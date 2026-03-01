@@ -63,8 +63,8 @@ def main():
     )
 
     # ── Chunking parameters ──────────────────────────────────────────────
-    parser.add_argument("--max-tokens", type=int, default=512, help="Max tokens per chunk (default: 512)")
-    parser.add_argument("--overlap-tokens", type=int, default=64, help="Overlap tokens between chunks (default: 64)")
+    parser.add_argument("--max-tokens", type=int, default=700, help="Max tokens per chunk (default: 700)")
+    parser.add_argument("--overlap-tokens", type=int, default=128, help="Overlap tokens between chunks (default: 128)")
     parser.add_argument("--min-chunk-chars", type=int, default=120, help="Min chars per chunk (default: 120)")
     parser.add_argument("--batch-size", type=int, default=16, help="Embedding batch size (default: 16)")
 

@@ -6,6 +6,7 @@ import faiss
 from sentence_transformers import SentenceTransformer
 from openai import OpenAI
 from tqdm import tqdm
+from rank_bm25 import BM25Okapi
 
 # ============================================================
 # LOAD ARTIFACTS
@@ -41,6 +42,17 @@ else:
     ENTITY_NAMES_V2 = []
 
 EMBEDDER_V2 = SentenceTransformer(META_V2["embedding_model"])
+
+print("🔄 Building BM25 Index...")
+def tokenize_vi(text: str) -> List[str]:
+    import string
+    text = str(text).lower()
+    for p in string.punctuation:
+        text = text.replace(p, " ")
+    return text.split()
+
+TOKENIZED_CHUNKS = [tokenize_vi(c) for c in CHUNKS_V2]
+BM25_INDEX = BM25Okapi(TOKENIZED_CHUNKS)
 
 print("✅ Artifacts loaded!")
 
@@ -99,32 +111,52 @@ def get_entity_relationships(entity_name: str) -> List[Dict]:
         rels.append({"src": src, "tgt": entity_name, **data})
     return rels
 
-def hybrid_query_engine(question: str, top_k_entities: int = 5, top_k_chunks: int = 5) -> Tuple[str, Dict]:
+def search_chunks_bm25(query: str, top_k: int = 5) -> List[int]:
+    """Retrieve chunks using BM25 keyword matching"""
+    tokenized_query = tokenize_vi(query)
+    scores = BM25_INDEX.get_scores(tokenized_query)
+    top_indices = np.argsort(scores)[-top_k:][::-1]
+    return [int(idx) for idx in top_indices if scores[idx] > 0]
+
+def hybrid_query_engine(question: str, top_k_chunks: int = 6) -> Tuple[str, Dict]:
     """
-    HYBRID SEARCH PIPELINE:
-    1. Lấy top K entities từ query.
-    2. Từ các entities đó, trích xuất tất cả các chunks liên quan (source_chunks của entity).
-    3. Lấy thêm top M chunks trực tiếp từ query.
-    4. Trộn chung các chunks tìm được.
-    5. Trích xuất tất cả các mối quan hệ liên quan đến top K entities.
-    6. Đưa tất cả vào LLM để answer.
+    LOCAL GRAPHRAG SUMMARY: Lấy chunk từ Semantic + BM25 + Entities,
+    gộp lại lấy top_k=6, sau đó bổ sung Entities/Relationships để làm Context.
     """
     debug_info = {}
     
-    # 1. Direct Chunk Search (Semantic Search First)
-    direct_chunks = search_chunks_direct(question, top_k=5)
+    # 1. Lấy chunks bằng Semantic FAISS
+    semantic_chunks = search_chunks_direct(question, top_k=4)
     
-    # 2. Extract Entities EXCLUSIVELY from Top Chunks for KG Support
+    # 2. Lấy chunks bằng BM25 (tốt cho exact match số liệu, năm, Phụ lục)
+    bm25_chunks = search_chunks_bm25(question, top_k=4)
+    
+    # 3. Lấy chunks từ việc search Entity trực tiếp bằng câu hỏi
+    entity_results = search_entities(question, top_k=3)
+    entity_chunks = []
+    for ent, _ in entity_results:
+        entity_chunks.extend(ENTITY_TO_CHUNKS.get(ent, []))
+    
+    # Gộp lại (ưu tiên Semantic -> BM25 -> Entity Chunks)
+    combined_chunks = []
+    seen = set()
+    for c in semantic_chunks + bm25_chunks + entity_chunks:
+        if c not in seen:
+            seen.add(c)
+            combined_chunks.append(c)
+    
+    # Cắt lấy đúng top_k (6 chunk theo yêu cầu)
+    final_chunk_indices = combined_chunks[:top_k_chunks]
+    
+    # 4. GraphRAG: Tự động tải Entities & Relationships từ các chunks đã chọn
     chunk_entities = set()
-    for c_idx in direct_chunks:
-        for ent, chunks in ENTITY_TO_CHUNKS.items():
-            if c_idx in chunks:
+    for c_idx in final_chunk_indices:
+        for ent, c_list in ENTITY_TO_CHUNKS.items():
+            if c_idx in c_list:
                 chunk_entities.add(ent)
                 
     combined_entities = list(chunk_entities)
-    final_chunk_indices = direct_chunks
     
-    # 5. Extract Relationships cho ALL combined entities
     rels_context = ""
     seen_rels = set()
     for ent in combined_entities:
@@ -135,63 +167,42 @@ def hybrid_query_engine(question: str, top_k_entities: int = 5, top_k_chunks: in
                 rel_name = rel.get("relation", "liên_quan")
                 desc = f" ({rel['description']})" if rel.get("description") else ""
                 rels_context += f"• {rel['src']} --[{rel_name}]--> {rel['tgt']}{desc}\n"
-
     
     # Generate Context String
-    ent_context_str = "\n".join([f"• {e}" for e in combined_entities[:10]]) # Lấy tối đa 10 entities cho đỡ dài
+    ent_context_str = "\n".join([f"• {e}" for e in combined_entities[:15]])
     chunk_context_str = "\n".join([f"[Chunk {i+1}]: {CHUNKS_V2[idx]}" for i, idx in enumerate(final_chunk_indices)])
     
-    context_str = f"""--- KHÁI NIỆM & THỰC THỂ ĐƯỢC NHẮC ĐẾN TRONG CHUNKS ---
+    context_str = f"""--- KHÁI NIỆM & THỰC THỂ (TỪ ĐỒ THỊ GRAPHRAG) ---
 {ent_context_str}
 
---- CÁC MỐI QUAN HỆ TRONG ĐỒ THỊ (HỖ TRỢ TỪ CHUNKS) ---
+--- MỐI QUAN HỆ (TỪ ĐỒ THỊ GRAPHRAG) ---
 {rels_context}
 
 --- CÁC TRÍCH ĐOẠN VĂN BẢN (CHUNKS) ---
 {chunk_context_str}"""
 
-    prompt = f"""Bạn là trợ lý pháp lý và chuyên gia về văn bản pháp luật, thông tư của Việt Nam.
+    prompt = f"""Bạn là trợ lý pháp lý chuyên về văn bản pháp luật Việt Nam.
 
-STRICT RULES:
-1) CHỈ SỬ DỤNG THÔNG TIN CÓ TRONG CONTEXT BÊN DƯỚI. KHÔNG sử dụng kiến thức bên ngoài hay tự đưa ra giả định.
-2) BẠN CÓ THỂ áp dụng suy luận logic và pháp lý dựa trên các quy định trong CONTEXT (ví dụ: tính toán số tiền, áp dụng quy tắc vào tình huống).
-3) Nếu CONTEXT KHÔNG CHỨA đủ quy định để trả lời hợp lý, BẮT BUỘC TRẢ LỜI NGAY MỘT CÂU DUY NHẤT:
-   Không tìm thấy thông tin liên quan
-4) Ưu tiên lấy các điều khoản, thông tư phù hợp nhất.
-5) Nếu nhiều phần trong CONTEXT chứa thông tin mâu thuẫn, hãy chỉ ra sự mâu thuẫn.
+QUY TẮC:
+1) CHỈ dùng thông tin trong CONTEXT bên dưới. KHÔNG dùng kiến thức ngoài.
+2) Có thể suy luận logic/tính toán dựa trên quy định trong CONTEXT.
+3) Nếu CONTEXT không đủ thông tin, trả lời: "Không tìm thấy thông tin liên quan"
 
-REASONING RULE (QUAN TRỌNG):
-- Câu hỏi có thể mô tả một tình huống thực tế (case study).
-- Các định mức chi phí hoặc thuế cần áp dụng chính xác theo bảng luật trong CONTEXT.
-- Bạn phải tuân thủ:
-  (a) Xác định quy tắc / mức phí liên quan trong CONTEXT.
-  (b) Áp dụng tỷ lệ / số tiền đó vào dữ kiện của tình huống thực tế. Tiển hành cộng trừ nhân chia rõ ràng.
-  (c) Đưa ra KẾT LUẬN CỤ THỂ (có số liệu nếu cần) được suy ra logic từ CONTEXT.
-
-OUTPUT FORMAT (Bắt buộc phải có đúng các Headline này):
-
-Answer:
-- Trình bày suy luận và kết luận ngắn gọn, chi tiết các bước tính toán nếu có (Quy tắc → Áp dụng → Kết luận). TRẢ LỜI BẰNG TIẾNG VIỆT.
-
-Cơ sở pháp lý:
-- <Nêu rõ Khoản/Điều/Thông tư nào trong CONTEXT đã dùng để trả lời>
-
-Trích dẫn:
-- "<Trích dẫn chính xác từ CONTEXT để làm bằng chứng (tối đa ~30 chữ/trích dẫn)>"
+TRẢ LỜI NGẮN GỌN dưới dạng 1 đoạn văn (passage), gồm: câu trả lời + cơ sở pháp lý + trích dẫn ngắn. Không dùng heading, không bullet dài.
 
 CONTEXT:
 {context_str}
 
-CÂU HỎI TỔNG HỢP: {question}
+CÂU HỎI: {question}
 
 TRẢ LỜI:"""
 
     answer = call_llm_query(prompt)
     
     debug_info["context_recall"] = context_str
-    debug_info["num_entities"] = len(combined_entities)
+    debug_info["num_entities"] = 0
     debug_info["num_chunks"] = len(final_chunk_indices)
-    debug_info["num_relationships"] = len(seen_rels)
+    debug_info["num_relationships"] = 0
     
     return answer, debug_info
 
