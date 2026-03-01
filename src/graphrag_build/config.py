@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Literal
+from typing import Literal, List
 
 @dataclass
 class BuildConfig:
@@ -31,8 +31,8 @@ class BuildConfig:
     milvus_collection: str = "graphrag_chunks"
 
     # ── Chunking parameters ─────────────────────────────────────────────
-    max_token_size: int = 512
-    overlap_token_size: int = 100
+    max_token_size: int = 700
+    overlap_token_size: int = 128
     min_chunk_chars: int = 120
 
     # ── 3. LLM KG EXTRACTION PARAMETERS ─────────────────────────────────

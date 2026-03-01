@@ -1,0 +1,1699 @@
+TỔNG SỐ PASSAGES: 20
+TỔNG SỐ CHUNKS: 31
+================================================================================
+
+--- CHUNK #1 ---
+ID: chunk-418e5d4f2cb63dc69e5012332e3cf66f
+Passage ID: 01_1999_TT-BXD_Phần_mở_đầu
+Context Title: Phần mở đầu
+Chunk Index: 0/0
+Tokens: 500
+Nội dung:
+[Passage: Phần mở đầu]
+[01_1999_TT-BXD.txt]
+[ID Passage: Phần mở đầu]
+BỘ
+XÂY DỰNG
+
+CỘNG
+HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM
+
+Độc lập - Tự do - Hạnh phúc
+
+Số:
+01/1999/TT-BXD
+
+Hà
+Nội, ngày 16 tháng 1 năm 1999
+
+THÔNG TƯ
+
+CỦA BỘ XÂY DỰNG SỐ 01/1999/TT-BXD NGÀY 16 THÁNG 10 NĂM 1999
+HƯỚNG DẪN LẬP DỰ TOÁN CÔNG TRÌNH XÂY DỰNG CƠ BẢN THEO LUẬT THUẾ GIÁ TRỊ GIA
+TĂNG VÀ THUẾ THU NHẬP DOANH NGHIỆP
+
+Căn cứ Nghị định số
+28/1998/NĐ-CP ngày11/5/1998 của Chính phủ quy định chi tiết thi hành Luật thuế
+Giá trị gia tăng; Nghị định số 30/1998/NĐ-CP ngày 13/5/1998 quy định chi tiết
+thi hành Luật thuế Thu nhập doanh nghiệp;
+
+Căn cứ Nghị định số 28/CP ngày 28/3/1997 của Chính phủ về đổi mới quản lý tiền
+lương, thu nhập trong các doanh nghiệp Nhà nước;
+
+Căn cứ Chỉ thị số 41/1998/CT-TTg ngày 17/12/1998 của Thủ tướng Chính phủ về
+việc tiếp tục tổ chức thực hiện các Luật thuế mới;
+
+Căn cứ Thông tư số 89/1998/TT-BTC ngày 27/6/1998 của Bộ Tài chính hướng dẫn
+thi hành Nghị định số 28/1998/NĐ-CP;
+
+Để quản lý chặt chẽ vốn đầu tư xây dựng cơ bản, đưa công tác lập và quản lý
+giá phù hợp với cơ chế quản lý mới; sau khi thống nhất với Bộ Tài chính, Bộ Xây
+dựng hướng dẫn lập dự toán công trình xây dựng cơ bản theo Luật Thuế Giá trị
+gia tăng và Thuế thu nhập doanh nghiệp như sau:
+--------------------------------------------------------------------------------
+
+--- CHUNK #2 ---
+ID: chunk-202dfa37d5e8094cbb82b69c9c42fdee
+Passage ID: 01_1999_TT-BXD_I__ĐỐI_VỚI
+Context Title: I- ĐỐI VỚI
+Chunk Index: 0/3
+Tokens: 594
+Nội dung:
+[Passage: I- ĐỐI VỚI]
+[01_1999_TT-BXD.txt]
+[ID Passage: I- ĐỐI VỚI]
+I- ĐỐI VỚI
+GIÁ TRỊ DỰ TOÁN XÂY LẮP
+
+Giá trị dự toán xây lắp sau thuế
+của công trình xây dựng bao gồm giá trị dự toán xây lắp trước thuế và khoản thuế
+giá trị gia tăng đầu ra. Trong đó:
+
+1- Giá trị dự toán xây lắp trước
+thuế:
+
+Giá trị dự toán xây lắp trước
+thuế là mức giá để tính thuế giá trị gia tăng, bao gồm các chi phí trực tiếp,
+chi phí chung và thu nhập chịu thuế tính trước. Các chi phí trên được xác định
+theo mức tiêu hao về vật tư, lao động, sử dụng máy.... và mặt bằng giá khu vực
+từng thời kỳ do các cơ quan có thẩm quyền ban hành.
+
+1.1- Chi phí tực tiếp:
+
+Bao gồm chi phí vật liệu, chi
+phí nhân công và chi phí sử dụng máy thi công được xác định dựa trên cơ sở khối
+lương xây lắp tính theo thiết kế được duyệt và đơn giá xây dựng cơ bản của công
+tác xây lắp tương ứng.
+
+1.1.1- Chi phí vật liệu:
+
+Bao gồm vật liệu chính, vật liệu
+phụ, các vật liệu luân chuyển được tính theo đơn giá xây dựng cơ bản (đơn giá của
+các tỉnh, thành phố hoặc đơn giá công trình). Mức giá các loại vật tư, vật liệu
+để tính chi phí vật liệu trong đơn giá xây dựng cơ bản chưa bao gồm khoản thuế
+giá trị gia tăng đầu vào mà doanh nghiệp xây dựng ứng trả khi mua vật tư, vật
+liệu phục vụ xây lắp công trình.
+
+Khi có sự thay đổi giá cả vật liệu
+thì căn cứ vào mức giá chưa có thuế giá trị gia tăng trong thông báo từng thời
+kỳ của cơ quan có thẩm quyền công bố và mức giá đã tính trong đơn giá xây dựng
+cơ bản để xác định phần chênh lệch và đưa trực tiếp vào chi phí vật liệu trong
+dự toán.
+--------------------------------------------------------------------------------
+
+--- CHUNK #3 ---
+ID: chunk-42bb407d93cc8fb60b6bc205177eb147
+Passage ID: 01_1999_TT-BXD_I__ĐỐI_VỚI
+Context Title: I- ĐỐI VỚI
+Chunk Index: 1/3
+Tokens: 583
+Nội dung:
+[Passage: I- ĐỐI VỚI]
+1.1.2- Chi phí nhân công
+
+Chi phí phân công trong dự toán
+xây lắp bao gồm lương cơ bản, các khoản phụ cấp có tính chất lương và các chi
+phí theo chế độ đối với công nhân xây lắp mà có thể khoán trực tiếp cho người
+lao động để tính cho một ngày công định mức. Theo nguyên tắc này chi phí nhân
+công trong đơn giá xây dựng cơ bản được xác định như sau:
+
+- Đối với đơn giá của các tỉnh,
+thành phố trực thuộc Trung ương khoản chi phí nhân công được tính với mức lương
+tối thiểu là 144.000đ/tháng, cấp bậc tiền lương theo bảng lương A6 kèm theo Nghị
+định số 05/CP ngày 26/1/1994 của Chính phủ, phụ cấp lưu động ở mức thấp nhất
+20% tiền lương tối thiểu, phụ cấp không ổn định sản xuất ở mức bình quân 10%, một
+số khoản lương phụ (nghỉ lễ, tết, phép...) bằng 12% và một số chi phí có thể
+khoán trực tiếp cho người lao động tính bằng 4% so với lương cơ bản. Đối với
+các công trình được hưởng thêm các khoản lương phụ, phụ cấp lương và các chế độ
+chính sách khác chưa tính trong thành phần đơn giá XDCB đã nêu ở trên hoặc được
+hưởng phụ cấp lưu động ở mức cao hơn 20% hay hưởng phụ cấp không ổn định sản xuất
+ở mức cao hơn 10% thì được bổ sung các khoản này vào chi phí nhân công theo hướng
+dẫn ở bảng tổng họp giá trị dự toán xây lắp như phụ lục 1 kém theo.
+
+- Đối với đơn giá xây dựng cơ bản
+công trình: đưa trực tiếp vào đơn giá các khoản lương cơ bản, phụ cấp có tính
+chất lương và các chế độ đối với công nhân xây lắp mà công trình được hưởng
+theo cách tính trên.
+--------------------------------------------------------------------------------
+
+--- CHUNK #4 ---
+ID: chunk-b92aa58da885a8393c2e7fe487ddb339
+Passage ID: 01_1999_TT-BXD_I__ĐỐI_VỚI
+Context Title: I- ĐỐI VỚI
+Chunk Index: 2/3
+Tokens: 512
+Nội dung:
+[Passage: I- ĐỐI VỚI]
+1.1.3- Chi phí máy thi công:
+
+Được tính theo bảng giá ca máy,
+thiết bị thi công do Bộ Xây dụng ban hành (Quyết định số 1260/1998/QĐ-BXD ngày
+28/11/1998). Trong đó chi phí nhân công thợ điều khiển, sửa chữa máy, thiết bị
+thi công đã bao gồm các nội dung như điểm 1.1.2 nói trên.
+
+Một số chi phí thuộc các thông số
+tính trong giá ca máy, thiết bị thi công (như xăng, dầu, điện năng,...) chưa
+tính thuế giá trị gia tăng đầu vào.
+
+1.2- Chi phí chung:
+
+Được tính bằng tỷ lệ phần trăm
+(%) so với chi phí nhân công trong dự toán xây lắp. Khoản chi phí chung này quy
+định theo từng loại công trình tại phụ lục 2.
+
+Một số khoản mục chi phí thuộc
+các thông số tính trong chi phí chung chưa tính thuế giá trị gia tăng đầu vào.
+
+1.3- Thu nhập chịu thuế tính trước:
+
+Trong dự toán xây lắp công
+trình, mức thu nhập chịu thuế tính trước bằng tỷ lệ phần trăm (%) so với chi
+phí trực tiếp và chi phí chung theo từng loại công trình quy định tại phụ lục
+
+2.
+
+Khoản thu nhập chịu thuế tính
+trước sử dụng để nộp thuế thu nhập doanh nghiệp và một số khoản chi phí phải nộp,
+phải trừ khác. Phần còn lại được trích lập các quỹ theo Quy chế quản lý tài
+chính và hạch toán kinh doanh đối với doanh nghiệp Nhà nưóc ban hành kèm theo
+Nghị định số 59/CP ngày 3/10/1996 của Chính Phủ.
+--------------------------------------------------------------------------------
+
+--- CHUNK #5 ---
+ID: chunk-dcf395a6d32bf263ab94480b22e12ae2
+Passage ID: 01_1999_TT-BXD_I__ĐỐI_VỚI
+Context Title: I- ĐỐI VỚI
+Chunk Index: 3/3
+Tokens: 242
+Nội dung:
+[Passage: I- ĐỐI VỚI]
+2- Thuế giá trị gia tăng đầu ra:
+
+Thuế giá trị gia tăng đầu ra sử
+dụng để trả số thuế giá trị gia tăng đầu vào mà doanh nghiệp xây dựng đã ứng
+trước khi mua các loại vật tư, vật liệu, nhiên liệu, năng lượng... nhưng chưa
+được tính vào chi phí vật liệu, chi máy thi công và chi phí chung trong dự toán
+xây lắp trước thuế và phần thuế giá trị gia tăng mà doanh nghiệp xây dựng phải
+nộp.
+
+Mức thuế suất thuế giá trị gia
+tăng đầu ra được tính theo quy định đối với công tác xây dựng, lắp đặt.
+
+Trình tự xác định giá trị dự
+toán xây lắp theo các nguyên tắc nêu trên được quy định tại phụ lục 1 kèm theo
+Thông tư này.
+--------------------------------------------------------------------------------
+
+--- CHUNK #6 ---
+ID: chunk-66d0277bc93d1b429fa2d1cd27ef9d19
+Passage ID: 01_1999_TT-BXD_II__ĐỐI_VỚI
+Context Title: II- ĐỐI VỚI
+Chunk Index: 0/1
+Tokens: 686
+Nội dung:
+[Passage: II- ĐỐI VỚI]
+[01_1999_TT-BXD.txt]
+[ID Passage: II- ĐỐI VỚI]
+II- ĐỐI VỚI
+CÁC CHI PHÍ KHÁC TRONG TỔNG DỰ TOÁN CÔNG TRÌNH XÂY DỰNG
+
+1- Về chi phí khảo sát xây dựng:
+
+Dự toán chi phí khảo sát xây dựng
+lập theo định mức dự toán khảo sát xây dựng ban hành kèm theo Quyết định số
+177/BXD-VKT ngày 17/7/1995 và Thông tư hướng dẫn lập và quản lý giá khảo sát
+xây dựng số 22/BXD-VKT ngày 17/7/1995 của Bộ Xây dựng. Khi áp dụng thuế giá trị
+gia tăng thì dự toán chi phí này được xác định như sau:
+
+1.1- Dự toán chi phí khảo sát
+xây dựng trước thuế bằng dự toán chi phí khảo sát xây dựng tính theo quy định
+nói trên nhân với hệ số điều chỉnh K = 0,95.
+
+1.2- Dự toán chi phí khảo sát
+xây dựng sau thuế bằng dự toán chi phí khảo sát xây dựng trước thuế nêu ở điểm
+1.1 cộng (+) thêm khoản thuế giá trị gia tăng đầu ra theo quy định.
+
+2- Về chi phí thiết kế:
+
+Dự toán chi phí thiết kế tính
+theo bản giá thiết kế công trình xây dựng ban hành kèm theo Quyết định số
+179/BXD-VKT ngày 17/7/1995 của Bộ Xây dựng. Khi áp dụng thuế giá trị gia tăng
+thì dự toán chi phí công tác này dược xác định như sau:
+
+2.1- Dự toán chi phí thiết kế
+trước thuế bằng dự toán chi phí thiết kế tính theo quy định nói trên nhân với hệ
+số điều chỉnh K = 0,96.
+
+2.2- Dự toán chi phí thiết kế
+sau thuế bằng dự toán chi phí thiết kế trước thuế nêu ở điểm 2.1 cộng (+) thêm
+khoản thuế giá trị gia tăng đầu ra theo quy định.
+
+Đối với công tác xây dựng quy hoạch
+xây dựng đô thị khi áp dụng thuế giá trị gia tăng thì dự toán chi phí được xác
+định như đối với dự toán chi phí thiết kế công trình xây dựng nói trên, nhưng
+trên cơ sở bảng giá quy hoạch xây dựng đô thị ban hành kèm theo Quyết định số
+502/BXD-VKT ngày 18/9/1996 của Bộ Xây dựng.
+--------------------------------------------------------------------------------
+
+--- CHUNK #7 ---
+ID: chunk-fcc50361197ae1053d651710e505a933
+Passage ID: 01_1999_TT-BXD_II__ĐỐI_VỚI
+Context Title: II- ĐỐI VỚI
+Chunk Index: 1/1
+Tokens: 242
+Nội dung:
+[Passage: II- ĐỐI VỚI]
+3- Về các chi phí thẩm định và
+tư vấn đầu tư, xây dựng:
+
+Chi phí thẩm định và tư vấn đầu
+tư, xây dựng tính theo Quyết định số 501/BXD-VKT ngày 18/9/1996 của Bộ Xây dựng.
+Khi áp dụng thuế giá trị gia tăng thì chi phí cho công việc này được xác định
+như sau:
+
+3.1- Chi phí trước thuế bằng mức
+chi phí tính theo tỷ lệ phần trăm (%) quy định nói trên nhân với giá trị xây lắp
+(hoặc giá trị xây lắp và giá trị thiết bị hoặc giá trị thiết bị) trước thuế.
+
+3.2- Chi phí sau thuế bằng mức
+chi phí trước thuế nêu ở điểm 3.1 cộng (+) thêm khoản thuế giá trị gia tăng đầu
+ra theo quy định.
+--------------------------------------------------------------------------------
+
+--- CHUNK #8 ---
+ID: chunk-bc76dceea63c4dfbac80c0eb24113657
+Passage ID: 01_1999_TT-BXD_III__TỔ_CHỨC
+Context Title: III- TỔ CHỨC
+Chunk Index: 0/0
+Tokens: 609
+Nội dung:
+[Passage: III- TỔ CHỨC]
+[01_1999_TT-BXD.txt]
+[ID Passage: III- TỔ CHỨC]
+III- TỔ CHỨC
+THỰC HIỆN:
+
+Cách lập dự toán công trình xây
+dựng cơ bản theo hướng dẫn trên đây áp dụng thống nhất trong cả nước từ ngày
+01/01/1999. Những quy định trước dây trái với quy định trong thông tư này đều
+không còn hiệu lực. Các văn bản của các ngành, địa phương hướng dẫn việc lập dự
+toán các công trình của ngành và địa pương không được trái với những quy định
+trong Thông tư này.
+
+Đối với các công trình xây dựng
+có chuyển tiếp từ năm trước sang năm 1999 thì Chủ đầu tư và đơn vị nhận thầu ở
+công trình phải lập biên bản theo mẫu biểu của Bộ Tài chính, xác định giá trị
+khối lượng xây dựng đã thực hiện đến ngày 31/12/1998 và khối lượng xây dưng còn
+lại thực hiện từ 01/01/1999 để áp dụng thuế giá trị gia tăng và thuế thu nhập
+doanh nghiệp theo nguyên tắc sau:
+
+- Đối với khối lượng công trình,
+hạng mục công trình đã thực hiện đến ngày 31/12/1998 không tính thuế giá trị
+gia tăng.
+
+- Đối với khối lượng công trình,
+hạng mục công trình thực hiện từ ngày 01/01/1999 thì được tính toán theo hướng
+dẫn tại thông tư này.
+
+Để có căn cứ lập lại bộ đơn giá
+xây dựng cơ bản mới áp dụng từ ngày 01/01/1999 đề nghị Uỷ ban nhân dân các tỉnh,
+thành phố chỉ đạo Liên Sở xây dựng - Tài chính - Vật giá xác định giá các loại
+vật tư, vật liệu xây dựng theo nguyên tắc giữ mức giá đã hình thành từ cuối năm
+1998, giá này đã bao gồm cả thuế giá trị gia tăng.
+
+Trong quá trình áp dụng nếu có vấn
+đề vướng mắc hoặc chưa phù hợp, đề nghị các ngành, địa phương phản ánh về Bộ
+Xây dựng nghiên cứu giải quyết.
+
+Đặng
+Nghiêm Chính
+
+(Đã
+ký)
+--------------------------------------------------------------------------------
+
+--- CHUNK #9 ---
+ID: chunk-f3e1ef4339a1e7abea000f2a8f406734
+Passage ID: 01_1999_TT-BXD_PHỤ_LỤC_1
+Context Title: PHỤ LỤC 1
+Chunk Index: 0/0
+Tokens: 59
+Nội dung:
+[Passage: PHỤ LỤC 1]
+[01_1999_TT-BXD.txt]
+[ID Passage: PHỤ LỤC 1]
+PHỤ LỤC 1
+
+BẢNG TỔNG HỢP GIÁ TRỊ DỰ TOÁN XÂY LẮP CÔNG TRÌNH XÂY DỰNG
+CƠ BẢN
+
+STT
+
+Khoản
+--------------------------------------------------------------------------------
+
+--- CHUNK #10 ---
+ID: chunk-ae37608b72620f31a336eb9ff9433d24
+Passage ID: 01_1999_TT-BXD_PHỤ_LỤC_1___mục_chi_phí
+Context Title: PHỤ LỤC 1 - mục chi phí
+Chunk Index: 0/1
+Tokens: 692
+Nội dung:
+[Passage: PHỤ LỤC 1 - mục chi phí]
+[01_1999_TT-BXD.txt]
+[ID Passage: PHỤ LỤC 1 - mục chi phí]
+mục chi phí
+
+Cách
+tính
+
+Kết
+quả
+
+I
+
+Chi phí trực tiếp
+
+1
+
+Chi phí vật liệu
+
+m ồQ j x D jvl + Cl vl j =1 VL 2
+
+Chi phí nhân công
+
+m F 1 F 2 ồQ j x D jnc (1+ + ) j=1 h 1n h 2n NC 3
+
+Chi phí máy thi công
+
+m ồQ j x D jm j = 1 M
+
+Cộng trực tiếp phí
+
+VL + NC + M T II Chi phí chung P x NC C III
+
+Thu nhập chịu thuế tính trước
+
+(T + C) x Tỷ lệ quy định
+
+TL
+
+Giá trị dự toán xây lắp trước
+thuế
+
+(T + C + TL)
+
+Z
+
+IV
+
+Thuế Giá trị gia tăng đầu ra
+
+Z x T
+
+GTGT
+
+VAT
+
+Giá trị dự toán xây lắp sau
+thuế
+
+(T + C + TL) + VAT
+
+G
+
+xl
+
+Trong đó:
+
+Q
+
+j
+
+: khối lượng công
+tác xây lắp thứ j
+
+D jvl , D jnc ,
+D jm
+
+: chi phí vật liệu, nhân công, máy thi công trong đơn giá XDCB của
+công tác xây lắp thứ j
+
+F
+
+1
+
+: Các khoản phụ cấp
+lương (nếu có) tính theo tiền lương tối thiểu mà chưa được tính hoặc chưa đủ
+trong đơn giá XDCB
+
+F
+
+2
+
+: Các khoản phụ cấp
+lương (nếu có) tính theo tiền lương cấp bậc mà chưa được tính hoặc chưa đủ
+trong đơn giá XDCB.
+
+h
+
+1n
+
+: Hệ số biểu thị
+quan hệ giữa chi phí nhân công trong đơn giá so với tiền lương tối thiểu của
+các nhóm lương thứ n
+
+- Nhóm I : h 1.1 =
+2,342 - Nhóm II : h 1.2 =
+2,493 - Nhóm III : h 1.3 =
+2,638 - Nhóm IV : h 1.3 =
+2,796 h 2n
+
+: Hệ số biểu thị
+quan hệ giữa chi phí nhân công trong đơn giá so với tiền lương cấp bậc của các
+nhóm lương thứ n.
+
+- Nhóm I : h 2.1 =
+1,378 - Nhóm II : h 2.2 =
+1,370 - Nhóm III : h 2.3 =
+1,363 - Nhóm IV : h 2.3 =
+1,357
+
+P : Định mức chi phí chung (%).
+
+TL : Thu nhập chịu thuế tính trước
+(%).
+
+G
+
+xl
+
+: Giá trị dự toán
+xây lắp sau thuế.
+
+CL
+
+vl
+
+: Chênh lệch vật
+liệu (nếu có).
+
+T
+
+GTGT
+--------------------------------------------------------------------------------
+
+--- CHUNK #11 ---
+ID: chunk-f8e9fb85b15e7b7d6fdee843b0c0886b
+Passage ID: 01_1999_TT-BXD_PHỤ_LỤC_1___mục_chi_phí
+Context Title: PHỤ LỤC 1 - mục chi phí
+Chunk Index: 1/1
+Tokens: 250
+Nội dung:
+[Passage: PHỤ LỤC 1 - mục chi phí]
+- Nhóm I : h 2.1 =
+1,378 - Nhóm II : h 2.2 =
+1,370 - Nhóm III : h 2.3 =
+1,363 - Nhóm IV : h 2.3 =
+1,357
+
+P : Định mức chi phí chung (%).
+
+TL : Thu nhập chịu thuế tính trước
+(%).
+
+G
+
+xl
+
+: Giá trị dự toán
+xây lắp sau thuế.
+
+CL
+
+vl
+
+: Chênh lệch vật
+liệu (nếu có).
+
+T
+
+GTGT
+
+: Mức thuế suất
+thuế Giá trị gia tăng quy định cho công tác xây dựng, lắp đặt.
+
+VAT : Tổng số thuế giá trị gia
+tăng đầu ra (gồm thuế giá trị gia tăng đầu vào để trả khi mua các loại vật tư,
+vật liệu, nhiên liệu, năng lượng... và phần thuế giá trị gia tăng mà doanh nghiệp
+xây dựng phải nộp).
+--------------------------------------------------------------------------------
+
+--- CHUNK #12 ---
+ID: chunk-e27fc771cd1d9c4bbfe81b8ce5c2f790
+Passage ID: 01_1999_TT-BXD_PHỤ_LỤC_SỐ_2
+Context Title: PHỤ LỤC SỐ 2
+Chunk Index: 0/0
+Tokens: 676
+Nội dung:
+[Passage: PHỤ LỤC SỐ 2]
+[01_1999_TT-BXD.txt]
+[ID Passage: PHỤ LỤC SỐ 2]
+PHỤ LỤC SỐ 2
+
+ĐỊNH MỨC CHI PHÍ CHUNG VÀ THU NHẬP CHỊU THUẾ TÍNH TRƯỚC
+
+Đơn vị tính: %
+
+Số
+
+TT
+
+Loại
+công trình, công tác xây lắp
+
+Chi
+phí chung
+
+Thu
+nhập chịu thuế tính trước
+
+1
+
+Xây dựng công trình dân dụng
+thông thường
+
+55,0
+
+5,5
+
+2
+
+Xây dựng nhà bê tông tấm lớn,
+lắp dựng kết cấu thép
+
+63,5
+
+5,5
+
+3
+
+Xây dựng công trình công nghiệp,
+dân dụng đặc biệt
+
+67,5
+
+5,5
+
+4
+
+Xây dựng công trình thuỷ điện
+
+71,0
+
+5,5
+
+- Riêng XD đường hầm trong
+công trình thuỷ điện
+
+74,0
+
+6,5
+
+- Trạm thuỷ điện nhỏ
+
+64,0
+
+5,5
+
+5
+
+Lắp đặt điện, nước, đường ống,
+máy công nghệ
+
+63,5
+
+5,5
+
+6
+
+Xây dựng nền đường, mặt đường
+bộ
+
+66,0
+
+6
+
+7
+
+Xây dựng mặt đường sắt
+
+67,0
+
+6
+
+8
+
+Xây dựng cầu cống giao thông,
+triền đà, ụ tầu, bến cảng
+
+63,5
+
+6
+
+9
+
+Xây dựng các công trình biển
+
+63,5
+
+5,5
+
+10
+
+Xây dựng công trình thuỷ lợi
+(trừ lực lượng dân công nghĩa vụ)
+
+64,0
+
+5,5
+
+11
+
+Đào đắp thủ công công trình
+thuỷ lợi đê, kè (trừ lực lượng dân công nghĩa vụ)
+
+51,0
+
+6
+
+12
+
+Xây dựng công trình thông tin
+bưu điện, thông tin tín hiệu đường sắt
+
+70,0
+
+5,5
+
+13
+
+Lắp đặt bề xăng dầu, đường ống
+dẫn xăng dầu trong kho
+
+63,5
+
+6
+
+14
+
+Lắp đặt đường ống dẫn dầu theo
+tuyến
+
+66,0
+
+6
+
+15
+
+Xây dựng đường dây tải điện,
+trạm biến thế
+
+71,0 6 16 Xây dựng hầm lò 74,0 6,5 17
+
+Lắp máy trong hầm lò, trong đường
+hầm
+
+70,0
+
+6,5
+
+18
+
+Trồng rừng, trồng cây công
+nghiệp (cao su, chè, cà phê)
+
+60,5
+
+6,5
+
+19
+
+Làm giầu rừng, khoanh nuôi rừng
+
+55,0
+
+6,5
+
+20
+
+Khai hoang, xây dựng đồng ruộng
+
+55,0
+
+5,5
+
+21
+
+Một số dây chuyền thi công cơ
+giới
+
+2,5
+
+5,0
+
+Ghi chú:
+
+Mức chi phí
+chung trong mục 21 tính trên chi phí sử dụng máy thi công và chỉ áp dụng đối với
+công trình, hạng mục công trình sử dụng dây chuyền công nghệ thi công đồng bộ bằng
+máy được lập thành dự toán xây lắp riêng.
+--------------------------------------------------------------------------------
+
+--- CHUNK #13 ---
+ID: chunk-f0b1f6000685d499a2d51659cf67954d
+Passage ID: 01_2000_TT-UBCK1_Phần_mở_đầu
+Context Title: Phần mở đầu
+Chunk Index: 0/2
+Tokens: 673
+Nội dung:
+[Passage: Phần mở đầu]
+[01_2000_TT-UBCK1.txt]
+[ID Passage: Phần mở đầu]
+UỶ
+BAN CHỨNG KHOÁN NHÀ NƯỚC
+
+CỘNG
+HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM
+
+Độc lập - Tự do - Hạnh phúc
+
+Số:
+01/2000/TT-UBCK1
+
+Hà
+Nội, ngày 17 tháng 4 năm 2000
+
+THÔNG TƯ
+
+CỦA UỶ BAN CHỨNG KHOÁN NHÀ NƯỚC SỐ 01/2000/TT-UBCK1 NGÀY 17
+THÁNG 4 NĂM 2000 HƯỚNG DẪN TẠM THỜI CHẾ ĐỘ THU PHÍ ĐỐI VỚI KHÁCH HÀNG CỦA CÁC TỔ
+CHỨC KINH DOANH, DỊCH VỤ CHỨNG KHOÁN
+
+Thực hiện Nghị định số
+
+48/1998/NĐ-CP
+
+ngày 11 tháng 7 năm 1998 của Chính phủ về Chứng khoán và thị trường chứng
+khoán, sau khi thoả thuận với Bộ Tài chính, Uỷ ban Chứng khoán Nhà nước hướng dẫn
+chế độ thu phí đối với khách hàng của các tổ chức kinh doanh, dịch vụ chứng
+khoán như sau:
+
+1. Các tổ chức
+kinh doanh, dịch vụ chứng khoán được phép thu phí đối với khách hàng bao gồm:
+
+- Công ty chứng khoán;
+
+- Công ty quản lý quỹ đầu tư;
+
+- Tổ chức lưu ký và ngân hàng
+giám sát bảo quản.
+
+2. Đối tượng và
+mức phí thu cụ thể do các tổ chức kinh doanh, dịch vụ quy định hoặc do các tổ
+chức kinh doanh, dịch vụ chứng khoán thoả thuận với khách hàng trên cơ sở mức
+phí tối đa do Uỷ ban Chứng khoán Nhà nước quy định tại Thông tư này. Cụ thể như
+sau:
+
+2.1- Phí bảo lãnh phát hành: tối
+đa không quá 3% tổng trị giá bảo lãnh phát hành;
+
+2.2- Phí dịch
+vụ môi giới (hoa hồng môi giới) mua, bán chứng khoán cho khách hàng:
+
++ Cổ phiếu, Chứng chỉ quỹ đầu
+tư: tối đa không quá 0,75% trị giá giao dịch;
+
++ Trái phiếu: tối đa không quá
+0,5% trị giá giao dịch.
+
+2.3- Phí dịch vụ tư vấn đầu tư
+và cung cấp thông tin: Mức thu theo thoả thuận giữa khách hàng và tổ chức cung
+cấp dịch vụ.
+
+2.4- Phí quản lý danh mục đầu
+tư: tối đa không quá 2% năm/trị giá vốn uỷ thác bình quân.
+--------------------------------------------------------------------------------
+
+--- CHUNK #14 ---
+ID: chunk-65ac859f94d62e7adae2885f58e8c852
+Passage ID: 01_2000_TT-UBCK1_Phần_mở_đầu
+Context Title: Phần mở đầu
+Chunk Index: 1/2
+Tokens: 628
+Nội dung:
+[Passage: Phần mở đầu]
+2.3- Phí dịch vụ tư vấn đầu tư
+và cung cấp thông tin: Mức thu theo thoả thuận giữa khách hàng và tổ chức cung
+cấp dịch vụ.
+
+2.4- Phí quản lý danh mục đầu
+tư: tối đa không quá 2% năm/trị giá vốn uỷ thác bình quân.
+
+2.5- Phí quản lý quỹ đầu tư: tối
+đa không quá 2% năm/giá trị tài sản quỹ bình quân năm.
+
+2.6- Phí dịch vụ bảo quản, giám
+sát tài sản của Quỹ đầu tư: Mức thu theo hợp đồng giám sát bảo quản tài sản giữa
+Ngân hàng giám sát và Công ty quản lý quỹ đầu tư, và được ghi cụ thể trong điều
+lệ Quỹ đầu tư, nhưng tối đa không quá 0,15% trị giá tài sản giám sát.
+
+2.7- Phí dịch vụ lưu ký chứng
+khoán đối với khách hàng của tổ chức lưu ký: Mức thu được tính toán dựa trên cơ
+sở mức phí do TTGDCK quy định với thành viên lưu ký và cộng thêm một tỷ lệ thoả
+thuận giữa khách hàng và tổ chức lưu ký;
+
+2.8- Phí đại diện người sở hữu
+trái phiếu: Mức thu thoả thuận giữa tổ chức phát hành và đại diện người sở hữu
+trái phiếu, nhưng tối đa không quá 0,1% tổng trị giá trái phiếu phát hành.
+
+Các tổ chức kinh doanh, dịch vụ
+chứng khoán xác định và công bố công khai mức phí, đồng gửi cho Uỷ ban Chứng
+khoán Nhà nước.
+
+3. Tổ chức thu:
+Các tổ chức kinh doanh, dịch vụ chứng khoán trực tiếp thu phí của khách hàng và
+được thực hiện như sau:
+
+- Đối với khách hàng trong nước
+được thống nhất thu bằng Đồng Việt Nam.
+
+- Đối với khách hàng nước ngoài
+thu bằng Đồng Việt Nam hoặc ngoại tệ (USD).
+
+- Trường hợp thu bằng ngoại tệ
+(USD), tỷ giá quy đổi được thực hiện theo tỷ giá trên thị trường ngoại tệ liên
+ngân hàng do Ngân hàng Nhà nước công bố tại thời điểm thu.
+--------------------------------------------------------------------------------
+
+--- CHUNK #15 ---
+ID: chunk-dce4256d1554a3b71b2f4d534c7530cd
+Passage ID: 01_2000_TT-UBCK1_Phần_mở_đầu
+Context Title: Phần mở đầu
+Chunk Index: 2/2
+Tokens: 219
+Nội dung:
+[Passage: Phần mở đầu]
+4. Các công ty
+kinh doanh, dịch vụ chứng khoán phải hạch toán đầy đủ toàn bộ khoản phí thu được
+trong sổ sách kế toán theo chế độ quản lý tài chính và chế độ kế toán quy định
+đối với công ty chứng khoán.
+
+5. Thông tư này
+có hiệu lực sau 15 ngày kể từ ngày ký ban hành.
+
+Các tổ chức kinh doanh, dịch vụ
+chứng khoán chịu trách nhiệm thực hiện thông tư này.
+
+Trong quá trình thực hiện nếu có
+khó khăn, vướng mắc đề nghị các đơn vị phản ánh kịp thời về Uỷ ban Chứng khoán
+Nhà nước để có hướng dẫn giải quyết cụ thể.
+
+Trần
+Xuân Giá
+
+(Đã
+ký)
+--------------------------------------------------------------------------------
+
+--- CHUNK #16 ---
+ID: chunk-9bf75f677a44c7c4e638f630bdde768e
+Passage ID: 01_2003_TT-BTC_Phần_mở_đầu
+Context Title: Phần mở đầu
+Chunk Index: 0/0
+Tokens: 482
+Nội dung:
+[Passage: Phần mở đầu]
+[01_2003_TT-BTC.txt]
+[ID Passage: Phần mở đầu]
+BỘ
+TÀI CHÍNH
+
+CỘNG
+HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM
+
+Độc lập - Tự do - Hạnh phúc
+
+Số:
+01/2003/TT-BTC
+
+Hà
+Nội, ngày 07 tháng 1 năm 2003
+
+THÔNG TƯ
+
+CỦA BỘ TÀI CHÍNH SỐ 01/2003/TT-BTC NGÀY 7 THÁNG 1 NĂM 2003 VỀ
+VIỆC SỬA ĐỔI MỨC THU PHÍ SỬ DỤNG ĐƯỜNG BỘ ĐỐI VỚI XE QUÂN SỰ CỦA BỘ QUỐC PHÒNG
+
+Căn cứ Pháp lệnh phí và lệ
+phí số 38/2001/PL-UBTVQH10 ngày 28/8/2001, Nghị định số 57/2002/NĐ-CP ngày 03
+tháng 6 năm 2002 của Chính phủ quy định chi tiết thi hành Pháp lệnh phí và lệ
+phí;
+
+Sau khi có ý kiến của Bộ Quốc phòng, Bộ Tài chính hướng dẫn sửa đổi mức thu
+phí sử dụng đường bộ đối với xe quân sự của Bộ Quốc phòng quy định tại Thông tư
+số 109/2002/TT-BTC ngày 6/12/2002 của Bộ Tài chính như sau:
+
+1. Sửa đổi mệnh
+giá vé thu phí đường bộ toàn quốc áp dụng đối với xe của Bộ Quốc phòng mang biển
+số nền màu đỏ, chữ và số màu trắng dập chìm, như sau:
+
+TT
+
+Loại phương tiện
+
+Mệnh giá vé năm (đồng/vé/năm)
+
+1
+
+Xe ô tô con quân sự
+
+- Mức 1:
+
+2.000.000
+
+- Mức 2:
+
+1.000.000
+
+2
+
+Xe ô tô vận tải quân sự
+
+- Mức 1:
+
+3.000.000
+
+- Mức 2:
+
+1.500.000
+
+2. Thông tư này
+có hiệu lực thi hành từ ngày 1/3/2003.
+
+Trương
+Chí Trung
+
+(Đã
+ký)
+--------------------------------------------------------------------------------
+
+--- CHUNK #17 ---
+ID: chunk-c6ea2bdb19a4c2e1e234271920369f1d
+Passage ID: 01_2005_TT-BTC_Phần_mở_đầu
+Context Title: Phần mở đầu
+Chunk Index: 0/0
+Tokens: 453
+Nội dung:
+[Passage: Phần mở đầu]
+[01_2005_TT-BTC.txt]
+[ID Passage: Phần mở đầu]
+BỘ TÀI CHÍNH
+
+CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM
+
+Độc lập - Tự do - Hạnh phúc
+
+Số: 01/2005/TT-BTC
+
+Hà Nội, ngày 04 tháng 1 năm 2005
+
+THÔNG TƯ
+
+CỦA BỘ TÀI CHÍNH SỐ 01/2005/TT-BTC NGÀY 04
+THÁNG 01 NĂM 2005 HƯỚNG DẪN CHẾ ĐỘ THU, NỘP, QUẢN LÝ VÀ SỬ DỤNG LỆ PHÍ CẤP
+PHÉP, THAY ĐỔI NỘI DUNG GIẤY PHÉP, ĐĂNG KÝ HOẠT ĐỘNG TRUNG TÂM TRỌNG TÀI, ĐĂNG
+KÝ HOẠT ĐỘNG CHI NHÁNH CỦA TRUNG TÂM TRỌNG TÀI VÀ LỆ PHÍ TOÀ ÁN LIÊN QUAN ĐẾN
+TRỌNG TÀI
+
+Căn cứ Nghị định
+số 25/2004/NĐ-CP ngày 15/01/2004 của Chính phủ quy định chi tiết thi hành một số
+điều của Pháp lệnh Trọng tài thương mại;
+
+Căn cứ Nghị định số 57/2002/NĐ-CP ngày 03/6/2002 của Chính phủ
+quy định chi tiết thi hành Pháp lệnh phí và lệ phí;
+
+Căn cứ Nghị định số 77/2003/NĐ-CP ngày 01/7/2003 của Chính phủ
+quy định chức năng, nhiệm vụ, quyền hạn và cơ cấu tổ chức của Bộ Tài chính;
+
+Bộ Tài chính hướng dẫn chế độ thu, nộp, quản lý và sử dụng lệ
+phí cấp phép, thay đổi nội dung giấy phép, đăng ký hoạt động trung tâm trọng
+tài, đăng ký hoạt động chi nhánh của trung tâm trọng tài và lệ phí toà án liên
+quan đến trọng tài, như sau:
+--------------------------------------------------------------------------------
+
+--- CHUNK #18 ---
+ID: chunk-2010c027c41388802e56b65e6b27c3a0
+Passage ID: 01_2005_TT-BTC_I_ĐỐI_TƯỢNG_ÁP_DỤNG
+Context Title: I. ĐỐI TƯỢNG ÁP DỤNG
+Chunk Index: 0/0
+Tokens: 317
+Nội dung:
+[Passage: I. ĐỐI TƯỢNG ÁP DỤNG]
+[01_2005_TT-BTC.txt]
+[ID Passage: I. ĐỐI TƯỢNG ÁP DỤNG]
+I. ĐỐI TƯỢNG ÁP DỤNG
+
+Đối tượng phải nộp
+lệ phí theo quy định của Thông tư này bao gồm:
+
+1. Tổ chức, cá
+nhân khi nộp hồ sơ đề nghị thành lập, thay đổi nội dung giấy phép thành lập,
+đăng ký hoạt động trung tâm trọng tài, đăng ký hoạt động chi nhánh trung tâm trọng
+tài phải nộp lệ phí cấp giấy phép thành lập, đăng ký hoạt động.
+
+2. Tổ chức, cá
+nhân yêu cầu Toà án chỉ định trọng tài viên, thay đổi trọng tài viên, xem xét lại
+quyết định của hội đồng trọng tài về thỏa thuận trọng tài, về thẩm quyền giải
+quyết vụ tranh chấp của hội đồng trọng tài, áp dụng, thay đổi, hủy bỏ biện pháp
+khẩn cấp tạm thời, hủy quyết định trọng tài, kháng cáo quyết định của Tòa án phải
+nộp lệ phí toà án liên quan đến trọng tài.
+--------------------------------------------------------------------------------
+
+--- CHUNK #19 ---
+ID: chunk-90f04ebaf0f05bed1b28a574dad4e569
+Passage ID: 01_2005_TT-BTC_II_MỨC_THU_CHẾ_ĐỘ_THU_NỘP_QUẢN_LÝ_VÀ_SỬ_DỤNG_LỆ_PHÍ
+Context Title: II. MỨC THU, CHẾ ĐỘ THU, NỘP, QUẢN LÝ VÀ SỬ DỤNG LỆ PHÍ
+Chunk Index: 0/0
+Tokens: 109
+Nội dung:
+[Passage: II. MỨC THU, CHẾ ĐỘ THU, NỘP, QUẢN LÝ VÀ SỬ DỤNG LỆ PHÍ]
+[01_2005_TT-BTC.txt]
+[ID Passage: II. MỨC THU, CHẾ ĐỘ THU, NỘP, QUẢN LÝ VÀ SỬ DỤNG LỆ PHÍ]
+II. MỨC THU, CHẾ ĐỘ THU, NỘP, QUẢN LÝ VÀ SỬ DỤNG LỆ PHÍ
+
+1.
+Mức thu:
+
+Căn cứ quy định tại
+--------------------------------------------------------------------------------
+
+--- CHUNK #20 ---
+ID: chunk-e7efd44f1cec65fd0ce65b03a00dbcb8
+Passage ID: 01_2005_TT-BTC_II_MỨC_THU_CHẾ_ĐỘ_THU_NỘP_QUẢN_LÝ_VÀ_SỬ_DỤNG_LỆ_PHÍ___Điều_13_và_Điều_14_Nghị_định_số_252004NĐ_CP_ngày_15012004_của_Chính_phủ_quy
+Context Title: II. MỨC THU, CHẾ ĐỘ THU, NỘP, QUẢN LÝ VÀ SỬ DỤNG LỆ PHÍ - Điều 13 và Điều 14 Nghị định số 25/2004/NĐ-CP ngày 15/01/2004 của Chính phủ quy
+Chunk Index: 0/2
+Tokens: 614
+Nội dung:
+[Passage: II. MỨC THU, CHẾ ĐỘ THU, NỘP, QUẢN LÝ VÀ SỬ DỤNG LỆ PHÍ - Điều 13 và Điều 14 Nghị định số 25/2004/NĐ-CP ngày 15/01/2004 của Chính phủ quy]
+[01_2005_TT-BTC.txt]
+[ID Passage: II. MỨC THU, CHẾ ĐỘ THU, NỘP, QUẢN LÝ VÀ SỬ DỤNG LỆ PHÍ - Điều 13 và Điều 14 Nghị định số 25/2004/NĐ-CP ngày 15/01/2004 của Chính phủ quy]
+
+Điều 13 và Điều 14 Nghị định số 25/2004/NĐ-CP ngày 15/01/2004 của Chính phủ quy
+định chi tiết thi hành một số điều của Pháp lệnh Trọng tài thương mại, mức thu
+lệ phí cấp phép, thay đổi nội dung giấy phép, đăng ký hoạt động trung tâm trọng
+tài, đăng ký hoạt động chi nhánh của trung tâm trọng tài và lệ phí toà án liên
+quan đến trọng tài được quy định như sau:
+
+STT
+
+Lệ phí
+
+Mức thu
+
+(đồng)
+
+I.
+
+LỆ PHÍ CẤP PHÉP,
+THAY ĐỔI NỘI DUNG GIẤY PHÉP, ĐĂNG KÝ HOẠT ĐỘNG TRUNG TÂM TRỌNG TÀI, ĐĂNG KÝ
+HOẠT ĐỘNG CHI NHÁNH CỦA TRUNG TÂM TRỌNG TÀI
+
+Cấp giấy phép
+thành lập trung tâm trọng tài
+
+500.000
+
+Thay đổi nội
+dung giấy phép thành lập
+
+100.000
+
+Đăng ký hoạt động
+của trung tâm trọng tài
+
+200.000
+
+Đăng ký hoạt động
+chi nhánh
+
+100.000
+
+II.
+
+LỆ PHÍ TÒA ÁN
+LIÊN QUAN ĐẾN TRỌNG TÀI
+
+Yêu cầu Tòa án
+chỉ định trọng tài viên, thay đổi trọng tài viên
+
+100.000
+
+Yêu cầu Tòa án
+xem xét lại quyết định của hội đồng trọng tài về thỏa thuận trọng tài, về thẩm
+quyền giải quyết vụ tranh chấp của hội đồng trọng tài
+
+300.000
+
+Yêu cầu Tòa án
+áp dụng, thay đổi, hủy bỏ biện pháp khẩn cấp tạm thời
+
+500.000
+
+Yêu cầu Tòa án hủy
+quyết định trọng tài
+
+500.000
+
+Kháng cáo quyết
+định của Tòa án
+
+300.000
+
+2.
+Chế độ thu, nộp, quản lý và sử dụng:
+--------------------------------------------------------------------------------
+
+--- CHUNK #21 ---
+ID: chunk-a79672763cb17af0e59d795c7f60e6aa
+Passage ID: 01_2005_TT-BTC_II_MỨC_THU_CHẾ_ĐỘ_THU_NỘP_QUẢN_LÝ_VÀ_SỬ_DỤNG_LỆ_PHÍ___Điều_13_và_Điều_14_Nghị_định_số_252004NĐ_CP_ngày_15012004_của_Chính_phủ_quy
+Context Title: II. MỨC THU, CHẾ ĐỘ THU, NỘP, QUẢN LÝ VÀ SỬ DỤNG LỆ PHÍ - Điều 13 và Điều 14 Nghị định số 25/2004/NĐ-CP ngày 15/01/2004 của Chính phủ quy
+Chunk Index: 1/2
+Tokens: 659
+Nội dung:
+[Passage: II. MỨC THU, CHẾ ĐỘ THU, NỘP, QUẢN LÝ VÀ SỬ DỤNG LỆ PHÍ - Điều 13 và Điều 14 Nghị định số 25/2004/NĐ-CP ngày 15/01/2004 của Chính phủ quy]
+2.
+Chế độ thu, nộp, quản lý và sử dụng:
+
+a) Đối tượng nộp lệ
+phí phải nộp đủ một lần số tiền lệ phí quy định tại điểm 1 mục này khi nộp hồ sơ
+đề nghị thành lập, thay đổi nội dung giấy phép thành lập, đăng ký hoạt động
+trung tâm trọng tài, đăng ký hoạt động chi nhánh trung tâm trọng tài hoặc khi gửi
+đơn yêu cầu Tòa án chỉ định trọng tài viên, thay đổi trọng tài viên, xem xét lại
+quyết định của hội đồng trọng tài về thỏa thuận trọng tài, về thẩm quyền giải
+quyết vụ tranh chấp của hội đồng trọng tài, áp dụng, thay đổi, hủy bỏ biện pháp
+khẩn cấp tạm thời, hủy quyết định trọng tài, kháng cáo quyết định của Tòa án.
+
+b) Cơ quan thu lệ
+phí:
+
+- Cơ quan thu lệ
+phí cấp phép, thay đổi nội dung giấy phép, đăng ký hoạt động trung tâm trọng
+tài, đăng ký hoạt động chi nhánh của trung tâm trọng tài là cơ quan có thẩm quyền
+cấp giấy phép thành lập, đăng ký hoạt động trung tâm trọng tài, đăng ký hoạt động
+chi nhánh trung tâm trọng tài;
+
+- Cơ quan thu lệ
+phí toà án liên quan đến trọng tài là Toà án nơi đối tượng nộp lệ phí gửi đơn
+yêu cầu Tòa án chỉ định trọng tài viên, thay đổi trọng tài viên, xem xét lại
+quyết định của hội đồng trọng tài về thỏa thuận trọng tài, về thẩm quyền giải
+quyết vụ tranh chấp của hội đồng trọng tài, áp dụng, thay đổi, hủy bỏ biện pháp
+khẩn cấp tạm thời, hủy quyết định trọng tài, kháng cáo quyết định của Tòa án.
+
+- Khi thu tiền lệ
+phí, cơ quan thu phải lập và cấp biên lai thu cho đối tượng nộp lệ phí theo
+đúng quy định hiện hành của Bộ Tài chính về phát hành, quản lý, sử dụng ấn chỉ
+thuế.
+--------------------------------------------------------------------------------
+
+--- CHUNK #22 ---
+ID: chunk-f15873c68f3c4321712fa839c48ce796
+Passage ID: 01_2005_TT-BTC_II_MỨC_THU_CHẾ_ĐỘ_THU_NỘP_QUẢN_LÝ_VÀ_SỬ_DỤNG_LỆ_PHÍ___Điều_13_và_Điều_14_Nghị_định_số_252004NĐ_CP_ngày_15012004_của_Chính_phủ_quy
+Context Title: II. MỨC THU, CHẾ ĐỘ THU, NỘP, QUẢN LÝ VÀ SỬ DỤNG LỆ PHÍ - Điều 13 và Điều 14 Nghị định số 25/2004/NĐ-CP ngày 15/01/2004 của Chính phủ quy
+Chunk Index: 2/2
+Tokens: 538
+Nội dung:
+[Passage: II. MỨC THU, CHẾ ĐỘ THU, NỘP, QUẢN LÝ VÀ SỬ DỤNG LỆ PHÍ - Điều 13 và Điều 14 Nghị định số 25/2004/NĐ-CP ngày 15/01/2004 của Chính phủ quy]
+c) Lệ phí cấp
+phép, thay đổi nội dung giấy phép, đăng ký hoạt động trung tâm trọng tài, đăng
+ký hoạt động chi nhánh của trung tâm trọng tài và lệ phí toà án liên quan đến
+trọng tài là khoản thu thuộc ngân sách nhà nước, được quản lý, sử dụng như sau:
+
+- Cơ quan thu lệ
+phí nộp toàn bộ số tiền phí thu được vào ngân sách nhà nước như sau:
+
++ Đối với lệ phí cấp
+phép, thay đổi nội dung giấy phép, đăng ký hoạt động trung tâm trọng tài, đăng
+ký hoạt động chi nhánh của trung tâm trọng tài hạch toán vào chương, loại, khoản
+tương ứng, mục 047, tiểu mục 29 của mục lục ngân sách nhà nước hiện hành;
+
++ Đối với lệ phí
+toà án liên quan đến trọng tài hạch toán vào chương, loại, khoản tương ứng, mục
+045, tiểu mục 07 của mục lục ngân sách nhà nước hiện hành.
+
+- Kinh phí cho hoạt
+động thu lệ phí được ngân sách nhà nước bảo đảm theo dự toán hàng năm.
+
+d) Việc lập, chấp
+hành, kế toán, quyết toán số thu, chi lệ phí cấp phép, thay đổi nội dung giấy
+phép, đăng ký hoạt động trung tâm trọng tài, đăng ký hoạt động chi nhánh của
+trung tâm trọng tài và lệ phí toà án liên quan đến trọng tài thực hiện theo quy
+định của Luật Ngân sách nhà nước, Pháp lệnh Phí và lệ phí và các văn bản hướng
+dẫn thi hành.
+--------------------------------------------------------------------------------
+
+--- CHUNK #23 ---
+ID: chunk-6af3c86e6932661ae39bb7c27b50cdc1
+Passage ID: 01_2005_TT-BTC_III_TỔ_CHỨC_THỰC_HIỆN
+Context Title: III. TỔ CHỨC THỰC HIỆN
+Chunk Index: 0/0
+Tokens: 184
+Nội dung:
+[Passage: III. TỔ CHỨC THỰC HIỆN]
+[01_2005_TT-BTC.txt]
+[ID Passage: III. TỔ CHỨC THỰC HIỆN]
+III. TỔ CHỨC THỰC HIỆN
+
+Thông tư này có hiệu
+lực thi hành sau 15 ngày, kể từ ngày đăng Công báo. Các vấn đề khác liên quan đến
+việc thu, nộp, quản lý và sử dụng lệ phí không đề cập tại Thông tư này được thực
+hiện theo hướng dẫn tại Thông tư số 63/2002/TT-BTC ngày 24/7/2002 của Bộ Tài
+chính hướng dẫn thực hiện các quy định pháp luật về phí và lệ phí.
+
+Trương
+Chí Trung
+
+(Đã
+ký)
+--------------------------------------------------------------------------------
+
+--- CHUNK #24 ---
+ID: chunk-29bdc29fd7b9f55d1c945b110f2e3909
+Passage ID: 01_2013_TT-BTC_Phần_mở_đầu
+Context Title: Phần mở đầu
+Chunk Index: 0/0
+Tokens: 462
+Nội dung:
+[Passage: Phần mở đầu]
+[01_2013_TT-BTC.txt]
+[ID Passage: Phần mở đầu]
+BỘ TÀI CHÍNH
+
+--------
+
+CỘNG HÒA XÃ
+HỘI CHỦ NGHĨA VIỆT NAM
+
+Độc lập - Tự do - Hạnh phúc
+
+---------------
+
+Số:
+01/2013/TT-BTC
+
+Hà Nội, ngày
+02 tháng 01 năm 2013
+
+THÔNG TƯ
+
+SỬA ĐỔI, BỔ SUNG THÔNG TƯ SỐ 36/2004/TT-BTC NGÀY
+26/4/2004 CỦA BỘ TÀI CHÍNH QUY ĐỊNH CHẾ ĐỘ THU, NỘP VÀ QUẢN LÝ SỬ DỤNG LỆ PHÍ HỢP
+PHÁP HOÁ, CHỨNG NHẬN LÃNH SỰ
+
+Căn cứ Pháp lệnh Phí và lệ phí;
+
+Căn cứ Nghị định số
+57/2002/NĐ-CP ngày 3/6/2002 và Nghị định số 24/2006/NĐ-CP ngày 06/3/2006 của
+Chính phủ quy định chi tiết thi hành Pháp lệnh phí và lệ phí;
+
+Căn cứ Nghị định số
+111/2011/NĐ-CP ngày 5/12/2011 của Chính phủ về chứng nhận lãnh sự, hợp pháp hoá
+lãnh sự.
+
+Căn cứ Nghị định số
+118/2008/NĐ-CP ngày 27/11/2008 của Chính phủ quy định chức năng, nhiệm vụ, quyền
+hạn và cơ cấu tổ chức của Bộ Tài chính;
+
+Xét đề nghị của Vụ trưởng Vụ
+Chính sách thuế;
+
+Bộ trưởng Bộ Tài chính ban hành
+Thông tư sửa đổi, bổ sung Thông tư số 36/2004/TT-BTC ngày 26/4/2004 của Bộ Tài
+chính quy định chế độ thu, nộp và quản lý sử dụng lệ phí hợp pháp hoá, chứng nhận
+lãnh sự như sau:
+--------------------------------------------------------------------------------
+
+--- CHUNK #25 ---
+ID: chunk-b58fe4a316af6d04265fa6624abfbeb0
+Passage ID: 01_2013_TT-BTC_Điều_1
+Context Title: Điều 1.
+Chunk Index: 0/2
+Tokens: 389
+Nội dung:
+[Passage: Điều 1.]
+[01_2013_TT-BTC.txt]
+[ID Passage: Điều 1.]
+
+Điều 1.
+
+1. Sửa đổi, bổ sung
+
+điểm 2 mục II Thông tư số 36/2004/TT-BTC
+
+như sau:
+
+“Cơ quan thu lệ phí hợp pháp hoá,
+chứng nhận lãnh sự có trách nhiệm thực hiện chế độ tài chính, kế toán về lệ phí
+hợp pháp hoá, chứng nhận lãnh sự theo hướng dẫn tại Thông tư số 63/2002/TT-BTC
+ngày 24/7/2002 và Thông tư số 45/2006/TT-BTC ngày 25/5/2006 sửa đổi, bổ sung
+Thông tư số 63/2002/TT-BTC ngày 24/7/2002 của Bộ Tài chính hướng dẫn thực hiện
+các quy định pháp luật về phí và lệ phí; Thông tư số 28/2011/TT-BTC ngày
+28/2/2011 của Bộ Tài chính hướng dẫn thi hành một số điều của Luật Quản lý thuế,
+hướng dẫn thi hành Nghị định số 85/2007/NĐ-CP ngày 25/5/2007 và Nghị định số
+106/2010/NĐ-CP ngày 28/10/2010 của Chính phủ; Thông tư số 153/2012/TT-BTC ngày
+17/9/2012 của Bộ Tài chính hướng dẫn việc in, phát hành, quản lý và sử dụng các
+loại chứng từ thu tiền phí, lệ phí thuộc ngân sách nhà nước”.
+--------------------------------------------------------------------------------
+
+--- CHUNK #26 ---
+ID: chunk-80b2ffa73096cde6566f92228e2686f5
+Passage ID: 01_2013_TT-BTC_Điều_1
+Context Title: Điều 1.
+Chunk Index: 1/2
+Tokens: 707
+Nội dung:
+[Passage: Điều 1.]
+2. Sửa đổi, bổ sung
+
+điểm 3, điểm 4 và điểm 5 mục II Thông tư số
+36/2004/TT-BTC
+
+như sau:
+
+“3. Đối với hồ sơ đề nghị hợp pháp
+hoá, chứng nhận lãnh sự nộp tại Bộ Ngoại giao: Cơ quan thu lệ phí hợp pháp hoá,
+chứng nhận lãnh sự (Bộ Ngoại giao) được trích để lại 30% (ba mươi phần trăm) tiền
+thu lệ phí trước khi nộp vào ngân sách nhà nước để trang trải chi phí cho việc
+thực hiện công việc thu lệ phí tại Bộ Ngoại giao.
+
+Đối với hồ sơ đề nghị hợp pháp
+hoá, chứng nhận lãnh sự nộp tại ngoại vụ các tỉnh, thành phố trực thuộc Trung
+ương: Cơ quan thu lệ phí (Bộ Ngoại giao) được để lại 20% (hai mươi phần trăm)
+tiền thu lệ phí, chuyển cho cơ quan ngoại vụ các tỉnh, thành phố trực thuộc
+Trung ương 10% (mười phần trăm) tiền thu lệ phí trước khi nộp vào ngân sách nhà
+nước để trang trải chi phí cho việc thực hiện công việc thu lệ phí tại Bộ Ngoại
+giao và ngoại vụ các tỉnh, thành phố trực thuộc Trung ương.
+
+Nội dung chi cụ thể như sau:
+
+a) Chi thanh toán cho cá nhân trực
+tiếp thực hiện công việc, dịch vụ và thu phí, lệ phí: tiền lương, tiền công, phụ
+cấp lương, các khoản đóng góp theo quy định được tính trên tiền lương (bảo hiểm
+y tế, bảo hiểm xã hội và công đoàn phí), trừ chi phí tiền lương cho cán bộ,
+công chức đã hưởng lương từ ngân sách nhà nước theo chế độ quy định;
+
+b) Chi phí phục vụ trực tiếp cho
+việc thực hiện công việc, dịch vụ và thu phí, lệ phí như: văn phòng phẩm, vật
+tư văn phòng, thông tin liên lạc, điện, nước, công tác phí (chi phí đi lại, tiền
+thuê chỗ ở, tiền lưu trú) theo tiêu chuẩn, định mức hiện hành;
+
+c) Chi sửa chữa thường xuyên, sửa
+chữa lớn tài sản, máy móc, thiết bị phục vụ trực tiếp cho việc thu lệ phí.
+
+d) Chi mua sắm thiết bị, công cụ
+làm việc và các khoản chi khác liên quan trực tiếp đến việc thu lệ phí.
+--------------------------------------------------------------------------------
+
+--- CHUNK #27 ---
+ID: chunk-d1950a5afec31976463185b7208407cd
+Passage ID: 01_2013_TT-BTC_Điều_1
+Context Title: Điều 1.
+Chunk Index: 2/2
+Tokens: 532
+Nội dung:
+[Passage: Điều 1.]
+c) Chi sửa chữa thường xuyên, sửa
+chữa lớn tài sản, máy móc, thiết bị phục vụ trực tiếp cho việc thu lệ phí.
+
+d) Chi mua sắm thiết bị, công cụ
+làm việc và các khoản chi khác liên quan trực tiếp đến việc thu lệ phí.
+
+đ) Chi khen thưởng, phúc lợi cho
+cán bộ, nhân viên trực tiếp thực hiện công việc, dịch vụ và thu phí, lệ phí
+trong đơn vị theo nguyên tắc bình quân một năm, một người tối đa không quá 3
+(ba) tháng lương thực hiện nếu số thu năm nay cao hơn năm trước và tối đa bằng
+2 (hai) tháng lương thực hiện nếu số thu năm nay thấp hơn hoặc bằng năm trước,
+sau khi đảm bảo các chi phí quy định tại tiết a, b, c và d điểm này.
+
+Hàng năm, cơ quan thu lệ phí hợp
+pháp hoá, chứng nhận lãnh sự phải lập dự toán thu, chi gửi: cơ quan quản lý
+ngành, lĩnh vực cấp trên, cơ quan tài chính, cơ quan thuế cùng cấp, Kho bạc nhà
+nước nơi tổ chức thu mở tài khoản tạm giữ tiền phí, lệ phí để kiểm soát chi
+theo quy định hiện hành; hàng năm phải quyết toán thu chi theo thực tế. Sau khi
+quyết toán đúng chế độ, số tiền phí, lệ phí chưa chi trong năm được phép chuyển
+sang năm sau để tiếp tục chi theo chế độ quy định.
+
+4. Số tiền thu lệ phí hợp pháp
+hoá, chứng nhận lãnh sự còn lại (70%), cơ quan thu lệ phí phải trực tiếp nộp
+vào ngân sách nhà nước theo chương, loại, mục, tiểu mục tương ứng của Mục lục
+ngân sách nhà nước hiện hành”.
+--------------------------------------------------------------------------------
+
+--- CHUNK #28 ---
+ID: chunk-656cae918977ca20fde8ddbe37bf0a9c
+Passage ID: 01_2013_TT-BTC_Điều_2
+Context Title: Điều 2.
+Chunk Index: 0/0
+Tokens: 577
+Nội dung:
+[Passage: Điều 2.]
+[01_2013_TT-BTC.txt]
+[ID Passage: Điều 2.]
+Điều 2.
+
+1.
+
+Thông tư
+này có hiệu lực thi hành kể từ ngày 01/3/2013.
+
+2. Các nội dung khác liên quan đến
+lệ phí hợp pháp hoá, chứng nhận lãnh sự không được đề cập trong Thông tư này vẫn
+được thực hiện theo hướng dẫn tại Thông tư số 36/2004/TT-BTC ngày 26/4/2004 và
+Thông tư số 98/2011/TT-BTC ngày 5/7/2011 sửa đổi, bổ sung Thông tư số
+36/2004/TT-BTC ngày 26/4/2004 của Bộ Tài chính quy định chế độ thu, nộp và quản
+lý sử dụng lệ phí hợp pháp hoá, chứng nhận lãnh sự.
+
+3. Tổ chức, cá nhân thuộc đối tượng
+nộp lệ phí và các cơ quan liên quan chịu trách nhiệm thi hành Thông tư này.
+Trong quá trình triển khai thực hiện, nếu có vướng mắc, đề nghị các tổ chức, cá
+nhân phản ánh kịp thời về Bộ Tài chính để xem xét, hướng dẫn./.
+
+Nơi nhận:
+
+- Văn phòng Trung ương Đảng;
+
+- Văn phòng Tổng Bí thư;
+
+- Văn phòng Quốc hội;
+
+- Văn phòng Chủ tịch nước;
+
+- Viện Kiểm sát nhân dân tối cao;
+
+- Tòa án nhân dân tối cao;
+
+- Kiểm toán nhà nước;
+
+- Các Bộ, cơ quan ngang Bộ,
+
+cơ quan thuộc Chính phủ;
+
+- Văn phòng Ban chỉ đạo Trung ương về phòng, chống tham nhũng;
+
+- Cơ quan Trung ương của các đoàn thể;
+
+- Công báo;
+
+- Uỷ ban nhân dân, Sở Tài chính, Cục Thuế, Kho bạc nhà nước các tỉnh, thành
+phố trực thuộc Trung ương;
+
+- Các đơn vị thuộc Bộ Tài chính;
+
+- Website Chính phủ;
+
+- Website Bộ Tài chính;
+
+- Cục kiểm tra văn bản (Bộ Tư pháp);
+
+- Lưu VT, CST (CST 5).
+
+KT. BỘ TRƯỞNG
+
+THỨ TRƯỞNG
+
+Vũ Thị Mai
+--------------------------------------------------------------------------------
+
+--- CHUNK #29 ---
+ID: chunk-365374dbef1533b8feaabf5797431ffe
+Passage ID: 01_2013_TT-BTC_1_Phần_mở_đầu
+Context Title: Phần mở đầu
+Chunk Index: 0/0
+Tokens: 464
+Nội dung:
+[Passage: Phần mở đầu]
+[01_2013_TT-BTC_1.txt]
+[ID Passage: Phần mở đầu]
+BỘ TÀI CHÍNH
+
+--------
+
+CỘNG HÒA XÃ
+HỘI CHỦ NGHĨA VIỆT NAM
+
+Độc lập - Tự do - Hạnh phúc
+
+---------------
+
+Số:
+01/2013/TT-BTC
+
+Hà Nội, ngày
+02 tháng 01 năm 2013
+
+THÔNG TƯ
+
+SỬA ĐỔI, BỔ SUNG THÔNG TƯ SỐ 36/2004/TT-BTC NGÀY
+26/4/2004 CỦA BỘ TÀI CHÍNH QUY ĐỊNH CHẾ ĐỘ THU, NỘP VÀ QUẢN LÝ SỬ DỤNG LỆ PHÍ HỢP
+PHÁP HOÁ, CHỨNG NHẬN LÃNH SỰ
+
+Căn cứ Pháp lệnh Phí và lệ phí;
+
+Căn cứ Nghị định số
+57/2002/NĐ-CP ngày 3/6/2002 và Nghị định số 24/2006/NĐ-CP ngày 06/3/2006 của
+Chính phủ quy định chi tiết thi hành Pháp lệnh phí và lệ phí;
+
+Căn cứ Nghị định số
+111/2011/NĐ-CP ngày 5/12/2011 của Chính phủ về chứng nhận lãnh sự, hợp pháp hoá
+lãnh sự.
+
+Căn cứ Nghị định số
+118/2008/NĐ-CP ngày 27/11/2008 của Chính phủ quy định chức năng, nhiệm vụ, quyền
+hạn và cơ cấu tổ chức của Bộ Tài chính;
+
+Xét đề nghị của Vụ trưởng Vụ
+Chính sách thuế;
+
+Bộ trưởng Bộ Tài chính ban hành
+Thông tư sửa đổi, bổ sung Thông tư số 36/2004/TT-BTC ngày 26/4/2004 của Bộ Tài
+chính quy định chế độ thu, nộp và quản lý sử dụng lệ phí hợp pháp hoá, chứng nhận
+lãnh sự như sau:
+--------------------------------------------------------------------------------
+
+--- CHUNK #30 ---
+ID: chunk-4ba7ee3a040263bb33264265c9b83305
+Passage ID: 01_2013_TT-BTC_1_Điều_1
+Context Title: Điều 1.
+Chunk Index: 0/2
+Tokens: 391
+Nội dung:
+[Passage: Điều 1.]
+[01_2013_TT-BTC_1.txt]
+[ID Passage: Điều 1.]
+
+Điều 1.
+
+1. Sửa đổi, bổ sung
+
+điểm 2 mục II Thông tư số 36/2004/TT-BTC
+
+như sau:
+
+“Cơ quan thu lệ phí hợp pháp hoá,
+chứng nhận lãnh sự có trách nhiệm thực hiện chế độ tài chính, kế toán về lệ phí
+hợp pháp hoá, chứng nhận lãnh sự theo hướng dẫn tại Thông tư số 63/2002/TT-BTC
+ngày 24/7/2002 và Thông tư số 45/2006/TT-BTC ngày 25/5/2006 sửa đổi, bổ sung
+Thông tư số 63/2002/TT-BTC ngày 24/7/2002 của Bộ Tài chính hướng dẫn thực hiện
+các quy định pháp luật về phí và lệ phí; Thông tư số 28/2011/TT-BTC ngày
+28/2/2011 của Bộ Tài chính hướng dẫn thi hành một số điều của Luật Quản lý thuế,
+hướng dẫn thi hành Nghị định số 85/2007/NĐ-CP ngày 25/5/2007 và Nghị định số
+106/2010/NĐ-CP ngày 28/10/2010 của Chính phủ; Thông tư số 153/2012/TT-BTC ngày
+17/9/2012 của Bộ Tài chính hướng dẫn việc in, phát hành, quản lý và sử dụng các
+loại chứng từ thu tiền phí, lệ phí thuộc ngân sách nhà nước”.
+--------------------------------------------------------------------------------
+
+--- CHUNK #31 ---
+ID: chunk-83ef70a6f867d11331d96b97c7bd43c9
+Passage ID: 01_2013_TT-BTC_1_Điều_2
+Context Title: Điều 2.
+Chunk Index: 0/0
+Tokens: 579
+Nội dung:
+[Passage: Điều 2.]
+[01_2013_TT-BTC_1.txt]
+[ID Passage: Điều 2.]
+Điều 2.
+
+1.
+
+Thông tư
+này có hiệu lực thi hành kể từ ngày 01/3/2013.
+
+2. Các nội dung khác liên quan đến
+lệ phí hợp pháp hoá, chứng nhận lãnh sự không được đề cập trong Thông tư này vẫn
+được thực hiện theo hướng dẫn tại Thông tư số 36/2004/TT-BTC ngày 26/4/2004 và
+Thông tư số 98/2011/TT-BTC ngày 5/7/2011 sửa đổi, bổ sung Thông tư số
+36/2004/TT-BTC ngày 26/4/2004 của Bộ Tài chính quy định chế độ thu, nộp và quản
+lý sử dụng lệ phí hợp pháp hoá, chứng nhận lãnh sự.
+
+3. Tổ chức, cá nhân thuộc đối tượng
+nộp lệ phí và các cơ quan liên quan chịu trách nhiệm thi hành Thông tư này.
+Trong quá trình triển khai thực hiện, nếu có vướng mắc, đề nghị các tổ chức, cá
+nhân phản ánh kịp thời về Bộ Tài chính để xem xét, hướng dẫn./.
+
+Nơi nhận:
+
+- Văn phòng Trung ương Đảng;
+
+- Văn phòng Tổng Bí thư;
+
+- Văn phòng Quốc hội;
+
+- Văn phòng Chủ tịch nước;
+
+- Viện Kiểm sát nhân dân tối cao;
+
+- Tòa án nhân dân tối cao;
+
+- Kiểm toán nhà nước;
+
+- Các Bộ, cơ quan ngang Bộ,
+
+cơ quan thuộc Chính phủ;
+
+- Văn phòng Ban chỉ đạo Trung ương về phòng, chống tham nhũng;
+
+- Cơ quan Trung ương của các đoàn thể;
+
+- Công báo;
+
+- Uỷ ban nhân dân, Sở Tài chính, Cục Thuế, Kho bạc nhà nước các tỉnh, thành
+phố trực thuộc Trung ương;
+
+- Các đơn vị thuộc Bộ Tài chính;
+
+- Website Chính phủ;
+
+- Website Bộ Tài chính;
+
+- Cục kiểm tra văn bản (Bộ Tư pháp);
+
+- Lưu VT, CST (CST 5).
+
+KT. BỘ TRƯỞNG
+
+THỨ TRƯỞNG
+
+Vũ Thị Mai
+--------------------------------------------------------------------------------
+

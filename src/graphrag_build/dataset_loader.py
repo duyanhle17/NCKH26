@@ -55,6 +55,108 @@ def extract_doc_metadata(filename: str, content: str) -> Dict[str, str]:
         "issuing_body": issuing_body,
     }
 
+def split_document_into_passages(text: str, doc_id: str, rel: str, filename: str, meta: Dict[str, str]) -> List[Dict[str, Any]]:
+    """
+    Chia văn bản gốc thành các đoạn (passages) dựa trên cấu trúc văn bản pháp luật.
+    Lưu giữ ngữ cảnh cấu trúc (Phụ lục, Phần, Chương, Mục, Điều) để làm title cho các chunk.
+    """
+    # Nhận diện cấp bậc tiêu đề
+    pat_phuluc = re.compile(r'^\s*(PHỤ\s+LỤC|Phụ\s+lục)[\s:0-9A-Za-z\-\.]*', re.IGNORECASE)
+    pat_phan = re.compile(r'^\s*(PHẦN|Phần)\s+([IVXLCDM]+|\d+)', re.IGNORECASE)
+    pat_chuong = re.compile(r'^\s*(CHƯƠNG|Chương)\s+([IVXLCDM]+|\d+)', re.IGNORECASE)
+    pat_muc = re.compile(r'^\s*(MỤC|Mục)\s+(\d+|[IVXLCDM]+)', re.IGNORECASE)
+    pat_dieu = re.compile(r'^\s*(ĐIỀU|Điều)\s+\d+', re.IGNORECASE)
+    # Old-style Roman numeral sections: "I-", "II-", "III.", "IV." (uppercase only, followed by - or .)
+    pat_roman_section = re.compile(r'^\s*((?:IX|IV|V?I{1,3})[\-\.]\s+[A-ZÀ-Ỹ])', re.MULTILINE)
+    
+    passages = []
+    lines = text.split('\n')
+    
+    # State tracking
+    context = {"Phụ lục": "", "Phần": "", "Chương": "", "Mục": "", "Điều": ""}
+    
+    current_buffer = []
+    
+    def flush():
+        content_text = "\n".join(current_buffer).strip()
+        current_buffer.clear()
+        
+        if len(content_text) < 10:
+            return
+            
+        parts = []
+        if context["Phụ lục"]: parts.append(context["Phụ lục"])
+        if context["Phần"]: parts.append(context["Phần"])
+        if context["Chương"]: parts.append(context["Chương"])
+        if context["Mục"]: parts.append(context["Mục"])
+        if context["Điều"]: parts.append(context["Điều"])
+        
+        title = " - ".join(parts) if parts else "Phần mở đầu"
+        
+        doc_meta = meta.copy()
+        doc_meta["context_title"] = title
+        
+        passage_id = title.replace(' ', '_').replace('-', '_')
+        passage_id = re.sub(r'[^A-Za-z0-9_À-ỹ]', '', passage_id)
+        if not passage_id:
+            passage_id = "Phan_mo_dau"
+            
+        passages.append({
+            "doc_id": f"{doc_id}_{passage_id}",
+            "path": f"DATASET::{rel}",
+            "content": f"[{filename}]\n[ID Passage: {title}]\n{content_text}",
+            "metadata": doc_meta,
+        })
+
+    for line in lines:
+        stripped = line.strip()
+        if not stripped:
+            current_buffer.append(line)
+            continue
+            
+        is_heading = False
+        
+        if pat_phuluc.match(stripped):
+            flush()
+            context["Phụ lục"] = stripped
+            context["Phần"] = ""
+            context["Chương"] = ""
+            context["Mục"] = ""
+            context["Điều"] = ""
+            is_heading = True
+        elif pat_phan.match(stripped):
+            flush()
+            context["Phần"] = stripped
+            context["Chương"] = ""
+            context["Mục"] = ""
+            context["Điều"] = ""
+            is_heading = True
+        elif pat_chuong.match(stripped):
+            flush()
+            context["Chương"] = stripped
+            context["Mục"] = ""
+            context["Điều"] = ""
+            is_heading = True
+        elif pat_muc.match(stripped):
+            flush()
+            context["Mục"] = stripped
+            context["Điều"] = ""
+            is_heading = True
+        elif pat_roman_section.match(stripped):
+            flush()
+            context["Mục"] = stripped
+            context["Điều"] = ""
+            is_heading = True
+        elif pat_dieu.match(stripped):
+            flush()
+            context["Điều"] = stripped
+            is_heading = True
+            
+        current_buffer.append(line)
+        
+    flush()
+    return passages
+
 def load_txt_documents(dataset_dir: Path) -> List[Dict[str, Any]]:
     docs = []
     files = list_txt_files(dataset_dir)
@@ -80,12 +182,9 @@ def load_txt_documents(dataset_dir: Path) -> List[Dict[str, Any]]:
         
         meta = extract_doc_metadata(filename, text)
         
-        docs.append({
-            "doc_id": doc_id,
-            "path": f"DATASET::{rel}",
-            "content": f"[{rel}]\n{text}",
-            "metadata": meta,
-        })
+        # Gọi hàm chia văn bản theo cấu trúc
+        file_passages = split_document_into_passages(text, doc_id, rel, filename, meta)
+        docs.extend(file_passages)
         
     if not docs:
         raise ValueError("All txt docs are empty/too short after normalization.")

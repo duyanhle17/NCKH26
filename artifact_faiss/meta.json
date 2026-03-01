@@ -1,20 +1,20 @@
 {
-  "created_at": "2026-02-27T01:46:24.575956",
+  "created_at": "2026-02-28T23:42:00.103257",
   "build_mode": "TXT→PASSAGES(legal-split)→CHUNK(token)→Snowflake/snowflake-arctic-embed-m→FAISS(chunks+entities)→KG",
   "dataset_dir": "dataset",
   "cache_dir": "artifact_faiss",
   "embedding_model": "Snowflake/snowflake-arctic-embed-m",
   "vector_backend": "faiss",
   "chunking": {
-    "max_token_size": 512,
-    "overlap_token_size": 64,
+    "max_token_size": 700,
+    "overlap_token_size": 128,
     "min_chunk_chars": 120
   },
   "counts": {
-    "passages": 8,
-    "chunks": 57,
-    "kg_nodes": 306,
-    "kg_edges": 328,
-    "entities": 306
+    "passages": 20,
+    "chunks": 31,
+    "kg_nodes": 221,
+    "kg_edges": 227,
+    "entities": 221
   }
 }
