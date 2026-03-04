@@ -1,0 +1,27 @@
+﻿# Python
+__pycache__/
+*.py[cod]
+*.class
+
+# Virtual Environments
+venv/
+.venv/
+env/
+.env
+
+# IDE / Editor
+.vscode/
+.idea/
+
+# Project Specific Data & Artifacts
+artifact_faiss/
+artifacts/
+work/
+
+# Outputs & Logs
+eval-thue-output*.json
+test_chunks_output.txt
+*.npy
+*.index
+
+dataset/
