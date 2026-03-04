@@ -33,3 +33,18 @@ Tài liệu này giải thích vai trò của các tệp tin và thư mục tron
 
 ---
 **Lưu ý:** Để chạy hệ thống, hãy sử dụng file `build.py`. Ví dụ: `python build.py --backend faiss`.
+
+---------------------------------------------
+
+1. Chunking: Với bộ data mới, có nhiều file --> load như nào
+    + Load các file data --> chia cắt nhỏ --> mỗi một passage có tiêu đ, ID riêng ( Ví dụ: Thông tư II Chương 3,....)
+    + Chunking ( mỗi chunk nó sẽ có ID riêng của chunk đó : tên của Passage nó thuộc)
+    + tìm cách eval chunk
+2. Embedding : Snowflake/ BGE BAAI m3
+3. Tuần này thử : faiss/ chromaDB
+    + Làm các nào để kiểm tra độ chính xác của vectorDB, check vectorDB đang lưu faiss như nào.
+    + Nếu mà storage đang ổn hay ko ổn, thì nó dựa theo cái gì (model embedding --> số chiều của model đó)
+4. Xây dựng KG --> prompt như nào cho LLM để xây ( ưu tiên nếu có dạng triples ( head,relation,tail))
+    --> Làm thế nào để lưu KG ( hiện tại đang sử dụng với Networkx), tìm hiểu cách để lưu vào Neo4j
+
+5. Evaluation
