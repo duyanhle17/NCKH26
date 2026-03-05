@@ -48,3 +48,5 @@ Tài liệu này giải thích vai trò của các tệp tin và thư mục tron
     --> Làm thế nào để lưu KG ( hiện tại đang sử dụng với Networkx), tìm hiểu cách để lưu vào Neo4j
 
 5. Evaluation
+
+ok
