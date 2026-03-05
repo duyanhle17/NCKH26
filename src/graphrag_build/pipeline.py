@@ -17,6 +17,7 @@ from .dataset_loader import load_txt_documents
 from .passages import docs_to_passages
 from .chunking import build_chunks
 from .entities_kg import build_kg_llm
+from .gpt_kg import build_kg_gpt
 from .embeddings import load_embedder, embed_texts
 from .vector_store import create_vector_store
 from .io_artifacts import (
@@ -62,23 +63,37 @@ def run_build(config: BuildConfig) -> None:
     save_json_compact(config.cache_dir / "chunks.json", dataset)
     save_json(config.cache_dir / "chunks_meta.json", chunks_meta)
 
-    # ── 4. KG extraction (LLM based) ─────────────────────────────────────
-    logger.info(f"🧠 LLM entities + KG (model={config.llm_model}) ...")
-    
+    # ── 4. KG extraction ──────────────────────────────────────────────────
     # Tạo thư mục checkpoint
     checkpoint_dir = config.work_dir / f"checkpoint_{config.vector_backend}"
     ensure_dir(checkpoint_dir)
 
-    kg, chunk_entities, entity_to_chunks, all_entities, all_relationships = build_kg_llm(
-        dataset,
-        llm_model=config.llm_model,
-        entity_types=config.entity_types,
-        max_workers=config.max_workers,
-        batch_size=config.batch_size,
-        checkpoint_dir=str(checkpoint_dir),
-        yake_top_k=config.yake_top_k,
-        yake_lang=config.yake_lang
-    )
+    if config.kg_backend == "gpt":
+        logger.info(f"🧠 GPT KG extraction (model={config.gpt_model}) ...")
+        kg, chunk_entities, entity_to_chunks, all_entities, all_relationships = build_kg_gpt(
+            dataset,
+            gpt_model=config.gpt_model,
+            gpt_base_url=config.gpt_base_url,
+            gpt_api_key=config.gpt_api_key,
+            entity_types=config.entity_types,
+            max_workers=config.max_workers,
+            batch_size=config.batch_size,
+            checkpoint_dir=str(checkpoint_dir),
+            yake_top_k=config.yake_top_k,
+            yake_lang=config.yake_lang,
+        )
+    else:
+        logger.info(f"🧠 NIM KG extraction (model={config.llm_model}) ...")
+        kg, chunk_entities, entity_to_chunks, all_entities, all_relationships = build_kg_llm(
+            dataset,
+            llm_model=config.llm_model,
+            entity_types=config.entity_types,
+            max_workers=config.max_workers,
+            batch_size=config.batch_size,
+            checkpoint_dir=str(checkpoint_dir),
+            yake_top_k=config.yake_top_k,
+            yake_lang=config.yake_lang,
+        )
     
     entities = sorted(list(entity_to_chunks.keys()))
     logger.info(
