@@ -35,19 +35,29 @@ class BuildConfig:
     overlap_token_size: int = 128
     min_chunk_chars: int = 120
 
-    # ── 3. LLM KG EXTRACTION PARAMETERS ─────────────────────────────────
+    # ── 3. KG EXTRACTION BACKEND ──────────────────────────────────────────
+    # Options: "nim" (NVIDIA NIM API / Kimi K2), "gpt" (GPT proxy local)
+    # Đổi giá trị này để chuyển đổi giữa 2 backend.
+    kg_backend: Literal["nim", "gpt"] = "nim"
+
+    # ── 3a. NIM API settings (kg_backend="nim") ──────────────────────────
     # Model LLM — Kimi K2 Instruct chạy qua NVIDIA NIM API
     # Để dùng model này, set: export NVAPI_KEY="nvapi-..."
     llm_model: str = "moonshotai/kimi-k2-instruct"
 
+    # ── 3b. GPT proxy settings (kg_backend="gpt") ────────────────────────
+    # GPT-5 qua ChatGPT Plus proxy. Proxy phải đang chạy trước khi build.
+    gpt_base_url: str = "http://localhost:8317/v1"
+    gpt_api_key: str = "proxypal-local"
+    gpt_model: str = "gpt-5.1"
+
+    # ── 3c. Common KG parameters ─────────────────────────────────────────
     # max_workers: số luồng song song gọi LLM cùng lúc.
-    # Với Kimi K2 NVIDIA NIM: bạn đã test thành công với 20 workers, có thể tăng lên nữa
-    # nếu bị rate limit thì backoff tự động sẽ xử lý.
-    max_workers: int = 2  # Set xuống 2 vì Kimi API quota đang chặn (Too Many Requests), có thể 10
+    # NIM: 2 workers (API quota hạn chế). GPT proxy: có thể 4-8 workers.
+    max_workers: int = 2
 
     # batch_size: số chunks xử lý trong 1 vòng lặp trước khi save checkpoint.
-    # VD: 200 chunks = cứ 200 chunks lại lưu tiến độ một lần.
-    # Nếu bị ngắt giữa chừng, lần sau sẻ tiếp tục từ batch chưa xong.
+    # Nếu bị ngắt giữa chừng, lần sau sẽ tiếp tục từ batch chưa xong.
     batch_size: int = 200
 
     # Entity types phù hợp với dạng văn bản pháp luật Việt Nam (Thông tư, Nghị định...)
