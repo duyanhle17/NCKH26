@@ -1,0 +1,22 @@
+=== BÁO CÁO THỐNG KÊ CHUNKING ===
+Tổng số chunk:           45065
+Độ dài lớn nhất:         1593 tokens
+Độ dài nhỏ nhất:         12 tokens
+Độ dài trung bình:       961.61 tokens
+Trung vị (Median / Q2):  997.00 tokens
+Tứ phân vị Q1 (25%):     880.00 tokens
+Tứ phân vị Q3 (75%):     1136.00 tokens
+
+=== PHÂN PHỐI THEO KHOẢNG TOKEN ===
+      Dưới 400:   1733 chunks (  3.8%)
+     400 - 800:   6664 chunks ( 14.8%)
+    800 - 1000:  15656 chunks ( 34.7%)
+   1000 - 1200:  18256 chunks ( 40.5%)
+
+--- CHUNK NHỎ NHẤT (#22726, 12 tokens) ---
+ID: chunk_255tct_qd_kh_khoan_14_5
+Hierarchy Path: Điều 3 > Khoản 14
+Nội dung:
+PHÓ TỔNG CỤC TRƯỞNG
+
+Nguyễn Văn Ninh

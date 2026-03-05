@@ -37,15 +37,15 @@ def run_build(config: BuildConfig) -> None:
     docs = load_txt_documents(config.dataset_dir)
     logger.info(f"✅ docs={len(docs)} from {config.dataset_dir}")
 
-    # ── 2. Passages ──────────────────────────────────────────────────────
-    logger.info("🧱 docs → passages ...")
+    # ── 2. Passages (normalize & pass-through) ──────────────────────────
+    logger.info("🧱 docs → passages (normalize) ...")
     passages = docs_to_passages(docs)
     if not passages:
-        raise ValueError("Passages=0. Dataset split failed.")
-    logger.info(f"✅ passages={len(passages)}")
+        raise ValueError("Passages=0. Dataset load failed.")
+    logger.info(f"✅ documents={len(passages)}")
 
     # ── 3. Chunking ──────────────────────────────────────────────────────
-    logger.info("✂️  passages → chunks ...")
+    logger.info("✂️  documents → chunks (unified parser & accumulator) ...")
     chunks_meta, dataset = build_chunks(
         passages,
         embed_model=config.embed_model,

@@ -1,32 +1,89 @@
-"""
-Chunking module – Simplified pipeline for Vietnamese legal documents.
+﻿"""Chunking module – Unified Parser & Accumulator for Vietnamese legal documents.
 
 Flow:
-  dataset_loader.py  → chia passages theo cấu trúc (Phần/Chương/Mục/Điều/Phụ lục)
-  passages.py        → giữ nguyên passages đã chia, chỉ normalize
-  chunking.py (HERE) → nhận passages, chia thành chunks theo token budget
-                        mỗi chunk giữ lại passage_id (context_title) từ dataset_loader
+  dataset_loader.py  → trả document nguyên vẹn (1 dict / file)
+  passages.py        → normalize text, pass through
+  chunking.py (HERE) → nhận diện cấu trúc 6 cấp (Phần > Chương > Mục > Điều
+                        > Khoản > Điểm), greedy buffer accumulation 800-1200
+                        tokens, tail-merge orphan < 400 tokens.
 
-Overlap: 100-150 tokens (configurable)
+Strategy:
+  - Line-by-line parsing toàn bộ document, nhận diện 6 cấp hierarchy.
+  - Hard-stop tại ranh giới ngữ nghĩa (Phần/Chương/Mục/Điều/Khoản/Điểm).
+  - Greedy Buffer: gom unit tuần tự, flush khi >= 800 tokens VÀ thêm unit
+    tiếp theo sẽ vượt 1200.
+  - Tail merge: chunk cuối < 400 tokens → gộp vào chunk trước đó.
+  - Force-split unit đơn lẻ > 1200 → ~1000 tokens mỗi phần.
+  - Semantic Range ID: chunk_[doc_slug]_[start_node]_to_[end_node].
+  - Fallback paragraph-based cho văn bản flat (Công điện, Lệnh, Sắc lệnh).
 """
 
-import re, hashlib
-from typing import Any, Dict, List
+import re
+import unicodedata
+from typing import Any, Dict, List, Tuple
+
 from transformers import AutoTokenizer
+
 from .utils_text import normalize_text
 
 
-def mdhash_id(text: str, prefix="chunk-") -> str:
-    h = hashlib.md5(text.encode("utf-8", errors="ignore")).hexdigest()
-    return f"{prefix}{h}"
+# ── Constants ─────────────────────────────────────────────────────────────────
 
+_MIN_TOKENS: int = 800          # Buffer >= 800 mới được flush
+_TARGET_TOKENS: int = 1000      # Mục tiêu mỗi chunk
+_MAX_TOKENS: int = 1200         # Cận trên cứng
+_TAIL_MERGE_THRESHOLD: int = 400  # Chunk cuối < 400 → gộp vào chunk trước
+
+
+# ── Deterministic Semantic ID ─────────────────────────────────────────────────
+
+def slugify(text: str) -> str:
+    """Chuyển text tiếng Việt thành slug ASCII lowercase."""
+    s = text.replace("đ", "d").replace("Đ", "d")
+    s = unicodedata.normalize("NFD", s)
+    s = "".join(ch for ch in s if unicodedata.category(ch) != "Mn")
+    s = s.lower()
+    s = re.sub(r"[^a-z0-9]+", "_", s)
+    return s.strip("_")
+
+
+def _generate_range_id(
+    doc_number: str,
+    start_marker: str,
+    end_marker: str = "",
+    sub_idx: int = 0,
+    total_sub: int = 1,
+) -> str:
+    """
+    Sinh Semantic Range ID xác định.
+
+    Format: ``chunk_[doc_slug]_[start_slug]_to_[end_slug]``
+    Sub-chunk thêm ``_p[index]``.
+    """
+    doc_slug = slugify(doc_number) if doc_number else "unknown"
+    start_slug = slugify(start_marker) if start_marker else "root"
+    end_slug = slugify(end_marker) if end_marker else ""
+
+    if not end_slug or start_slug == end_slug:
+        cid = f"chunk_{doc_slug}_{start_slug}"
+    else:
+        cid = f"chunk_{doc_slug}_{start_slug}_to_{end_slug}"
+
+    if total_sub > 1:
+        cid += f"_p{sub_idx}"
+    return cid
+
+
+# ── Tokenizer wrapper ────────────────────────────────────────────────────────
 
 class TokenizerWrapper:
-    def __init__(self, tok):
+    def __init__(self, tok: Any) -> None:
         self.tok = tok
-    def encode(self, text: str):
+
+    def encode(self, text: str) -> List[int]:
         return self.tok.encode(text, add_special_tokens=False)
-    def decode(self, ids):
+
+    def decode(self, ids: List[int]) -> str:
         return self.tok.decode(ids, skip_special_tokens=True)
 
 
@@ -34,10 +91,6 @@ class TokenizerWrapper:
 
 def _is_corrupted_block(text: str, short_line_threshold: int = 12,
                          min_short_ratio: float = 0.60) -> bool:
-    """
-    Return True when a block looks like a PDF/Word table pasted as plain text
-    — high proportion of very short lines.
-    """
     lines = [l for l in text.split("\n") if l.strip()]
     if len(lines) < 6:
         return False
@@ -46,63 +99,47 @@ def _is_corrupted_block(text: str, short_line_threshold: int = 12,
 
 
 def _collapse_corrupted_block(text: str) -> str:
-    """Flatten a corrupted block into a single line."""
     tokens = [l.strip() for l in text.split("\n") if l.strip()]
     return " ".join(tokens)
 
 
-# ── Sentence / clause splitting for overlap & oversized units ─────────────────
+# ── Sentence splitting (cho force-split & oversized units) ────────────────────
 
-def _split_sentences(text: str) -> list[str]:
-    """
-    Split text into sentences / clause-level segments for fine-grained chunking.
-    Chiến lược chia nhiều tầng:
-    1. Legal sub-markers (1.1- , Điều, Khoản...)
-    2. Double newline (paragraph break)
-    3. Dấu chấm/chấm phẩy + newline hoặc 2+ khoảng trắng
-    4. Dấu chấm câu thông thường (. ; ) theo sau bởi 1 khoảng trắng
-    """
-    # 1. Try legal sub-markers first
+def _split_sentences(text: str) -> List[str]:
+    """Split text thành sentence/clause segments (multi-level)."""
+    # 1. Legal sub-markers
     _RE_SENT_SPLIT = re.compile(
         r"(?="
         r"(?:^|\n)\s*"
         r"(?:"
-        r"\d+(?:\.\d+)*[.\-\)]\s"     # 1. 1.1- 2) etc.
-        r"|[a-dđ][.\)]\s"             # a) b. c)
-        r"|[IVXLC]+[.\)]\s"           # I. II. III)
-        r"|Điều\s+\d+"                # Điều 1
-        r"|Khoản\s+\d+"               # Khoản 1
-        r"|Mục\s+[IVXLC\d]"           # Mục I, Mục 1
+        r"\d+(?:\.\d+)*[.\-\)]\s"
+        r"|[a-zđ][.\)]\s"
+        r"|[IVXLC]+[.\)]\s"
+        r"|Điều\s+\d+"
+        r"|Khoản\s+\d+"
+        r"|Mục\s+[IVXLC\d]"
         r")"
         r")",
-        re.MULTILINE
+        re.MULTILINE,
     )
     parts = _RE_SENT_SPLIT.split(text)
     parts = [p for p in parts if p and p.strip()]
     if len(parts) >= 2:
         return parts
 
-    # 2. Double newline (paragraph break)
+    # 2. Double newline
     parts = [p.strip() for p in re.split(r"\n{2,}", text) if p.strip()]
     if len(parts) >= 2:
         return parts
 
-    # 3. Split at sentence-ending punctuation + newline or 2+ spaces
-    _RE_SENTENCE_END = re.compile(
-        r"(?<=[.;:])"
-        r"(?:\s*\n|\s{2,})"
-    )
-    parts = _RE_SENTENCE_END.split(text)
+    # 3. Punctuation + newline/spaces
+    parts = re.split(r"(?<=[.;:])\s*\n|\s{2,}", text)
     parts = [p for p in parts if p and p.strip()]
     if len(parts) >= 2:
         return parts
 
-    # 4. Final fallback: dấu chấm câu tiếng Việt thông thường
-    #    Split sau dấu chấm (.) khi theo sau bởi chữ hoa hoặc dấu gạch
-    _RE_VN_SENTENCE = re.compile(
-        r'(?<=[.;])\s+(?=[A-ZÀ-ỸĐ\-])'
-    )
-    parts = _RE_VN_SENTENCE.split(text)
+    # 4. Vietnamese sentence boundary
+    parts = re.split(r"(?<=[.;])\s+(?=[A-ZÀ-ỸĐ\-])", text)
     parts = [p for p in parts if p and p.strip()]
     if len(parts) >= 2:
         return parts
@@ -110,15 +147,114 @@ def _split_sentences(text: str) -> list[str]:
     return [text]
 
 
-# ── Main chunking logic ──────────────────────────────────────────────────────
+# ── 6-level hierarchy regex ──────────────────────────────────────────────────
+# Phần > Chương > Mục > Điều > Khoản > Điểm
 
-def _clean_passage_text(text: str) -> str:
+_RE_PHU_LUC = re.compile(
+    r"^\s*(?:PHỤ\s+LỤC|Phụ\s+lục)[\s:0-9A-Za-zÀ-ỹ\-\.]*", re.IGNORECASE
+)
+_RE_PHAN = re.compile(
+    r"^\s*(?:PHẦN|Phần)\s+([IVXLCDM]+|\d+)", re.IGNORECASE
+)
+_RE_CHUONG = re.compile(
+    r"^\s*(?:CHƯƠNG|Chương)\s+([IVXLCDM]+|\d+)", re.IGNORECASE
+)
+_RE_MUC = re.compile(
+    r"^\s*(?:MỤC|Mục)\s+(\d+|[IVXLCDM]+)", re.IGNORECASE
+)
+_RE_DIEU = re.compile(r"^\s*(?:ĐIỀU|Điều)\s+(\d+)", re.MULTILINE)
+_RE_KHOAN_EXPLICIT = re.compile(
+    r"^\s*(?:Khoản|KHOẢN)\s+(\d+)", re.MULTILINE | re.IGNORECASE
+)
+_RE_SUB_ITEM = re.compile(r"^\s*(\d+\.\d+(?:\.\d+)*)[\.\-\)]*\s", re.MULTILINE)
+_RE_KHOAN_NUM = re.compile(r"^\s*(\d+)[\.\-\)]\s", re.MULTILINE)
+_RE_DIEM = re.compile(r"^\s*([a-zđ])[\.\)]\s", re.MULTILINE)
+
+# Quick check: text chứa bất kỳ marker pháp lý nào?
+_RE_ANY_LEGAL = re.compile(
+    r"(?:^|\n)\s*(?:"
+    r"(?:PHẦN|Phần)\s+[IVXLCDM\d]"
+    r"|(?:CHƯƠNG|Chương)\s+[IVXLCDM\d]"
+    r"|(?:MỤC|Mục)\s+[IVXLCDM\d]"
+    r"|(?:ĐIỀU|Điều)\s+\d+"
+    r"|(?:Khoản|KHOẢN)\s+\d+"
+    r"|\d+\.\d+(?:\.\d+)*[\.\-\)]*\s"
+    r"|\d+[\.\-\)]\s"
+    r"|[a-zđ][\.\)]\s"
+    r")",
+    re.MULTILINE,
+)
+
+
+# ── Marker classification (6 levels) ─────────────────────────────────────────
+
+def _classify_marker(line: str) -> Tuple[str, str]:
     """
-    Pre-process passage text: collapse corrupted PDF table fragments
-    nhưng giữ nguyên cấu trúc paragraph cho văn bản bình thường.
+    Nhận diện marker pháp lý 6 cấp ở đầu dòng.
+
+    Returns ``(level, label)``:
+      - ``("phu_luc", "Phụ lục I")``
+      - ``("phan",    "Phần II")``
+      - ``("chuong",  "Chương III")``
+      - ``("muc",     "Mục 1")``
+      - ``("dieu",    "Điều 5")``
+      - ``("khoan",   "Khoản 3")``
+      - ``("diem",    "Điểm a")``
+      - ``("sub_item","1.2.3")``
+      - ``("", "")`` nếu không có marker.
     """
+    stripped = line.strip()
+
+    m = _RE_PHU_LUC.match(stripped)
+    if m:
+        return "phu_luc", stripped
+
+    m = _RE_PHAN.match(stripped)
+    if m:
+        return "phan", f"Phần {m.group(1)}"
+
+    m = _RE_CHUONG.match(stripped)
+    if m:
+        return "chuong", f"Chương {m.group(1)}"
+
+    m = _RE_MUC.match(stripped)
+    if m:
+        return "muc", f"Mục {m.group(1)}"
+
+    m = _RE_DIEU.match(stripped)
+    if m:
+        return "dieu", f"Điều {m.group(1)}"
+
+    m = _RE_KHOAN_EXPLICIT.match(stripped)
+    if m:
+        return "khoan", f"Khoản {m.group(1)}"
+
+    # Sub-item trước khoản-số (1.1 vs 1.)
+    m = _RE_SUB_ITEM.match(stripped)
+    if m:
+        return "sub_item", m.group(1)
+
+    m = _RE_KHOAN_NUM.match(stripped)
+    if m:
+        return "khoan", f"Khoản {m.group(1)}"
+
+    m = _RE_DIEM.match(stripped)
+    if m:
+        return "diem", f"Điểm {m.group(1)}"
+
+    return "", ""
+
+
+def _has_legal_markers(text: str) -> bool:
+    return bool(_RE_ANY_LEGAL.search(text))
+
+
+# ── Pre-processing ────────────────────────────────────────────────────────────
+
+def _clean_document_text(text: str) -> str:
+    """Collapse corrupted PDF table fragments, giữ cấu trúc paragraph."""
     paragraphs = re.split(r"\n{2,}", text)
-    cleaned = []
+    cleaned: List[str] = []
     for para in paragraphs:
         if _is_corrupted_block(para):
             collapsed = _collapse_corrupted_block(para)
@@ -127,18 +263,16 @@ def _clean_passage_text(text: str) -> str:
         else:
             cleaned.append(para)
 
-    # Collapse runs of consecutive tiny paragraphs (< 15 chars)
-    # Chỉ collapse khi có >= 6 dòng ngắn liên tiếp (dấu hiệu bảng PDF)
-    result = []
+    result: List[str] = []
     i = 0
     while i < len(cleaned):
         run_end = i
         while run_end < len(cleaned) and len(cleaned[run_end].strip()) <= 15:
             run_end += 1
-        run_len = run_end - i
-        if run_len >= 6:
-            # Đây là bảng PDF bị vỡ → collapse thành 1 dòng
-            collapsed = " ".join(cleaned[j].strip() for j in range(i, run_end) if cleaned[j].strip())
+        if run_end - i >= 6:
+            collapsed = " ".join(
+                cleaned[j].strip() for j in range(i, run_end) if cleaned[j].strip()
+            )
             if collapsed:
                 result.append(collapsed)
             i = run_end
@@ -148,83 +282,348 @@ def _clean_passage_text(text: str) -> str:
     return "\n\n".join(result)
 
 
-def _chunk_text_by_tokens(
-    text: str,
-    tw: TokenizerWrapper,
-    max_tokens: int,
-    overlap_tokens: int,
+# ── Line-by-line parser → semantic units ──────────────────────────────────────
+
+# Thứ tự cấp: cao → thấp (dùng để reset state)
+_LEVEL_ORDER: List[str] = ["phu_luc", "phan", "chuong", "muc", "dieu", "khoan", "diem", "sub_item"]
+
+
+def _parse_document_to_units(text: str) -> List[Dict[str, Any]]:
+    """
+    Parse toàn bộ document line-by-line, tách thành semantic units.
+
+    Mỗi unit: ``{"level": str, "marker": str, "content": str, "hierarchy_path": str}``.
+
+    Hierarchy state 6 cấp: phu_luc / phan / chuong / muc / dieu / khoan / diem / sub_item.
+    Khi gặp cấp X → reset tất cả cấp thấp hơn X.
+    """
+    lines = text.split("\n")
+    units: List[Dict[str, Any]] = []
+
+    # Hierarchy state
+    hier: Dict[str, str] = {
+        "phu_luc": "", "phan": "", "chuong": "", "muc": "",
+        "dieu": "", "khoan": "", "diem": "", "sub_item": "",
+    }
+
+    cur_level = ""
+    cur_marker = ""
+    cur_lines: List[str] = []
+
+    def _build_path() -> str:
+        parts: List[str] = []
+        for key in _LEVEL_ORDER:
+            if hier[key]:
+                parts.append(hier[key])
+        return " > ".join(parts) if parts else ""
+
+    def _update_hier(level: str, marker: str) -> None:
+        """Cập nhật hierarchy: set level hiện tại, reset các cấp thấp hơn."""
+        idx = _LEVEL_ORDER.index(level)
+        hier[level] = marker
+        for lower in _LEVEL_ORDER[idx + 1:]:
+            hier[lower] = ""
+
+    def _flush_unit() -> None:
+        nonlocal cur_level, cur_marker, cur_lines
+        if not cur_lines:
+            return
+        content = "\n".join(cur_lines).strip()
+        if not content:
+            cur_lines = []
+            return
+        units.append({
+            "level": cur_level,
+            "marker": cur_marker,
+            "content": content,
+            "hierarchy_path": _build_path(),
+        })
+        cur_lines = []
+
+    for line in lines:
+        level, marker = _classify_marker(line)
+        if level:
+            # Flush unit trước đó
+            _flush_unit()
+            # Cập nhật hierarchy state
+            _update_hier(level, marker)
+            cur_level = level
+            cur_marker = marker
+            cur_lines = [line]
+        else:
+            cur_lines.append(line)
+
+    _flush_unit()
+    return units
+
+
+# ── Token-based splitting ─────────────────────────────────────────────────────
+
+def _split_text_at_tokens(
+    text: str, tw: TokenizerWrapper, n_tokens: int
+) -> Tuple[str, str]:
+    """Cắt text thành (first_part, remainder) sao cho first_part ~ n_tokens."""
+    total = len(tw.encode(text))
+    if total <= n_tokens:
+        return text, ""
+
+    segments = _split_sentences(text)
+    if len(segments) >= 2:
+        first_parts: List[str] = []
+        toks = 0
+        split_idx = 0
+        for i, seg in enumerate(segments):
+            st = len(tw.encode(seg))
+            if toks + st <= n_tokens:
+                first_parts.append(seg)
+                toks += st
+                split_idx = i + 1
+            else:
+                break
+        if first_parts:
+            return "\n".join(first_parts), "\n".join(segments[split_idx:])
+
+    # Fallback: word-level split
+    words = text.split()
+    first_words: List[str] = []
+    t = 0
+    for w in words:
+        wt = len(tw.encode(w))
+        if t + wt + 1 <= n_tokens:
+            first_words.append(w)
+            t += wt + 1
+        else:
+            break
+    rest_words = words[len(first_words):]
+    return " ".join(first_words), " ".join(rest_words)
+
+
+def _split_oversized_unit(
+    text: str, tw: TokenizerWrapper, target_tokens: int, max_tokens: int
 ) -> List[str]:
-    """
-    Chia văn bản thành chunks theo token budget.
-    Overlap: lấy câu/đoạn cuối chunk trước prepend vào chunk sau.
-    """
-    total_toks = len(tw.encode(text))
-    if total_toks <= max_tokens:
+    """Chia unit > max_tokens thành ~ target_tokens mỗi phần."""
+    if len(tw.encode(text)) <= max_tokens:
         return [text]
 
-    sentences = _split_sentences(text)
-    
-    # 1. Tránh trường hợp có câu quá dài (vượt max_tokens)
-    # Ta cắt câu dài thành các cụm từ (nối bằng dấu cách) và coi như nó là 1 câu
-    refined_sentences = []
-    for sent in sentences:
-        st = len(tw.encode(sent))
-        if st <= max_tokens:
-            refined_sentences.append(sent)
+    segments = [p.strip() for p in re.split(r"\n{2,}", text) if p.strip()]
+    if len(segments) < 2:
+        segments = _split_sentences(text)
+
+    refined: List[str] = []
+    for seg in segments:
+        if len(tw.encode(seg)) <= max_tokens:
+            refined.append(seg)
         else:
-            words = sent.split()
-            current_pseudo = []
-            curr_len = 0
+            words = seg.split()
+            buf: List[str] = []
+            buf_len = 0
             for w in words:
                 wt = len(tw.encode(w))
-                if curr_len + wt + 1 <= max_tokens:
-                    current_pseudo.append(w)
-                    curr_len += wt + 1
+                if buf_len + wt + 1 <= max_tokens:
+                    buf.append(w)
+                    buf_len += wt + 1
                 else:
-                    if current_pseudo:
-                        refined_sentences.append(" ".join(current_pseudo))
-                    current_pseudo = [w]
-                    curr_len = wt
-            if current_pseudo:
-                refined_sentences.append(" ".join(current_pseudo))
+                    if buf:
+                        refined.append(" ".join(buf))
+                    buf = [w]
+                    buf_len = wt
+            if buf:
+                refined.append(" ".join(buf))
 
-    # 2. Gom các câu vào các chunks
-    chunks = []
-    current_parts = []
-    current_toks = 0
-
-    for sent in refined_sentences:
-        st = len(tw.encode(sent))
-        
-        if current_toks + st <= max_tokens:
-            current_parts.append(sent)
-            current_toks += st
+    chunks: List[str] = []
+    cur_parts: List[str] = []
+    cur_toks = 0
+    for seg in refined:
+        st = len(tw.encode(seg))
+        if cur_toks + st <= target_tokens:
+            cur_parts.append(seg)
+            cur_toks += st
         else:
-            # Ghi nhận chunk vừa rồi
-            if current_parts:
-                chunks.append("\n\n".join(current_parts))
-                
-            # Tạo đoạn overlap bằng cách lấy đuôi của chunk trước
-            ov_parts = []
-            ov_toks = 0
-            for s in reversed(current_parts):
-                s_tok = len(tw.encode(s))
-                if ov_toks + s_tok <= overlap_tokens:
-                    ov_parts.insert(0, s)
-                    ov_toks += s_tok
-                else:
-                    break
-            
-            # Khởi tạo chunk tiếp theo: Overlap + Câu mới hiện tại
-            current_parts = ov_parts + [sent]
-            current_toks = ov_toks + st
-
-    # Xả bộ nhớ chunk cuối
-    if current_parts:
-        chunks.append("\n\n".join(current_parts))
-
+            if cur_parts:
+                chunks.append("\n\n".join(cur_parts))
+            cur_parts = [seg]
+            cur_toks = st
+    if cur_parts:
+        chunks.append("\n\n".join(cur_parts))
     return chunks
 
+
+# ── Greedy Buffer Accumulation ────────────────────────────────────────────────
+
+def _accumulate_blocks(
+    units: List[Dict[str, Any]],
+    tw: TokenizerWrapper,
+    min_tokens: int = _MIN_TOKENS,
+    target_tokens: int = _TARGET_TOKENS,
+    max_tokens: int = _MAX_TOKENS,
+    tail_merge_threshold: int = _TAIL_MERGE_THRESHOLD,
+) -> List[Dict[str, Any]]:
+    """
+    Greedy Buffer Accumulation — gom unit tuần tự, flush khi đạt ngưỡng.
+
+    Quy tắc:
+    1. buffer + next_unit <= max_tokens → nạp tiếp.
+    2. Tràn max_tokens:
+       - Buffer >= min_tokens → flush, bắt đầu buffer mới.
+       - Buffer < min_tokens  → force-split unit để lấp đầy.
+    3. Unit đơn lẻ > max_tokens → split thành ~ target_tokens.
+    4. Tail merge: chunk cuối < tail_merge_threshold → gộp vào chunk trước.
+
+    Returns list block dict:
+      content, start_marker, end_marker, start_level, end_level, hierarchy_path, tokens.
+    """
+    if not units:
+        return []
+
+    blocks: List[Dict[str, Any]] = []
+
+    buf_texts: List[str] = []
+    buf_info: List[Dict[str, str]] = []
+    buf_toks: int = 0
+
+    def _flush() -> None:
+        nonlocal buf_texts, buf_info, buf_toks
+        if not buf_texts:
+            return
+        blocks.append({
+            "content": "\n\n".join(buf_texts),
+            "start_marker": buf_info[0]["marker"],
+            "end_marker": buf_info[-1]["marker"],
+            "start_level": buf_info[0]["level"],
+            "end_level": buf_info[-1]["level"],
+            "hierarchy_path": buf_info[0].get("hierarchy_path", ""),
+            "tokens": buf_toks,
+        })
+        buf_texts = []
+        buf_info = []
+        buf_toks = 0
+
+    def _make_info(unit: Dict[str, Any]) -> Dict[str, str]:
+        return {
+            "level": unit["level"],
+            "marker": unit["marker"],
+            "hierarchy_path": unit.get("hierarchy_path", ""),
+        }
+
+    for unit in units:
+        u_text = unit["content"]
+        u_toks = len(tw.encode(u_text))
+        u_info = _make_info(unit)
+
+        # Case 3: unit > max_tokens → split riêng
+        if u_toks > max_tokens:
+            _flush()
+            sub_chunks = _split_oversized_unit(u_text, tw, target_tokens, max_tokens)
+            for sc in sub_chunks:
+                blocks.append({
+                    "content": sc,
+                    "start_marker": unit["marker"],
+                    "end_marker": unit["marker"],
+                    "start_level": unit["level"],
+                    "end_level": unit["level"],
+                    "hierarchy_path": unit.get("hierarchy_path", ""),
+                    "tokens": len(tw.encode(sc)),
+                })
+            continue
+
+        # Case 1: fits in buffer
+        if buf_toks + u_toks <= max_tokens:
+            buf_texts.append(u_text)
+            buf_info.append(u_info)
+            buf_toks += u_toks
+            continue
+
+        # Case 2: overflow
+        if buf_toks >= min_tokens:
+            _flush()
+            buf_texts = [u_text]
+            buf_info = [u_info]
+            buf_toks = u_toks
+        else:
+            # Force-split unit
+            space = target_tokens - buf_toks
+            if space < 50:
+                space = max_tokens - buf_toks
+            first_part, remainder = _split_text_at_tokens(u_text, tw, space)
+
+            if first_part.strip():
+                buf_texts.append(first_part)
+                buf_info.append(u_info)
+                buf_toks += len(tw.encode(first_part))
+
+            _flush()
+
+            if remainder.strip():
+                buf_texts = [remainder]
+                buf_info = [_make_info(unit)]
+                buf_toks = len(tw.encode(remainder))
+
+    _flush()
+
+    # ── Tail merge: chunk cuối < threshold → gộp vào chunk trước ─────────
+    if len(blocks) >= 2 and blocks[-1]["tokens"] < tail_merge_threshold:
+        tail = blocks.pop()
+        blocks[-1]["content"] += "\n\n" + tail["content"]
+        blocks[-1]["end_marker"] = tail["end_marker"]
+        blocks[-1]["end_level"] = tail["end_level"]
+        blocks[-1]["tokens"] += tail["tokens"]
+
+    return blocks
+
+
+# ── Fallback: chunk flat text ─────────────────────────────────────────────────
+
+def _chunk_flat_text(
+    text: str, tw: TokenizerWrapper, max_tokens: int
+) -> List[str]:
+    """Chunk theo paragraph rồi gom đến max_tokens (cho Công điện, Lệnh…)."""
+    if len(tw.encode(text)) <= max_tokens:
+        return [text]
+
+    segments = [p.strip() for p in re.split(r"\n{2,}", text) if p.strip()]
+    if len(segments) < 2:
+        segments = _split_sentences(text)
+
+    refined: List[str] = []
+    for seg in segments:
+        if len(tw.encode(seg)) <= max_tokens:
+            refined.append(seg)
+        else:
+            words = seg.split()
+            buf: List[str] = []
+            buf_len = 0
+            for w in words:
+                wt = len(tw.encode(w))
+                if buf_len + wt + 1 <= max_tokens:
+                    buf.append(w)
+                    buf_len += wt + 1
+                else:
+                    if buf:
+                        refined.append(" ".join(buf))
+                    buf = [w]
+                    buf_len = wt
+            if buf:
+                refined.append(" ".join(buf))
+
+    chunks: List[str] = []
+    cur_parts: List[str] = []
+    cur_toks = 0
+    for seg in refined:
+        st = len(tw.encode(seg))
+        if cur_toks + st <= max_tokens:
+            cur_parts.append(seg)
+            cur_toks += st
+        else:
+            if cur_parts:
+                chunks.append("\n\n".join(cur_parts))
+            cur_parts = [seg]
+            cur_toks = st
+    if cur_parts:
+        chunks.append("\n\n".join(cur_parts))
+    return chunks
+
+
+# ── Entry point ───────────────────────────────────────────────────────────────
 
 def build_chunks(
     passages: List[Dict[str, Any]],
@@ -232,73 +631,113 @@ def build_chunks(
     max_tokens: int,
     overlap_tokens: int,
     min_chunk_chars: int,
-):
+) -> Tuple[List[Dict[str, Any]], List[str]]:
     """
-    Entry point: nhận passages từ pipeline, trả về (chunks_meta, dataset).
+    **Unified Parser & Accumulator** cho văn bản pháp luật Việt Nam.
 
-    Mỗi chunk giữ lại:
-    - passage_id (doc_id từ dataset_loader, chứa cấu trúc Phần/Chương/Điều)
-    - context_title (tiêu đề passage, ví dụ "Phụ lục 1 - Chương 2")
-    - content: text chunk đã normalize + prepend context_title
+    Nhận danh sách document nguyên vẹn (1 dict/file từ dataset_loader),
+    parse cấu trúc 6 cấp, gom greedy buffer 800-1200 tokens,
+    tail-merge orphan < 400 tokens.
+
+    Parameters giữ signature cũ (overlap_tokens không sử dụng) để tương thích
+    với pipeline.py.
     """
     tokenizer = AutoTokenizer.from_pretrained(embed_model, use_fast=True)
     tw = TokenizerWrapper(tokenizer)
 
-    chunks_meta = []
-    dataset = []
-    seen_ids = set()
+    chunks_meta: List[Dict[str, Any]] = []
+    dataset: List[str] = []
+    seen_ids: set = set()
 
-    for pi, p in enumerate(passages):
-        passage_id = p.get("doc_id", f"doc::passage-{pi}")
-        text = (p.get("content") or "").strip()
+    for doc in passages:
+        doc_id = doc.get("doc_id", "")
+        raw_content = (doc.get("content") or "").strip()
+        if not raw_content:
+            continue
+
+        meta_info = doc.get("metadata", {})
+        doc_number = meta_info.get("doc_number", "")
+
+        # Tiền xử lý: collapse bảng PDF bị vỡ
+        text = _clean_document_text(raw_content)
         if not text:
             continue
 
-        # Lấy context_title từ metadata (đã set bởi dataset_loader)
-        meta_info = p.get("metadata", {})
-        context_title = meta_info.get("context_title", "")
+        # ── Quyết định chiến lược chunk ──────────────────────────────────
+        if _has_legal_markers(text):
+            # ── A. Unified semantic parsing ──────────────────────────────
+            units = _parse_document_to_units(text)
 
-        # Clean corrupted table artifacts
-        text = _clean_passage_text(text)
-        if not text:
-            continue
+            # Greedy Buffer Accumulation
+            blocks = _accumulate_blocks(units, tw)
 
-        # Chunk by token budget
-        text_chunks = _chunk_text_by_tokens(text, tw, max_tokens, overlap_tokens)
+            for bi, block in enumerate(blocks):
+                chunk_text = normalize_text(block["content"])
 
-        for ci, raw_text in enumerate(text_chunks):
-            # Prepend context_title để mỗi chunk biết nó thuộc đoạn nào
-            if context_title:
-                full_text = f"[Passage: {context_title}]\n{raw_text}"
-            else:
-                full_text = raw_text
+                if len(chunk_text) < min_chunk_chars:
+                    if len(chunk_text) < 30:
+                        continue
 
-            chunk_text = normalize_text(full_text)
+                start_marker = block["start_marker"]
+                end_marker = block["end_marker"]
+                hierarchy_path = block["hierarchy_path"]
+                semantic_level = block["start_level"] or "preamble"
 
-            # Filter quá nhỏ
-            if len(chunk_text) < min_chunk_chars:
-                if len(text_chunks) > 1 or len(chunk_text) < 30:
-                    continue
+                cid = _generate_range_id(doc_number, start_marker, end_marker)
+                orig_cid = cid
+                dedup_counter = 1
+                while cid in seen_ids:
+                    cid = f"{orig_cid}_{dedup_counter}"
+                    dedup_counter += 1
+                seen_ids.add(cid)
 
-            cid = mdhash_id(chunk_text)
-            if cid in seen_ids:
-                continue
-            seen_ids.add(cid)
+                chunks_meta.append({
+                    "id": cid,
+                    "doc_id": doc_id,
+                    "hierarchy_path": hierarchy_path,
+                    "semantic_level": semantic_level,
+                    "start_marker": start_marker,
+                    "end_marker": end_marker,
+                    "chunk_index": bi,
+                    "tokens": len(tw.encode(chunk_text)),
+                    "path": doc.get("path", ""),
+                    "doc_number": doc_number,
+                    "content": chunk_text,
+                })
+                dataset.append(chunk_text)
 
-            tok_count = len(tw.encode(chunk_text))
+        else:
+            # ── B. Flat-text fallback (Công điện, Lệnh, Sắc lệnh) ──────
+            text_chunks = _chunk_flat_text(text, tw, _MAX_TOKENS)
 
-            meta = {
-                "id": cid,
-                "passage_id": passage_id,
-                "context_title": context_title,
-                "chunk_index": ci,
-                "total_chunks_in_passage": len(text_chunks),
-                "tokens": tok_count,
-                "path": p.get("path", ""),
-                "doc_number": meta_info.get("doc_number", ""),
-                "content": chunk_text,
-            }
-            chunks_meta.append(meta)
-            dataset.append(chunk_text)
+            for ci, raw_text in enumerate(text_chunks):
+                chunk_text = normalize_text(raw_text)
+
+                if len(chunk_text) < min_chunk_chars:
+                    if len(text_chunks) > 1 or len(chunk_text) < 30:
+                        continue
+
+                cid = _generate_range_id(doc_number, f"para_{ci}")
+                orig_cid = cid
+                dedup_counter = 1
+                while cid in seen_ids:
+                    cid = f"{orig_cid}_{dedup_counter}"
+                    dedup_counter += 1
+                seen_ids.add(cid)
+
+                chunks_meta.append({
+                    "id": cid,
+                    "doc_id": doc_id,
+                    "hierarchy_path": "Văn bản",
+                    "semantic_level": "paragraph",
+                    "start_marker": "",
+                    "end_marker": "",
+                    "chunk_index": ci,
+                    "tokens": len(tw.encode(chunk_text)),
+                    "path": doc.get("path", ""),
+                    "doc_number": doc_number,
+                    "content": chunk_text,
+                })
+                dataset.append(chunk_text)
 
     return chunks_meta, dataset
