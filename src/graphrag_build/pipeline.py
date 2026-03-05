@@ -101,6 +101,26 @@ def run_build(config: BuildConfig) -> None:
         f"kg_edges={kg.number_of_edges()} entities={len(entities)}"
     )
 
+    # ── 4b. Neo4j export (optional) ──────────────────────────────────────
+    if config.neo4j_enabled:
+        logger.info("🔗 Exporting KG to Neo4j ...")
+        try:
+            from .neo4j_store import Neo4jStore
+
+            with Neo4jStore(
+                uri=config.neo4j_uri,
+                user=config.neo4j_user,
+                password=config.neo4j_password,
+            ) as neo4j_store:
+                neo4j_store.clear_graph()
+                neo4j_store.import_from_networkx(kg, all_entities, all_relationships)
+                stats = neo4j_store.get_stats()
+                logger.info(
+                    f"✅ Neo4j: {stats['nodes']} nodes, {stats['edges']} edges"
+                )
+        except Exception as e:
+            logger.error(f"⚠️  Neo4j export failed (pipeline continues): {e}")
+
     # ── 5. Embedding ─────────────────────────────────────────────────────
     logger.info(f"🧩 embed chunks + entities (model={config.embed_model}) ...")
     embedder = load_embedder(config.embed_model)

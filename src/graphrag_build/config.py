@@ -51,6 +51,14 @@ class BuildConfig:
     gpt_api_key: str = "proxypal-local"
     gpt_model: str = "gpt-5.1"
 
+    # ── 4. NEO4J GRAPH DATABASE ─────────────────────────────────────────
+    # Set neo4j_enabled=True để export KG sang Neo4j sau khi build.
+    # Cần chạy Neo4j trước: docker compose -f docker-compose.neo4j.yml up -d
+    neo4j_enabled: bool = False
+    neo4j_uri: str = "bolt://localhost:7687"
+    neo4j_user: str = "neo4j"
+    neo4j_password: str = "graphrag2026"
+
     # ── 3c. Common KG parameters ─────────────────────────────────────────
     # max_workers: số luồng song song gọi LLM cùng lúc.
     # NIM: 2 workers (API quota hạn chế). GPT proxy: có thể 4-8 workers.
