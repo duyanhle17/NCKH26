@@ -25,3 +25,5 @@ test_chunks_output.txt
 *.index
 
 dataset/
+
+RAG_SYSTEM_OVERVIEW.md 
