@@ -113,8 +113,6 @@ def _split_sentences(text: str) -> List[str]:
     _RE_SENT_SPLIT = re.compile(
         r"(?="
         r"(?:^|\n)\s*"
-        r"(?="
-        r"(?:^|\n)\s*"
         r"(?:"
         r"\d+(?:\.\d+)*[.\-\)]\s"
         r"|[a-zđ][.\)]\s"
