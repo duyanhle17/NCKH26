@@ -44,7 +44,7 @@ class BuildConfig:
     # ── 3. KG EXTRACTION BACKEND ──────────────────────────────────────────
     # Options: "nim" (NVIDIA NIM API / Kimi K2), "gpt" (GPT proxy local)
     # Đổi giá trị này để chuyển đổi giữa 2 backend.
-    kg_backend: Literal["nim", "gpt"] = "gpt"
+    kg_backend: Literal["nim", "gpt"] = "nim"
 
     # ── 3a. NIM API settings (kg_backend="nim") ──────────────────────────
     # Model LLM — Kimi K2 Instruct chạy qua NVIDIA NIM API
@@ -68,11 +68,11 @@ class BuildConfig:
     # ── 3c. Common KG parameters ─────────────────────────────────────────
     # max_workers: số luồng song song gọi LLM cùng lúc.
     # NIM: 2 workers (API quota hạn chế). GPT proxy: có thể 4-8 workers.
-    max_workers: int = 2
+    max_workers: int = 10
 
     # batch_size: số chunks xử lý trong 1 vòng lặp trước khi save checkpoint.
     # Nếu bị ngắt giữa chừng, lần sau sẽ tiếp tục từ batch chưa xong.
-    batch_size: int = 200
+    batch_size: int = 50
 
     # Entity types phù hợp với dạng văn bản pháp luật Việt Nam (Thông tư, Nghị định...)
     entity_types: List[str] = field(default_factory=lambda: [
