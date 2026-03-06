@@ -1,6 +1,10 @@
 import re
 from typing import Any, Dict, List
 from .utils_text import normalize_text
+from .chunking import strip_header_footer, split_legal_units
+
+MAX_PASSAGE_CHARS = 10000
+MIN_PASSAGE_CHARS = 100
 
 def doc_to_passages(doc: Dict[str, Any]) -> List[Dict[str, Any]]:
     """
