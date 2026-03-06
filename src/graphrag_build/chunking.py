@@ -113,8 +113,6 @@ def _split_sentences(text: str) -> List[str]:
     _RE_SENT_SPLIT = re.compile(
         r"(?="
         r"(?:^|\n)\s*"
-        r"(?="
-        r"(?:^|\n)\s*"
         r"(?:"
         r"\d+(?:\.\d+)*[.\-\)]\s"
         r"|[a-zđ][.\)]\s"
@@ -489,13 +487,19 @@ def _accumulate_blocks(
         nonlocal buf_texts, buf_info, buf_toks
         if not buf_texts:
             return
+        seen = []
+        for info in buf_info:
+            hp = info.get("hierarchy_path", "")
+            if hp and hp not in seen:
+                seen.append(hp)
+        merged_path = " | ".join(seen)
         blocks.append({
             "content": "\n\n".join(buf_texts),
             "start_marker": buf_info[0]["marker"],
             "end_marker": buf_info[-1]["marker"],
             "start_level": buf_info[0]["level"],
             "end_level": buf_info[-1]["level"],
-            "hierarchy_path": buf_info[0].get("hierarchy_path", ""),
+            "hierarchy_path": merged_path,
             "tokens": buf_toks,
         })
         buf_texts = []
@@ -625,6 +629,23 @@ def _chunk_flat_text(
     if cur_parts:
         chunks.append("\n\n".join(cur_parts))
     return chunks
+
+
+# ── Public helpers used by passages.py ─────────────────────────────────────────
+
+def strip_header_footer(text: str) -> str:
+    """Public alias for _clean_document_text (collapse corrupted PDF fragments)."""
+    return _clean_document_text(text)
+
+
+def split_legal_units(text: str) -> List[str]:
+    """Parse text into semantic legal units, returning their content strings."""
+    if _has_legal_markers(text):
+        units = _parse_document_to_units(text)
+        return [u["content"] for u in units if u.get("content", "").strip()]
+    # Flat text fallback: split on double newlines
+    parts = [p.strip() for p in re.split(r"\n{2,}", text) if p.strip()]
+    return parts if parts else [text]
 
 
 # ── Entry point ───────────────────────────────────────────────────────────────

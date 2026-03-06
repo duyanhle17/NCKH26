@@ -54,6 +54,7 @@ def doc_to_passages(doc: Dict[str, Any]) -> List[Dict[str, Any]]:
                 "doc_id": doc["doc_id"],
                 "path": f'{doc["path"]} > PASSAGE_{pi}',
                 "content": block,
+                "metadata": doc.get("metadata", {}),
             })
             pi += 1
         buf = []
@@ -75,6 +76,7 @@ def doc_to_passages(doc: Dict[str, Any]) -> List[Dict[str, Any]]:
                     "doc_id": doc["doc_id"],
                     "path": f'{doc["path"]} > PASSAGE_{pi}',
                     "content": block,
+                    "metadata": doc.get("metadata", {}),
                 })
                 pi += 1
         elif buf_len + ulen > MAX_PASSAGE_CHARS:
@@ -95,6 +97,7 @@ def doc_to_passages(doc: Dict[str, Any]) -> List[Dict[str, Any]]:
                 "doc_id": doc["doc_id"],
                 "path": f'{doc["path"]} > FULL_DOC',
                 "content": block,
+                "metadata": doc.get("metadata", {}),
             })
 
     return passages
