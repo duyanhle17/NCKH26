@@ -5,3 +5,4 @@ sentence-transformers
 transformers
 yake
 zvec
+neo4j>=5.0

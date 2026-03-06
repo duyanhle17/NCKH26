@@ -1,83 +1,190 @@
-# NCKH26 - GraphRAG Build & Evaluation Pipeline
+# GraphRAG Build Pipeline — Văn bản Pháp luật Việt Nam
 
-Dự án này cung cấp quy trình xây dựng GraphRAG từ các văn bản pháp luật và công cụ đánh giá (evaluation engine) sử dụng mô hình ngôn ngữ lớn (LLM).
+Hệ thống **GraphRAG** (Graph-based Retrieval-Augmented Generation) xây dựng pipeline xử lý văn bản pháp luật Việt Nam, từ dữ liệu thô đến Knowledge Graph + Vector Database, phục vụ hỏi đáp pháp lý tự động.
 
-## 1. Cài đặt môi trường
+## 📋 Tổng quan
 
-### Yêu cầu hệ thống
-- Python 3.10 trở lên.
-- Khuyên dùng môi trường ảo (venv hoặc conda).
+| Thành phần | Mô tả |
+|:---|:---|
+| **Dataset** | 11.280 văn bản pháp luật (Thuế - Phí - Lệ phí), 20 loại văn bản |
+| **Pipeline** | Load → Passages → Chunking → KG Extraction → Embedding → Vector Store |
+| **KG Backend** | NIM API (Kimi K2 Instruct) hoặc GPT Proxy (ChatGPT Plus) |
+| **Vector Backend** | FAISS, ChromaDB, Milvus, ZVec |
+| **Embedding** | Snowflake Arctic Embed M (mặc định) |
 
-### Cài đặt thư viện dependencies
-Chạy lệnh sau để cài đặt các thư viện cần thiết:
+---
+
+## 🚀 Cài đặt
+
 ```bash
-pip install -r requirements.txt
-```
+# Clone repo
+git clone <repo-url>
+cd NCKH26
 
-Hoặc nếu bạn muốn cài đặt theo từng backend cụ thể (ví dụ FAISS):
-```bash
-pip install -r requirements/base.txt -r requirements/faiss.txt
+# Tạo virtual environment
+python -m venv venv
+source venv/bin/activate
+
+# Cài đặt dependencies (chọn 1 trong các backend)
+pip install -r requirements/base.txt
+pip install -r requirements/faiss.txt      # FAISS (mặc định)
+# pip install -r requirements/chromadb.txt # ChromaDB
+# pip install -r requirements/milvus.txt   # Milvus
+# pip install -r requirements/zvec.txt     # ZVec
 ```
 
 ---
 
-## 2. Cấu hình khóa API (NVAPI_KEY)
+## ⚡ Sử dụng
 
-Dự án sử dụng NVIDIA API cho các tác vụ LLM. Bạn cần export biến môi trường `NVAPI_KEY`.
+### Build Pipeline (CLI)
 
-### Trên macOS / Linux (Terminal)
-Chạy lệnh sau trong terminal (hoặc thêm vào file `~/.zshrc` hoặc `~/.bashrc` để dùng lâu dài):
 ```bash
-export NVAPI_KEY="your_api_key_here"
+# Chạy mặc định: Snowflake embedding + FAISS
+python build.py
+
+# Tuỳ chọn backend
+python build.py --backend chromadb
+python build.py --backend milvus --milvus-uri http://localhost:19530
+
+# Tuỳ chọn embedding model
+python build.py --model intfloat/multilingual-e5-large
+
+# Xem tất cả options
+python build.py --help
 ```
 
-### Trên Windows (Command Prompt)
-```cmd
-set NVAPI_KEY=your_api_key_here
+### Build Pipeline (Python)
+
+```python
+from src.graphrag_build.config import BuildConfig
+from src.graphrag_build.pipeline import run_build
+
+# Mặc định: NIM API + FAISS
+config = BuildConfig()
+run_build(config)
+
+# Dùng GPT proxy để build KG
+config = BuildConfig(
+    kg_backend="gpt",       # "nim" hoặc "gpt"
+    max_workers=4,
+    gpt_model="gpt-5.1",
+)
+run_build(config)
 ```
 
-### Trên Windows (PowerShell)
-```powershell
-$env:NVAPI_KEY="your_api_key_here"
+### Chuyển đổi KG Backend
+
+Trong `src/graphrag_build/config.py`, đổi `kg_backend`:
+
+| Giá trị | Backend | Yêu cầu |
+|:---|:---|:---|
+| `"nim"` (mặc định) | NVIDIA NIM API (Kimi K2 Instruct) | `export NVAPI_KEY="nvapi-..."` |
+| `"gpt"` | GPT Proxy local (ChatGPT Plus) | Proxy chạy tại `localhost:8317` |
+
+---
+
+## 📁 Cấu trúc dự án
+
+```
+NCKH26/
+├── build.py                    # CLI entry point
+├── eval_engine.py              # Evaluation engine (hybrid query + LLM)
+├── dataset/                    # Văn bản pháp luật (.txt)
+│   └── thue_phi_le_phi/        # 20 thể loại, 11.280 files
+│       ├── Thông_tư/
+│       ├── Nghị_định/
+│       ├── Quyết_định/
+│       └── ...
+├── src/graphrag_build/         # Core pipeline modules
+│   ├── config.py               # Cấu hình (embedding, KG backend, chunking)
+│   ├── pipeline.py             # Orchestrator chính
+│   ├── dataset_loader.py       # Load .txt files
+│   ├── passages.py             # Chia văn bản → passages (theo Điều/Khoản)
+│   ├── chunking.py             # Passages → chunks (theo token budget)
+│   ├── entities_kg.py          # KG extraction via NIM API (Kimi K2)
+│   ├── gpt_kg.py               # KG extraction via GPT Proxy (ChatGPT Plus)
+│   ├── embeddings.py           # Sentence-Transformers embedding
+│   ├── vector_store.py         # Vector DB plugin (FAISS/ChromaDB/Milvus/ZVec)
+│   ├── io_artifacts.py         # Save/load artifacts (JSON, Pickle, Numpy)
+│   └── utils_text.py           # Text utilities
+├── artifact_faiss/             # Output artifacts (sau khi build)
+├── requirements/               # Dependencies theo backend
+│   ├── base.txt
+│   ├── faiss.txt
+│   ├── chromadb.txt
+│   ├── milvus.txt
+│   └── zvec.txt
+├── STRUCTURE.md                # Giải thích cấu trúc project
+├── DATASET_ANALYSIS.md         # Phân tích chi tiết dataset
+└── eval-thue.json              # Bộ câu hỏi đánh giá
 ```
 
 ---
 
-## 3. Hướng dẫn chạy Pipeline
+## 🔧 Pipeline Flow
 
-Quy trình gồm 2 bước chính: Xây dựng Index và Chạy Evaluation.
+```
+1. Load Dataset        dataset/*.txt
+       ↓
+2. Passages            Chia theo cấu trúc pháp lý (Điều/Khoản/Điểm)
+       ↓
+3. Chunking            Token budget (700 tokens, overlap 128)
+       ↓
+4. KG Extraction       NIM API hoặc GPT Proxy
+   ├── Entities        Trích xuất thực thể (cơ quan, văn bản, thuế phí...)
+   └── Triples         source → relation → target
+       ↓
+5. Embedding           Sentence-Transformers → vectors
+       ↓
+6. Vector Store        FAISS / ChromaDB / Milvus / ZVec
+       ↓
+7. Artifacts           chunks.json, kg.pkl, entities.json, ...
+```
 
-### Bước 1: Xây dựng Index (build.py)
-Công cụ này sẽ xử lý dữ liệu trong thư mục `dataset/`, thực hiện chunking, tạo embedding và xây dựng Knowledge Graph.
+---
 
-- **Chạy mặc định (FAISS):**
-  ```bash
-  python build.py
-  ```
-- **Sử dụng backend khác (ví dụ ChromaDB):**
-  ```bash
-  python build.py --backend chromadb
-  ```
-- **Tùy chỉnh model embedding:**
-  ```bash
-  python build.py --model intfloat/multilingual-e5-large
-  ```
-
-Sau khi chạy xong, các file artifacts sẽ được tạo trong thư mục `artifact_faiss/` (hoặc tương ứng với backend bạn chọn).
-
-### Bước 2: Chạy công cụ đánh giá (eval_engine.py)
-Sau khi đã có artifacts từ Bước 1, bạn có thể chạy engine để thực hiện truy vấn và đánh giá.
+## 📊 Evaluation
 
 ```bash
+# Chạy đánh giá trên bộ câu hỏi
 python eval_engine.py
 ```
 
-*Lưu ý: `eval_engine.py` mặc định tìm dữ liệu trong `./artifact_faiss`. Nếu bạn dùng backend khác, hãy đảm bảo đường dẫn trong code trỏ đúng vị trí.*
+Evaluation engine sử dụng **hybrid query**: Semantic Search + BM25 + Entity Search + KG Relationships, sau đó gọi LLM để sinh câu trả lời.
 
 ---
 
-## Cấu trúc thư mục chính
-- `src/graphrag_build/`: Chứa mã nguồn core cho việc xây dựng pipeline.
-- `dataset/`: Thư mục chứa các tệp văn bản đầu vào (.txt, .json).
-- `artifact_faiss/`: Kết quả sau khi chạy `build.py` (embeddings, metadata, KG).
-- `eval_engine.py`: Script dùng để chạy thử nghiệm và đánh giá chất lượng RAG.
+## 🔑 API Keys
+
+### NIM API (Kimi K2)
+```bash
+export NVAPI_KEY="nvapi-your-key-here"
+```
+
+### GPT Proxy
+GPT proxy cần đang chạy tại `http://localhost:8317`. Cấu hình trong `config.py`:
+```python
+gpt_base_url = "http://localhost:8317/v1"
+gpt_api_key = "proxypal-local"
+gpt_model = "gpt-5.1"
+```
+
+---
+
+## 📦 Output Artifacts
+
+Sau khi build xong, các file output nằm trong `artifact_{backend}/`:
+
+| File | Nội dung |
+|:---|:---|
+| `chunks.json` | Danh sách tất cả chunks (text) |
+| `chunks_meta.json` | Metadata của chunks (source file, passage ID...) |
+| `kg.pkl` | Knowledge Graph (NetworkX DiGraph) |
+| `entities.json` | Danh sách entities đã merge |
+| `entity_to_chunks.json` | Mapping entity → chunk indices |
+| `chunk_entities.json` | Mapping chunk → entity names |
+| `all_entities_raw.json` | Entities thô (chưa merge) |
+| `all_relationships_raw.json` | Relationships thô (chưa merge) |
+| `meta.json` | Thông tin build (model, backend, stats) |
+| `chunks.index` / `entities.index` | FAISS indices |

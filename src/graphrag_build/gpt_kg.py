@@ -208,6 +208,7 @@ def parse_json_safe(text: str) -> List[Dict[str, Any]]:
 
 
 def norm_entity_name(name: str) -> str:
+    # UPPER để merge dễ hơn (giống entities_kg.py)
     return (name or "").strip().upper()
 
 

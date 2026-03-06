@@ -1,4 +1,4 @@
-﻿"""Chunking module – Unified Parser & Accumulator for Vietnamese legal documents.
+"""Chunking module – Unified Parser & Accumulator for Vietnamese legal documents.
 
 Flow:
   dataset_loader.py  → trả document nguyên vẹn (1 dict / file)
@@ -89,6 +89,8 @@ class TokenizerWrapper:
 
 # ── Corrupted-table detection & collapse ──────────────────────────────────────
 
+# ── Corrupted-table detection & collapse ──────────────────────────────────────
+
 def _is_corrupted_block(text: str, short_line_threshold: int = 12,
                          min_short_ratio: float = 0.60) -> bool:
     lines = [l for l in text.split("\n") if l.strip()]
@@ -109,6 +111,8 @@ def _split_sentences(text: str) -> List[str]:
     """Split text thành sentence/clause segments (multi-level)."""
     # 1. Legal sub-markers
     _RE_SENT_SPLIT = re.compile(
+        r"(?="
+        r"(?:^|\n)\s*"
         r"(?="
         r"(?:^|\n)\s*"
         r"(?:"
