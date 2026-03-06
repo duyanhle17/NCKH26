@@ -44,7 +44,7 @@ class BuildConfig:
     # ── 3. KG EXTRACTION BACKEND ──────────────────────────────────────────
     # Options: "nim" (NVIDIA NIM API / Kimi K2), "gpt" (GPT proxy local)
     # Đổi giá trị này để chuyển đổi giữa 2 backend.
-    kg_backend: Literal["nim", "gpt"] = "nim"
+    kg_backend: Literal["nim", "gpt"] = "gpt"
 
     # ── 3a. NIM API settings (kg_backend="nim") ──────────────────────────
     # Model LLM — Kimi K2 Instruct chạy qua NVIDIA NIM API
@@ -55,12 +55,12 @@ class BuildConfig:
     # GPT-5 qua ChatGPT Plus proxy. Proxy phải đang chạy trước khi build.
     gpt_base_url: str = "http://localhost:8317/v1"
     gpt_api_key: str = "proxypal-local"
-    gpt_model: str = "gpt-5.1"
+    gpt_model: str = "gpt-5.2-codex"
 
     # ── 4. NEO4J GRAPH DATABASE ─────────────────────────────────────────
     # Set neo4j_enabled=True để export KG sang Neo4j sau khi build.
     # Cần chạy Neo4j trước: docker compose -f docker-compose.neo4j.yml up -d
-    neo4j_enabled: bool = False
+    neo4j_enabled: bool = True
     neo4j_uri: str = "bolt://localhost:7687"
     neo4j_user: str = "neo4j"
     neo4j_password: str = "graphrag2026"
