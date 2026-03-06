@@ -27,6 +27,7 @@ test_chunks_output.txt
 dataset/
 
 RAG_SYSTEM_OVERVIEW.md 
-
+chunk_summary.txt 
 test_chunks_output.txt
-CHUNK_ENTITY_ANALYSIS.md
+
+CHUNK_ENTITY_ANALYSIS.md 
