@@ -30,10 +30,16 @@ class BuildConfig:
     milvus_uri: str = "http://localhost:19530"
     milvus_collection: str = "graphrag_chunks"
 
-    # ── Chunking parameters ─────────────────────────────────────────────
-    max_token_size: int = 700
-    overlap_token_size: int = 128
-    min_chunk_chars: int = 120
+    # ── Chunking parameters (Unified Semantic Chunking) ────────────────
+    # Chiến lược: gom unit pháp lý tuần tự (greedy buffer accumulation).
+    # Flush buffer khi >= min_chunk_tokens VÀ unit tiếp theo sẽ vượt max_chunk_tokens.
+    # Unit đơn lẻ > max_chunk_tokens → force-split thành ~target_chunk_tokens.
+    # Chunk cuối < tail_merge_threshold → gộp vào chunk trước.
+    min_chunk_tokens: int = 800       # Buffer >= 800 mới được flush
+    target_chunk_tokens: int = 1000   # Mục tiêu khi force-split unit quá lớn
+    max_chunk_tokens: int = 1200      # Cận trên cứng mỗi chunk
+    tail_merge_threshold: int = 400   # Chunk cuối < 400 tokens → gộp vào chunk trước
+    min_chunk_chars: int = 120        # Bỏ chunk quá ngắn (< 120 ký tự)
 
     # ── 3. KG EXTRACTION BACKEND ──────────────────────────────────────────
     # Options: "nim" (NVIDIA NIM API / Kimi K2), "gpt" (GPT proxy local)

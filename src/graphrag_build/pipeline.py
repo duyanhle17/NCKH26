@@ -50,8 +50,10 @@ def run_build(config: BuildConfig) -> None:
     chunks_meta, dataset = build_chunks(
         passages,
         embed_model=config.embed_model,
-        max_tokens=config.max_token_size,
-        overlap_tokens=config.overlap_token_size,
+        min_chunk_tokens=config.min_chunk_tokens,
+        target_chunk_tokens=config.target_chunk_tokens,
+        max_chunk_tokens=config.max_chunk_tokens,
+        tail_merge_threshold=config.tail_merge_threshold,
         min_chunk_chars=config.min_chunk_chars,
     )
     if not dataset:

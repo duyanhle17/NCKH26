@@ -1,4 +1,4 @@
-"""Chunking module – Unified Parser & Accumulator for Vietnamese legal documents.
+﻿"""Chunking module – Unified Parser & Accumulator for Vietnamese legal documents.
 
 Flow:
   dataset_loader.py  → trả document nguyên vẹn (1 dict / file)
@@ -27,12 +27,12 @@ from transformers import AutoTokenizer
 from .utils_text import normalize_text
 
 
-# ── Constants ─────────────────────────────────────────────────────────────────
+# ── Default constants (fallback nếu không truyền tham số) ─────────────────────
 
-_MIN_TOKENS: int = 800          # Buffer >= 800 mới được flush
-_TARGET_TOKENS: int = 1000      # Mục tiêu mỗi chunk
-_MAX_TOKENS: int = 1200         # Cận trên cứng
-_TAIL_MERGE_THRESHOLD: int = 400  # Chunk cuối < 400 → gộp vào chunk trước
+_DEFAULT_MIN_TOKENS: int = 800
+_DEFAULT_TARGET_TOKENS: int = 1000
+_DEFAULT_MAX_TOKENS: int = 1200
+_DEFAULT_TAIL_MERGE_THRESHOLD: int = 400
 
 
 # ── Deterministic Semantic ID ─────────────────────────────────────────────────
@@ -457,10 +457,10 @@ def _split_oversized_unit(
 def _accumulate_blocks(
     units: List[Dict[str, Any]],
     tw: TokenizerWrapper,
-    min_tokens: int = _MIN_TOKENS,
-    target_tokens: int = _TARGET_TOKENS,
-    max_tokens: int = _MAX_TOKENS,
-    tail_merge_threshold: int = _TAIL_MERGE_THRESHOLD,
+    min_tokens: int = _DEFAULT_MIN_TOKENS,
+    target_tokens: int = _DEFAULT_TARGET_TOKENS,
+    max_tokens: int = _DEFAULT_MAX_TOKENS,
+    tail_merge_threshold: int = _DEFAULT_TAIL_MERGE_THRESHOLD,
 ) -> List[Dict[str, Any]]:
     """
     Greedy Buffer Accumulation — gom unit tuần tự, flush khi đạt ngưỡng.
@@ -632,19 +632,21 @@ def _chunk_flat_text(
 def build_chunks(
     passages: List[Dict[str, Any]],
     embed_model: str,
-    max_tokens: int,
-    overlap_tokens: int,
-    min_chunk_chars: int,
+    min_chunk_tokens: int = _DEFAULT_MIN_TOKENS,
+    target_chunk_tokens: int = _DEFAULT_TARGET_TOKENS,
+    max_chunk_tokens: int = _DEFAULT_MAX_TOKENS,
+    tail_merge_threshold: int = _DEFAULT_TAIL_MERGE_THRESHOLD,
+    min_chunk_chars: int = 120,
 ) -> Tuple[List[Dict[str, Any]], List[str]]:
     """
     **Unified Parser & Accumulator** cho văn bản pháp luật Việt Nam.
 
     Nhận danh sách document nguyên vẹn (1 dict/file từ dataset_loader),
-    parse cấu trúc 6 cấp, gom greedy buffer 800-1200 tokens,
-    tail-merge orphan < 400 tokens.
-
-    Parameters giữ signature cũ (overlap_tokens không sử dụng) để tương thích
-    với pipeline.py.
+    parse cấu trúc 6 cấp, gom greedy buffer theo token budget:
+      - min_chunk_tokens: buffer >= giá trị này mới được flush (default 800)
+      - target_chunk_tokens: mục tiêu khi force-split unit quá lớn (default 1000)
+      - max_chunk_tokens: cận trên cứng mỗi chunk (default 1200)
+      - tail_merge_threshold: chunk cuối < giá trị này → gộp vào chunk trước (default 400)
     """
     tokenizer = AutoTokenizer.from_pretrained(embed_model, use_fast=True)
     tw = TokenizerWrapper(tokenizer)
@@ -672,8 +674,14 @@ def build_chunks(
             # ── A. Unified semantic parsing ──────────────────────────────
             units = _parse_document_to_units(text)
 
-            # Greedy Buffer Accumulation
-            blocks = _accumulate_blocks(units, tw)
+            # Greedy Buffer Accumulation (dùng tham số từ config)
+            blocks = _accumulate_blocks(
+                units, tw,
+                min_tokens=min_chunk_tokens,
+                target_tokens=target_chunk_tokens,
+                max_tokens=max_chunk_tokens,
+                tail_merge_threshold=tail_merge_threshold,
+            )
 
             for bi, block in enumerate(blocks):
                 chunk_text = normalize_text(block["content"])
@@ -712,7 +720,7 @@ def build_chunks(
 
         else:
             # ── B. Flat-text fallback (Công điện, Lệnh, Sắc lệnh) ──────
-            text_chunks = _chunk_flat_text(text, tw, _MAX_TOKENS)
+            text_chunks = _chunk_flat_text(text, tw, max_chunk_tokens)
 
             for ci, raw_text in enumerate(text_chunks):
                 chunk_text = normalize_text(raw_text)

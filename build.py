@@ -62,11 +62,19 @@ def main():
         help="Output artifacts directory (default: ./artifacts/graphrag_{backend})",
     )
 
-    # ── Chunking parameters ──────────────────────────────────────────────
-    parser.add_argument("--max-tokens", type=int, default=700, help="Max tokens per chunk (default: 700)")
-    parser.add_argument("--overlap-tokens", type=int, default=128, help="Overlap tokens between chunks (default: 128)")
-    parser.add_argument("--min-chunk-chars", type=int, default=120, help="Min chars per chunk (default: 120)")
-    parser.add_argument("--batch-size", type=int, default=16, help="Embedding batch size (default: 16)")
+    # ── Chunking parameters (Semantic Chunking) ───────────────────────────
+    parser.add_argument("--min-tokens", type=int, default=800,
+                        help="Min tokens to flush buffer (default: 800)")
+    parser.add_argument("--target-tokens", type=int, default=1000,
+                        help="Target tokens when force-splitting oversized units (default: 1000)")
+    parser.add_argument("--max-tokens", type=int, default=1200,
+                        help="Max tokens per chunk — hard cap (default: 1200)")
+    parser.add_argument("--tail-merge", type=int, default=400,
+                        help="Merge tail chunk if < N tokens (default: 400)")
+    parser.add_argument("--min-chunk-chars", type=int, default=120,
+                        help="Min chars per chunk (default: 120)")
+    parser.add_argument("--batch-size", type=int, default=16,
+                        help="Embedding batch size (default: 16)")
 
     # ── Milvus-specific ──────────────────────────────────────────────────
     parser.add_argument("--milvus-uri", default="http://localhost:19530", help="Milvus server URI")
@@ -95,8 +103,10 @@ def main():
         "embed_model": args.model,
         "vector_backend": backend,
         "batch_embed": args.batch_size,
-        "max_token_size": args.max_tokens,
-        "overlap_token_size": args.overlap_tokens,
+        "min_chunk_tokens": args.min_tokens,
+        "target_chunk_tokens": args.target_tokens,
+        "max_chunk_tokens": args.max_tokens,
+        "tail_merge_threshold": args.tail_merge,
         "min_chunk_chars": args.min_chunk_chars,
         "milvus_uri": args.milvus_uri,
         "milvus_collection": args.milvus_collection,
@@ -114,8 +124,7 @@ def main():
     print(f"  Vector backend  : {config.vector_backend}")
     print(f"  Dataset         : {config.dataset_dir}")
     print(f"  Output          : {config.cache_dir}")
-    print(f"  Max tokens      : {config.max_token_size}")
-    print(f"  Overlap tokens  : {config.overlap_token_size}")
+    print(f"  Chunk tokens    : {config.min_chunk_tokens}-{config.max_chunk_tokens} (target={config.target_chunk_tokens}, tail<{config.tail_merge_threshold})")
     print(f"  Min chunk chars : {config.min_chunk_chars}")
     print(f"  LLM Max workers : {config.max_workers}")
     print("=" * 60)
