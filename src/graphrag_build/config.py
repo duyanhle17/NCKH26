@@ -44,7 +44,7 @@ class BuildConfig:
     # ── 3. KG EXTRACTION BACKEND ──────────────────────────────────────────
     # Options: "nim" (NVIDIA NIM API / Kimi K2), "gpt" (GPT proxy local)
     # Đổi giá trị này để chuyển đổi giữa 2 backend.
-    kg_backend: Literal["nim", "gpt"] = "nim"
+    kg_backend: Literal["nim", "gpt"] = "gpt"
 
     # ── 3a. NIM API settings (kg_backend="nim") ──────────────────────────
     # Model LLM — Kimi K2 Instruct chạy qua NVIDIA NIM API
@@ -55,7 +55,7 @@ class BuildConfig:
     # GPT-5 qua ChatGPT Plus proxy. Proxy phải đang chạy trước khi build.
     gpt_base_url: str = "http://localhost:8317/v1"
     gpt_api_key: str = "proxypal-local"
-    gpt_model: str = "gpt-5.2-codex"
+    gpt_model: str = "gpt-5.1"
 
     # ── 4. NEO4J GRAPH DATABASE ─────────────────────────────────────────
     # Set neo4j_enabled=True để export KG sang Neo4j sau khi build.
@@ -68,11 +68,11 @@ class BuildConfig:
     # ── 3c. Common KG parameters ─────────────────────────────────────────
     # max_workers: số luồng song song gọi LLM cùng lúc.
     # NIM: 2 workers (API quota hạn chế). GPT proxy: có thể 4-8 workers.
-    max_workers: int = 10
+    max_workers: int = 5
 
     # batch_size: số chunks xử lý trong 1 vòng lặp trước khi save checkpoint.
     # Nếu bị ngắt giữa chừng, lần sau sẽ tiếp tục từ batch chưa xong.
-    batch_size: int = 50
+    batch_size: int = 200
 
     # Entity types phù hợp với dạng văn bản pháp luật Việt Nam (Thông tư, Nghị định...)
     entity_types: List[str] = field(default_factory=lambda: [
